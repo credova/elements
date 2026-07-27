@@ -1443,17 +1443,17 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.9.tgz#d229a7b7f9dac167a156992ef23c7f023653f53b"
   integrity sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==
 
-"@publicsquare/elements-js@1.15.1":
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/@publicsquare/elements-js/-/elements-js-1.15.1.tgz#0082f4334eb0e75837367d9e1b1920284142d4df"
-  integrity sha512-+kF5TryAnT9GtuC+7+kRS9VVuewvxQELdXwb3TNIp18K7pN15DTuQaNozglZ/N5BACu/2e/m9QmrLh0qMp3JKQ==
+"@publicsquare/elements-js@1.15.2":
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/@publicsquare/elements-js/-/elements-js-1.15.2.tgz#d8f59dcff4d6353665bbf1f588d4d5a52a74a16c"
+  integrity sha512-Q8E/inoUdBKaOugg4fFbDsKJqPH747IuMfMri+laDiCFMHKPN44wETwbiGuYmEZDyb6vOT/UblnnTIMJ00FpUQ==
   dependencies:
     "@basis-theory/basis-theory-js" "^4.30.0"
     "@basis-theory/web-threeds" "^2.1.2"
     follow-redirects "^1.16.0"
     glob "^13.0.6"
     minimatch "^10.2.5"
-    prettier "^3.8.2"
+    prettier "^3.8.3"
     serialize-javascript "^7.0.5"
 
 "@sinclair/typebox@^0.34.0":
@@ -3211,15 +3211,10 @@ pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-prettier@^3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.8.2.tgz#4f52e502193c9aa5b384c3d00852003e551bbd9f"
-  integrity sha512-8c3mgTe0ASwWAJK+78dpviD+A8EqhndQPUBpNUIPt6+xWlIigCwfN01lWr9MAede4uqXGTEKeQWTvzb3vjia0Q==
-
 prettier@^3.8.3:
-  version "3.9.5"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.9.5.tgz#4fec97736e33b9d0b620b48914fe93b530e835ad"
-  integrity sha512-/FVl766LpUfB5vXgCYOYa0MeV/441Ia99AeICQIQFTY/Nw0roZwULcXpku5i1/m5kt/baz+s4Zogspd839HSMg==
+  version "3.9.6"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.9.6.tgz#b3ea5146515d40fc53f18aa63f74dfab1e10dbf6"
+  integrity sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==
 
 pretty-format@30.3.0:
   version "30.3.0"
