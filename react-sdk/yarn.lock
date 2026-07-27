@@ -1443,17 +1443,17 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.2.9.tgz#d229a7b7f9dac167a156992ef23c7f023653f53b"
   integrity sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==
 
-"@publicsquare/elements-js@1.15.1":
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/@publicsquare/elements-js/-/elements-js-1.15.1.tgz#0082f4334eb0e75837367d9e1b1920284142d4df"
-  integrity sha512-+kF5TryAnT9GtuC+7+kRS9VVuewvxQELdXwb3TNIp18K7pN15DTuQaNozglZ/N5BACu/2e/m9QmrLh0qMp3JKQ==
+"@publicsquare/elements-js@1.15.2":
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/@publicsquare/elements-js/-/elements-js-1.15.2.tgz#d8f59dcff4d6353665bbf1f588d4d5a52a74a16c"
+  integrity sha512-Q8E/inoUdBKaOugg4fFbDsKJqPH747IuMfMri+laDiCFMHKPN44wETwbiGuYmEZDyb6vOT/UblnnTIMJ00FpUQ==
   dependencies:
     "@basis-theory/basis-theory-js" "^4.30.0"
     "@basis-theory/web-threeds" "^2.1.2"
     follow-redirects "^1.16.0"
     glob "^13.0.6"
     minimatch "^10.2.5"
-    prettier "^3.8.2"
+    prettier "^3.8.3"
     serialize-javascript "^7.0.5"
 
 "@sinclair/typebox@^0.34.0":
@@ -1727,9 +1727,9 @@ asynckit@^0.4.0:
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
 axios@^1.16.0, axios@^1.8.2:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.17.0.tgz#ae5a1164a4f719942cd73c67e6a3f62d3ccb8f2b"
-  integrity sha512-J8SwNxprqqpbfenehxWYXE7CW+wM1BB4w3+N+g+/Wx40xM4rsLrfPmHHxSWIxJLYDgSY/HqlFPIYb2/S3rxafw==
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.18.1.tgz#d63f9863bcd8938815c86f9e2abd380189d96dfe"
+  integrity sha512-3nTvFlvpn9Zu/RkHUqtc7/+al4UpRW5az71ap5zccp6e8RAYEzhMTecX8Dz1wWDYrPpUoB1HAQEGEAEvUr7S9g==
   dependencies:
     follow-redirects "^1.16.0"
     form-data "^4.0.5"
@@ -3210,11 +3210,6 @@ pkg-dir@^4.2.0:
   integrity sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
   dependencies:
     find-up "^4.0.0"
-
-prettier@^3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.8.2.tgz#4f52e502193c9aa5b384c3d00852003e551bbd9f"
-  integrity sha512-8c3mgTe0ASwWAJK+78dpviD+A8EqhndQPUBpNUIPt6+xWlIigCwfN01lWr9MAede4uqXGTEKeQWTvzb3vjia0Q==
 
 prettier@^3.8.3:
   version "3.9.5"
