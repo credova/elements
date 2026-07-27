@@ -26,7 +26,7 @@
     "@publicsquare/elements-react": "^1.11.0",
     "flatted": "^3.4.2",
     "minimatch": "^10.2.3",
-    "next": "^15.5.16",
+    "next": "^16.2.12",
     "react": "^19.2.1",
     "react-dom": "^19.2.1"
   },
