@@ -1,0 +1,29 @@
+# Task runner for the elements SDK (replaces the Makefile).
+# Run tasks with `mise run <task>`, e.g. `mise run build`.
+[tools]
+node = "24"
+
+[tasks.format]
+run = "./scripts/format.sh"
+
+[tasks.verify]
+run = "./scripts/verify.sh"
+
+[tasks.build]
+run = "./scripts/build.sh"
+
+[tasks.dev]
+run = "cd example-app && yarn dev"
+
+[tasks.lint]
+run = "cd example-app && yarn lint"
+
+[tasks.test]
+description = "Playwright acceptance tests — needs a live env + the SDK key; run out-of-band, not in PR CI"
+run = "./scripts/acceptance-test.sh"
+
+[tasks.release]
+run = "./scripts/release.sh"
+
+[tasks.release-cdn]
+run = "./scripts/release-cdn.sh"
