@@ -5,7 +5,7 @@ current_directory="$PWD"
 
 cd $(dirname $0)/..
 
-npx semantic-release
+bunx semantic-release
 
 result=$?
 

@@ -1,3 +1,4 @@
+---
 name: Release
 
 concurrency: deploy
@@ -6,57 +7,60 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HUSKY: 0 # disables husky hooks
+
 jobs:
   release-sdk:
-    runs-on: "ubuntu-latest"
-
-    permissions:
-      contents: "write"
-      id-token: "write"
-
-    env:
-      HUSKY: 0 # disables husky hooks
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Generate token
-        id: generate-token
-        uses: actions/create-github-app-token@v3
+      # credova-standard release token (RELEASE_DOWNLOADER GitHub App), replacing
+      # the bespoke create-github-app-token + RELEASE_APP_* flow.
+      - id: release-token
+        name: Generate release token
+        uses: credova/platform-workflows/actions/auth-release-token@master
         with:
-          client-id: ${{ secrets.RELEASE_APP_ID }}
-          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          client-id: ${{ secrets.RELEASE_DOWNLOADER_APP_ID }}
+          private-key: ${{ secrets.RELEASE_DOWNLOADER_APP_PRIVATE_KEY }}
 
       - name: Checkout repo
         uses: actions/checkout@v6
         with:
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ steps.release-token.outputs.token }}
           fetch-depth: 0
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - name: Setup mise
+        uses: jdx/mise-action@v4
         with:
-          node-version: 24.*
-
-      - name: Upgrade npm to 11.5.1+ for OIDC
-        run: npm install -g npm@latest
+          install: true
 
       - name: Build
-        run: make build
+        run: mise run build
 
-      - name: Release
-        run: make release
+      # TODO(npm publishing): semantic-release publishes the packages to npm. npm
+      # trusted publishing / token for the credova org is being set up separately
+      # (with Levi); this step will succeed once that is in place.
+      - name: Release (npm)
+        run: mise run release
         env:
           ENVIRONMENT: prod
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.release-token.outputs.token }}
 
-      - id: login-to-gcp
+      # CDN publish (GCS) — authenticate via the credova psq-github WIF pool
+      # (matching the payments-plugin migrations), replacing the old psqfinancial pool.
+      - id: auth-gcp
         name: Authenticate to GCP
-        uses: "google-github-actions/auth@v3"
+        uses: google-github-actions/auth@v3
         with:
           project_id: psqpayments-shd-operations
-          workload_identity_provider: projects/6883124133/locations/global/workloadIdentityPools/psqfinancial/providers/psqfinancial-github
+          workload_identity_provider: projects/50446899764/locations/global/workloadIdentityPools/psq-github/providers/psq-github
 
-      - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v3"
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
 
       - name: Release CDN
-        run: make release-cdn
+        run: mise run release-cdn

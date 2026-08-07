@@ -69,6 +69,7 @@ describe('ThreeDs', () => {
     expect(JSON.parse(requestInit.body)).toEqual({
       bt_session_id: 'bt_session_123',
       payment_intent_id: 'pmt_int_1',
+      challenge_preference: 'no-preference',
     });
 
     // The API response (including bt_session_id) is returned to the caller

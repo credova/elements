@@ -3,13 +3,13 @@
   "version": "1.15.2",
   "scripts": {
     "release": "semantic-release",
-    "test": "yarn playwright test",
-    "test:ui": "yarn playwright test --ui"
+    "test": "bunx playwright test",
+    "test:ui": "bunx playwright test --ui"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "resolutions": {
+  "overrides": {
     "brace-expansion": "^5.0.6",
     "ip-address": "^10.1.1",
     "js-yaml": "^4.2.0",

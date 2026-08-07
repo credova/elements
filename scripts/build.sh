@@ -5,30 +5,30 @@ current_directory="$PWD"
 
 cd $(dirname $0)/..
 
-yarn
+bun install
 
 cd js-sdk
 
 rm -rf node_modules
-yarn
-yarn build
+bun install
+bun run build
 
 cd ../react-sdk
 
 rm -rf node_modules
-yarn
-yarn link:js-sdk
-yarn build
+bun install
+bun run link:js-sdk
+bun run build
 
 cd ../example-app
 
 echo "Building project..."
 
 rm -rf node_modules
-yarn
-yarn link:js-sdk
-yarn link:react-sdk
-yarn build
+bun install
+bun run link:js-sdk
+bun run link:react-sdk
+bun run build
 
 result=$?
 

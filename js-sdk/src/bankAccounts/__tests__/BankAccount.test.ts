@@ -118,14 +118,18 @@ describe('BankAccounts', () => {
     const error = await getError<{ message: string }>(() =>
       bankAccount.create({ card: {} } as any),
     );
-    expect(error.message).toEqual('routing_number is required');
+    expect(error.message).toEqual(
+      'routing_number is required when bank_account_verification_id is not provided',
+    );
   });
 
   test('create() fails with invalid account number', async () => {
     const error = await getError<{ message: string }>(() =>
       bankAccount.create({ routing_number: '123456789' } as any),
     );
-    expect(error.message).toEqual('account_number is required');
+    expect(error.message).toEqual(
+      'account_number is required when bank_account_verification_id is not provided',
+    );
   });
 
   test('create() only passes validated input', async () => {

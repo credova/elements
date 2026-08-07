@@ -1,0 +1,38 @@
+# Task runner for the elements SDK (replaces the Makefile).
+# Run tasks with `mise run <task>`, e.g. `mise run build`.
+[tools]
+node = "24"
+# Pinned to the version the monorepo build/tests were validated against. Bump
+# deliberately rather than tracking "latest" so CI is reproducible.
+bun = "1.3.14"
+
+[tasks.format]
+run = "./scripts/format.sh"
+
+[tasks.verify]
+run = "./scripts/verify.sh"
+
+[tasks.build]
+run = "./scripts/build.sh"
+
+[tasks.dev]
+run = "cd example-app && bun run dev"
+
+[tasks.lint]
+run = "cd example-app && bun run lint"
+
+[tasks.test]
+description = "Unit tests (jest). Pure/mocked, no live env — runs in PR CI."
+# js-sdk holds the unit suite; react-sdk has no unit tests yet. Self-installs so
+# it also works standalone (in CI the preceding build has already installed deps).
+run = "cd js-sdk && bun install && bun run test"
+
+[tasks.acceptance]
+description = "Playwright acceptance tests — needs a live env + the SDK key; run out-of-band, not in PR CI"
+run = "./scripts/acceptance-test.sh"
+
+[tasks.release]
+run = "./scripts/release.sh"
+
+[tasks.release-cdn]
+run = "./scripts/release-cdn.sh"

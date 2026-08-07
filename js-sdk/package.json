@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "yarn clean && concurrently \"yarn build:bundle\" \"yarn build:module\" \"yarn build:types\" \"yarn build:package\" -n \"bundle,module,types,package\" -c \"yellow,magenta,blue,green\" --kill-others-on-fail -g",
+    "build": "bun run clean && concurrently \"bun run build:bundle\" \"bun run build:module\" \"bun run build:types\" \"bun run build:package\" -n \"bundle,module,types,package\" -c \"yellow,magenta,blue,green\" --kill-others-on-fail -g",
     "build:bundle": "webpack --config webpack.prod.js",
     "build:module": "babel src --extensions .ts --out-dir dist",
     "build:types": "tsc && tsc-alias",
@@ -38,7 +38,7 @@
     "serialize-javascript": "^7.0.5",
     "follow-redirects": "^1.16.0"
   },
-  "resolutions": {
+  "overrides": {
     "brace-expansion": "^5.0.6",
     "axios": "^1.16.0",
     "@babel/plugin-transform-modules-systemjs": "^7.29.4",
