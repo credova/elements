@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "resolutions": {
+  "overrides": {
     "brace-expansion": "^5.0.6",
     "ip-address": "^10.1.1",
     "js-yaml": "^4.2.0",
