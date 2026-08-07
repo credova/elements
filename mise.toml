@@ -2,7 +2,9 @@
 # Run tasks with `mise run <task>`, e.g. `mise run build`.
 [tools]
 node = "24"
-bun = "latest"
+# Pinned to the version the monorepo build/tests were validated against. Bump
+# deliberately rather than tracking "latest" so CI is reproducible.
+bun = "1.3.14"
 
 [tasks.format]
 run = "./scripts/format.sh"
@@ -20,6 +22,12 @@ run = "cd example-app && bun run dev"
 run = "cd example-app && bun run lint"
 
 [tasks.test]
+description = "Unit tests (jest). Pure/mocked, no live env — runs in PR CI."
+# js-sdk holds the unit suite; react-sdk has no unit tests yet. Self-installs so
+# it also works standalone (in CI the preceding build has already installed deps).
+run = "cd js-sdk && bun install && bun run test"
+
+[tasks.acceptance]
 description = "Playwright acceptance tests — needs a live env + the SDK key; run out-of-band, not in PR CI"
 run = "./scripts/acceptance-test.sh"
 
