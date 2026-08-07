@@ -2,6 +2,7 @@
 # Run tasks with `mise run <task>`, e.g. `mise run build`.
 [tools]
 node = "24"
+bun = "latest"
 
 [tasks.format]
 run = "./scripts/format.sh"
@@ -13,10 +14,10 @@ run = "./scripts/verify.sh"
 run = "./scripts/build.sh"
 
 [tasks.dev]
-run = "cd example-app && yarn dev"
+run = "cd example-app && bun run dev"
 
 [tasks.lint]
-run = "cd example-app && yarn lint"
+run = "cd example-app && bun run lint"
 
 [tasks.test]
 description = "Playwright acceptance tests — needs a live env + the SDK key; run out-of-band, not in PR CI"

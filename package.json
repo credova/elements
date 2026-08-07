@@ -3,8 +3,8 @@
   "version": "1.15.2",
   "scripts": {
     "release": "semantic-release",
-    "test": "yarn playwright test",
-    "test:ui": "yarn playwright test --ui"
+    "test": "bunx playwright test",
+    "test:ui": "bunx playwright test --ui"
   },
   "keywords": [],
   "author": "",

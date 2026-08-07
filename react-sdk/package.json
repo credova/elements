@@ -18,8 +18,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "link:js-sdk": "cd ../js-sdk/dist && yarn link && cd ../../react-sdk && yarn link @publicsquare/elements-js",
-    "build": "yarn clean && concurrently \"yarn build:module\" \"yarn build:types\" \"yarn build:package\" --kill-others-on-fail",
+    "link:js-sdk": "cd ../js-sdk/dist && bun link && cd ../../react-sdk && bun link @publicsquare/elements-js",
+    "build": "bun run clean && concurrently \"bun run build:module\" \"bun run build:types\" \"bun run build:package\" --kill-others-on-fail",
     "build:module": "babel src --extensions .ts,.tsx --out-dir dist",
     "build:types": "tsc",
     "build:package": "node prepare.js",
