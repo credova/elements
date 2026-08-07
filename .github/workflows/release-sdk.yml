@@ -18,14 +18,19 @@ jobs:
   release-sdk:
     runs-on: ubuntu-latest
     steps:
-      # credova-standard release token (RELEASE_DOWNLOADER GitHub App), replacing
-      # the bespoke create-github-app-token + RELEASE_APP_* flow.
+      # Token for semantic-release, which pushes the version + CHANGELOG commit back to
+      # master (@semantic-release/git) and creates the GitHub release. Uses the
+      # fxt-semantic-release GitHub App, whose installation includes public repos —
+      # unlike the RELEASE_DOWNLOADER org secrets, which are private-visibility and
+      # resolve empty in this public repo (that mismatch is what broke the release).
+      # RELEASE_DOWNLOADER is for downloading releases from private repos; this repo
+      # only needs write access to itself.
       - id: release-token
         name: Generate release token
-        uses: credova/platform-workflows/actions/auth-release-token@master
+        uses: actions/create-github-app-token@v3
         with:
-          client-id: ${{ secrets.RELEASE_DOWNLOADER_APP_ID }}
-          private-key: ${{ secrets.RELEASE_DOWNLOADER_APP_PRIVATE_KEY }}
+          client-id: ${{ secrets.SEMANTIC_RELEASE_APP_ID }}
+          private-key: ${{ secrets.SEMANTIC_RELEASE_APP_PRIVATE_KEY }}
 
       - name: Checkout repo
         uses: actions/checkout@v6
