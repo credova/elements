@@ -1,3 +1,10 @@
+## [1.15.3](https://github.com/credova/elements/compare/v1.15.2...v1.15.3) (2026-08-14)
+
+
+### Bug Fixes
+
+* **ci:** use fxt-semantic-release app for release token ([#25](https://github.com/credova/elements/issues/25)) ([bf1825e](https://github.com/credova/elements/commit/bf1825e6460bde5c3009c12d56d78b7a152e60a4)), closes [#8](https://github.com/credova/elements/issues/8)
+
 ## [1.15.2](https://github.com/publicsquare-financial/publicsquare-elements/compare/v1.15.1...v1.15.2) (2026-07-20)
 
 
