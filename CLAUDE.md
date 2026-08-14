@@ -81,3 +81,27 @@ cd react-sdk && yarn link:js-sdk   # Links local js-sdk build into react-sdk
 ```
 The `build.sh` script handles this automatically via `yarn link` when running `make build`.
 
+## Publishing (npm OIDC trusted publishing)
+
+Releases run in `.github/workflows/release-sdk.yml` on push to `master`. `semantic-release`
+publishes `@publicsquare/elements-js` and `@publicsquare/elements-react` to npm.
+
+Authentication is **OIDC trusted publishing** — there is no `NPM_TOKEN`. The workflow grants
+`id-token: write`, and `@semantic-release/npm` (>=13.1, which bundles npm >=11.5.1) exchanges
+the GitHub OIDC token for a short-lived npm credential at publish time. Provenance attestations
+are generated automatically (`publishConfig.provenance: true` in each package).
+
+Trusted publishing is bound to an exact repo + workflow filename, so both packages are
+registered on npmjs.com against `credova/elements` / `release-sdk.yml` (no environment).
+Renaming or moving this workflow file breaks publishes until the npm-side config is updated.
+
+**Onboarding a new package to OIDC:**
+1. In its `package.json`, set `publishConfig.access: "public"` and `publishConfig.provenance: true`,
+   and ensure `repository.url` exactly matches `git+https://github.com/credova/elements.git`
+   (case-sensitive — provenance verification fails on a mismatch).
+2. On npmjs.com → the package → Settings → Trusted Publisher, add a GitHub Actions publisher:
+   organization `credova`, repository `elements`, workflow `release-sdk.yml`, environment blank.
+3. Publish from a workflow that has `permissions: id-token: write` and an npm CLI >= 11.5.1.
+   Do **not** add an `NPM_TOKEN`/`.npmrc` token for publish — a stored credential in the
+   environment can shadow OIDC and cause auth failures.
+

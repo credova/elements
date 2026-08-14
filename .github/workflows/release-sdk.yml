@@ -46,9 +46,13 @@ jobs:
       - name: Build
         run: mise run build
 
-      # TODO(npm publishing): semantic-release publishes the packages to npm. npm
-      # trusted publishing / token for the credova org is being set up separately
-      # (with Levi); this step will succeed once that is in place.
+      # semantic-release publishes both SDK packages to npm via OIDC trusted
+      # publishing — no NPM_TOKEN. The id-token:write permission above lets
+      # @semantic-release/npm (>=13.1, bundling npm >=11.5.1) mint short-lived
+      # credentials at publish time. Each package's trusted publisher must be
+      # registered on npmjs.com pinned to this repo + workflow file:
+      #   @publicsquare/elements-js, @publicsquare/elements-react
+      #   -> credova/elements, workflow: release-sdk.yml (no environment)
       - name: Release (npm)
         run: mise run release
         env:
