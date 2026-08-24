@@ -30,9 +30,8 @@ bun run check        # TypeScript type-check only (no emit, js-sdk only)
 
 ### Testing
 ```bash
-# Unit tests (run inside js-sdk/ or react-sdk/)
-bun run test
-bun run test:cov     # With coverage (react-sdk only)
+# Unit tests (js-sdk only — react-sdk has no unit tests)
+mise run test        # or: cd js-sdk && bun run test
 
 # Acceptance tests (Playwright, from root)
 mise run acceptance
