@@ -53,7 +53,7 @@ The example app is provided as a convenience to quickly see what it looks like.
 To use it, simply run from the root of the project:
 
 ```bash
-$ mise run dev
+mise run dev
 ```
 
 Then open [http://localhost:3000](http://localhost:3000)
