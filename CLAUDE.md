@@ -14,34 +14,36 @@ This is a monorepo for the PublicSquare Elements SDK — a payment elements libr
 
 ## Commands
 
+`mise` is the task runner for this repo (replaces the old Makefile) and manages the pinned Node/Bun versions — run `mise install` once to get the pinned toolchain.
+
 ### Building
 ```bash
-make build          # Build all packages (js-sdk, react-sdk, example-app)
-make dev            # Run example-app in dev mode
+mise run build       # Build all packages (js-sdk, react-sdk, example-app)
+mise run dev         # Run example-app in dev mode
 ```
 
 Per-package (run inside `js-sdk/` or `react-sdk/`):
 ```bash
-yarn build          # Full build (clean, bundle, module, types, package)
-yarn check          # TypeScript type-check only (no emit)
+bun run build        # Full build (clean, bundle, module, types, package)
+bun run check        # TypeScript type-check only (no emit, js-sdk only)
 ```
 
 ### Testing
 ```bash
 # Unit tests (run inside js-sdk/ or react-sdk/)
-yarn test
-yarn test:cov       # With coverage (react-sdk only)
+bun run test
+bun run test:cov     # With coverage (react-sdk only)
 
 # Acceptance tests (Playwright, from root)
-make acceptance-test
-yarn test           # or: yarn playwright test
-yarn test:ui        # Interactive Playwright UI
+mise run acceptance
+bun run test         # or: bunx playwright test
+bun run test:ui      # Interactive Playwright UI
 ```
 
 ### Linting & Formatting
 ```bash
-make format         # Prettier across all packages
-make lint           # ESLint on example-app only
+mise run format      # Prettier across all packages
+mise run lint        # ESLint on example-app only
 ```
 
 ## Architecture
