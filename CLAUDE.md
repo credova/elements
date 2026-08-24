@@ -77,11 +77,16 @@ JS SDK produces two outputs:
 
 ### Local Development with Linked Packages
 
-When working across js-sdk and react-sdk simultaneously:
+When working across js-sdk and react-sdk simultaneously, link the local build(s) with `bun link` rather than installing from npm. `scripts/build.sh` (invoked via `mise run build`) does this automatically across all three packages.
+
+To link manually:
 ```bash
-cd react-sdk && yarn link:js-sdk   # Links local js-sdk build into react-sdk
+cd react-sdk && bun run link:js-sdk   # Links local js-sdk build into react-sdk
 ```
-The `build.sh` script handles this automatically via `yarn link` when running `make build`.
+When linking multiple packages into the same consumer (e.g. both js-sdk and react-sdk into example-app), link them in a single `bun link` call — linking them one at a time causes each call to reinstall (and clobber) the other's symlink:
+```bash
+cd example-app && bun link @publicsquare/elements-js @publicsquare/elements-react
+```
 
 ## Publishing (npm OIDC trusted publishing)
 
