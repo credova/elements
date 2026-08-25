@@ -14,34 +14,35 @@ This is a monorepo for the PublicSquare Elements SDK — a payment elements libr
 
 ## Commands
 
+`mise` is the task runner for this repo (replaces the old Makefile) and manages the pinned Node/Bun versions — run `mise install` once to get the pinned toolchain.
+
 ### Building
 ```bash
-make build          # Build all packages (js-sdk, react-sdk, example-app)
-make dev            # Run example-app in dev mode
+mise run build       # Build all packages (js-sdk, react-sdk, example-app)
+mise run dev         # Run example-app in dev mode
 ```
 
 Per-package (run inside `js-sdk/` or `react-sdk/`):
 ```bash
-yarn build          # Full build (clean, bundle, module, types, package)
-yarn check          # TypeScript type-check only (no emit)
+bun run build        # Full build (clean, bundle, module, types, package)
+bun run check        # TypeScript type-check only (no emit, js-sdk only)
 ```
 
 ### Testing
 ```bash
-# Unit tests (run inside js-sdk/ or react-sdk/)
-yarn test
-yarn test:cov       # With coverage (react-sdk only)
+# Unit tests (js-sdk only — react-sdk has no unit tests)
+mise run test        # or: cd js-sdk && bun run test
 
 # Acceptance tests (Playwright, from root)
-make acceptance-test
-yarn test           # or: yarn playwright test
-yarn test:ui        # Interactive Playwright UI
+mise run acceptance
+bun run test         # or: bunx playwright test
+bun run test:ui      # Interactive Playwright UI
 ```
 
 ### Linting & Formatting
 ```bash
-make format         # Prettier across all packages
-make lint           # ESLint on example-app only
+mise run format      # Prettier across all packages
+mise run lint        # ESLint on example-app only
 ```
 
 ## Architecture
@@ -75,11 +76,16 @@ JS SDK produces two outputs:
 
 ### Local Development with Linked Packages
 
-When working across js-sdk and react-sdk simultaneously:
+When working across js-sdk and react-sdk simultaneously, link the local build(s) with `bun link` rather than installing from npm. `scripts/build.sh` (invoked via `mise run build`) does this automatically across all three packages.
+
+To link manually:
 ```bash
-cd react-sdk && yarn link:js-sdk   # Links local js-sdk build into react-sdk
+cd react-sdk && bun run link:js-sdk   # Links local js-sdk build into react-sdk
 ```
-The `build.sh` script handles this automatically via `yarn link` when running `make build`.
+When linking multiple packages into the same consumer (e.g. both js-sdk and react-sdk into example-app), link them in a single `bun link` call — linking them one at a time causes each call to reinstall (and clobber) the other's symlink:
+```bash
+cd example-app && bun link @publicsquare/elements-js @publicsquare/elements-react
+```
 
 ## Publishing (npm OIDC trusted publishing)
 

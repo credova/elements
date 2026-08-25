@@ -8,29 +8,52 @@ Contained within is the official **PublicSquare** Elements Javascript and React 
 
 ### Dependencies
 
-- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/) - `npm install --global yarn`
-  - Run yarn once to enable it - `yarn`
-- [Playwright](https://playwright.dev/) - `yarn playwright install`
+- [mise](https://mise.jdx.dev/) - task runner, and manages the pinned Node/Bun versions for this repo
+  - Install the pinned toolchain - `mise install`
+- [Playwright](https://playwright.dev/) - `bunx playwright install`
 
 ### Build the SDK and run Tests
 
 Run the following command from the root of the project:
 
 ```sh
-make verify
+mise run verify
+```
+
+To just build all packages (`js-sdk`, `react-sdk`, `example-app`) without running tests:
+
+```sh
+mise run build
+```
+
+Or build a single package (run inside `js-sdk/` or `react-sdk/`):
+
+```sh
+bun run build
+```
+
+### Updating Dependencies
+
+After changing a dependency version in a `package.json`, run from that package's directory:
+
+```sh
+bun install
+```
+
+If you did this in `example-app/`, it will re-resolve `@publicsquare/elements-js`/`elements-react` from the registry and drop the local symlinks set up by `link:js-sdk`/`link:react-sdk`. Re-link both in one call afterward:
+
+```sh
+bun link @publicsquare/elements-js @publicsquare/elements-react
 ```
 
 ## Running the example app (`/example-app`)
 
 The example app is provided as a convenience to quickly see what it looks like.
 
-To use it, simply:
+To use it, simply run from the root of the project:
 
 ```bash
-$ cd example-app
-$ yarn
-
-$ yarn dev
+mise run dev
 ```
 
 Then open [http://localhost:3000](http://localhost:3000)

@@ -7,8 +7,8 @@
       "dependencies": {
         "@headlessui/react": "^2.1.8",
         "@heroicons/react": "^2.1.5",
-        "@publicsquare/elements-js": "^1.11.0",
-        "@publicsquare/elements-react": "^1.11.0",
+        "@publicsquare/elements-js": "^1.15.3",
+        "@publicsquare/elements-react": "^1.15.3",
         "flatted": "^3.4.2",
         "minimatch": "^10.2.3",
         "next": "^15.5.16",
@@ -229,9 +229,9 @@
 
     "@playwright/test": ["@playwright/test@1.62.1", "", { "dependencies": { "playwright": "1.62.1" }, "bin": { "playwright": "cli.js" } }, "sha512-DTcUc8qii+cpHvtOwggMtBRMjKZHXYWdw8syRYu2vtzuq4Wxphqq4NfCs5Zt44L6mA8rfDfj+PHnxFc/FeK6mQ=="],
 
-    "@publicsquare/elements-js": ["@publicsquare/elements-js@1.15.2", "", { "dependencies": { "@basis-theory/basis-theory-js": "^4.30.0", "@basis-theory/web-threeds": "^2.1.2", "follow-redirects": "^1.16.0", "glob": "^13.0.6", "minimatch": "^10.2.5", "prettier": "^3.8.3", "serialize-javascript": "^7.0.5" } }, "sha512-Q8E/inoUdBKaOugg4fFbDsKJqPH747IuMfMri+laDiCFMHKPN44wETwbiGuYmEZDyb6vOT/UblnnTIMJ00FpUQ=="],
+    "@publicsquare/elements-js": ["@publicsquare/elements-js@1.15.3", "", { "dependencies": { "@basis-theory/basis-theory-js": "^4.30.0", "@basis-theory/web-threeds": "^2.1.2", "follow-redirects": "^1.16.0", "glob": "^13.0.6", "minimatch": "^10.2.5", "prettier": "^3.8.3", "serialize-javascript": "^7.0.5" } }, "sha512-/MX4yGhna2pK5WsUjq+8EJWBqEgKO19ybZwZpvxLW/ZSXyiSkhgXv7P9V5Y71MeyTiy1exmSAHdVK7nKltRlvg=="],
 
-    "@publicsquare/elements-react": ["@publicsquare/elements-react@1.15.2", "", { "dependencies": { "@publicsquare/elements-js": "1.15.2", "follow-redirects": "^1.16.0", "glob": "^13.0.1", "minimatch": "^10.2.3", "prettier": "^3.8.3" } }, "sha512-oQ5bw3ae321ovCEQHCmynkhooP9j+pcgdYQuBS2GPALipI6R3eDul0iK5cFbX5jcFHyLggnnkv/RPiQyL3+QGA=="],
+    "@publicsquare/elements-react": ["@publicsquare/elements-react@1.15.3", "", { "dependencies": { "@publicsquare/elements-js": "1.15.3", "follow-redirects": "^1.16.0", "glob": "^13.0.1", "minimatch": "^10.2.3", "prettier": "^3.8.3" } }, "sha512-g39sOxy7BflvwmEESdoYSUo0ZvFHIKsbL5t4BAKgvjPRvkF9bdalfvuHFqZatkDgH2dn/jJXob797zVgNIZ0ZQ=="],
 
     "@react-aria/focus": ["@react-aria/focus@3.22.1", "", { "dependencies": { "@swc/helpers": "^0.5.0", "react-aria": "^3.48.0" }, "peerDependencies": { "react": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1", "react-dom": "^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1" } }, "sha512-CPxtkyrBi/HYY5P3lE/57sQ6qfa0lN8E55TOm89H0kNGv0lKt+/0zP7lWERzBjRr5IxBVrQX4gFEowBN52LPaA=="],
 
