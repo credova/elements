@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/credova/elements/compare/v1.15.3...v1.16.0) (2026-08-25)
+
+
+### Features
+
+* add test card for production test mode ([#28](https://github.com/credova/elements/issues/28)) ([d941199](https://github.com/credova/elements/commit/d9411993013a451955c8ec0d3f797e5a03190fa3))
+
 ## [1.15.3](https://github.com/credova/elements/compare/v1.15.2...v1.15.3) (2026-08-14)
 
 
