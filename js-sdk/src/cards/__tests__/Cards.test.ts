@@ -41,4 +41,56 @@ describe('Cards', () => {
     );
     expect(error.message).toBe('cardholder_name is required');
   });
+
+  test('create() defaults to TEST environment when apiKey contains "test"', async () => {
+    const testPublicsquare = await new PublicSquare().init('key_test_123');
+    const testCards = new PublicSquareCards(testPublicsquare);
+    const input = generateCardCreateInput();
+
+    await testCards.create(input);
+
+    expect(testPublicsquare.bt?.client?.post).toHaveBeenCalledWith(
+      'https://api.test.basistheory.com/proxy',
+      expect.anything(),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'BT-PROXY-KEY': 'key_test_us_proxy_AaEf6KrqHpa1ur7jyiZcNu',
+        }),
+      }),
+    );
+  });
+
+  test('create() defaults to PRODUCTION environment when apiKey does not contain "test"', async () => {
+    const input = generateCardCreateInput();
+
+    await publicsquare.cards.create(input);
+
+    expect(publicsquare.bt?.client?.post).toHaveBeenCalledWith(
+      'https://api.basistheory.com/proxy',
+      expect.anything(),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'BT-PROXY-KEY': 'key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP',
+        }),
+      }),
+    );
+  });
+
+  test('create() does not override an explicitly passed environment', async () => {
+    const testPublicsquare = await new PublicSquare().init('key_test_123');
+    const testCards = new PublicSquareCards(testPublicsquare);
+    const input = generateCardCreateInput();
+
+    await testCards.create(input, 'PRODUCTION');
+
+    expect(testPublicsquare.bt?.client?.post).toHaveBeenCalledWith(
+      'https://api.basistheory.com/proxy',
+      expect.anything(),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'BT-PROXY-KEY': 'key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP',
+        }),
+      }),
+    );
+  });
 });

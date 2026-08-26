@@ -23,7 +23,8 @@ export class PublicSquareCards {
     } else if (!this._publicSquare.bt || !this._publicSquare.bt.client) {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
-      environment = environment ?? 'PRODUCTION';
+      environment =
+        environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
       const validatedInput = validateCreateCardInput(input);
       const cardCreateUrl =
         environment === 'TEST'
