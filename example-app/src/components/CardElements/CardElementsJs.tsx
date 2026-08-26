@@ -113,7 +113,6 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
             cardholder_name: formProps.cardholder_name as string,
             card,
           },
-          'TEST',
         );
         if (response) {
           setMessage({
