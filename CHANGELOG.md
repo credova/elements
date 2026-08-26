@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/credova/elements/compare/v1.16.0...v1.16.1) (2026-08-26)
+
+
+### Bug Fixes
+
+* default card create environment to TEST when apiKey is a test key ([#29](https://github.com/credova/elements/issues/29)) ([bbb88ea](https://github.com/credova/elements/commit/bbb88ea3df910679af43736a25bf4a2b8207b19c))
+
 # [1.16.0](https://github.com/credova/elements/compare/v1.15.3...v1.16.0) (2026-08-25)
 
 
