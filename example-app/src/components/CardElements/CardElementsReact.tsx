@@ -7,7 +7,7 @@ import {
   CardElement,
   CardNumberElement,
   CardExpirationDateElement,
-  CardVerifcationCodeElement,
+  CardVerificationCodeElement,
   usePublicSquare,
 } from '@publicsquare/elements-react';
 import PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
@@ -121,7 +121,7 @@ function Elements({ allInOne }: { allInOne: boolean }) {
                 <div>
                   <label>CVC</label>
                   <div className="w-full rounded-lg bg-white p-2 shadow">
-                    <CardVerifcationCodeElement
+                    <CardVerificationCodeElement
                       id="react-card-verification-code-element"
                       ref={cardVerificationCodeElement}
                     />

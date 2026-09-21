@@ -44,6 +44,10 @@ export class PublicSquare {
   _btApiBaseUrl: string = 'https://api.basistheory.com';
   _threeDsCreateSessionUrl?: string;
   _public3dsAppKey: string = 'key_prod_us_pub_7cC6EF431x2rKGwsnnuZPP';
+  // TODO(sc-89255): replace with the real BT Public Application key (token:update only permission)
+  // once it's created — see RFC "CVV Recollection for Saved Card", Next Steps #1.
+  _cvcUpdateAppKey: string = 'key_prod_us_pub_REPLACE_WITH_CVC_UPDATE_KEY';
+  _cvcUpdateTestAppKey: string = 'key_test_us_pub_E6LAPR7H9heqXCc8ENcACq';
 
   protected _bt?: BasisTheoryInstance;
   get bt(): BasisTheoryInstance | undefined {
@@ -83,6 +87,8 @@ export class PublicSquare {
       this._threeDsCreateSessionUrl = options?.threeDsCreateSessionUrl;
     if (options?.btApiBaseUrl) this._btApiBaseUrl = options?.btApiBaseUrl;
     if (options?.public3dsAppKey) this._public3dsAppKey = options?.public3dsAppKey;
+    if (options?.cvcUpdateAppKey) this._cvcUpdateAppKey = options?.cvcUpdateAppKey;
+    if (options?.cvcUpdateTestAppKey) this._cvcUpdateTestAppKey = options?.cvcUpdateTestAppKey;
 
     const bt = await new BasisTheory().init((Math.random() + 1).toString(36).substring(7), {
       elements: true,

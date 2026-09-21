@@ -63,3 +63,11 @@ export type CardCreateResponse = {
 export type CardCreateErrorResponse = {
   error: string;
 };
+
+export type CardUpdateCvcResponse = {
+  id: string;
+  type: string;
+  createdAt?: string;
+  modifiedAt?: string;
+  error?: CardCreateErrorResponse;
+};

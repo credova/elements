@@ -4,7 +4,7 @@ import {
   CardElement,
   CardNumberElement,
   CardExpirationDateElement,
-  CardVerifcationCodeElement,
+  CardVerificationCodeElement,
 } from '@publicsquare/elements-react';
 import PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
 import { ReactNode, useRef } from 'react';
@@ -125,7 +125,7 @@ export function useCardForm(allInOne: boolean, idPrefix: string) {
             <div>
               <label>CVC</label>
               <div className="w-full rounded-lg bg-white p-2 shadow">
-                <CardVerifcationCodeElement
+                <CardVerificationCodeElement
                   id={`${idPrefix}-card-cvc`}
                   ref={cardVerificationCodeElement}
                 />

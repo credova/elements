@@ -36,6 +36,8 @@ export interface PublicSquareInitOptions {
   btApiBaseUrl?: string;
   public3dsAppKey?: string;
   proxyKey?: string;
+  cvcUpdateAppKey?: string;
+  cvcUpdateTestAppKey?: string;
   appInfo?: ApplicationInfo;
 }
 

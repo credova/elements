@@ -11,6 +11,9 @@ jest.mock('@basis-theory/basis-theory-js', () => ({
       client: {
         post: jest.fn().mockResolvedValue({}),
       },
+      tokens: {
+        update: jest.fn().mockResolvedValue({}),
+      },
     }),
   })),
 }));
@@ -92,5 +95,85 @@ describe('Cards', () => {
         }),
       }),
     );
+  });
+
+  describe('updateCvc()', () => {
+    const cvcElement = { targetId: 'cvcElement' } as any;
+
+    test('sends the cvc element straight to the BT tokens.update endpoint', async () => {
+      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+
+      expect(publicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
+        'card_token_123',
+        { data: { cvc: cvcElement } },
+        expect.objectContaining({ apiKey: expect.any(String) }),
+      );
+      expect(result).toEqual({});
+    });
+
+    test('never puts the raw cvc value in a request the merchant/PSQ server can see', async () => {
+      await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+
+      const [, model] = (publicsquare.bt?.tokens?.update as jest.Mock).mock.calls[0];
+      expect(model.data.cvc).toBe(cvcElement);
+    });
+
+    test('defaults to TEST environment when apiKey contains "test"', async () => {
+      const testPublicsquare = await new PublicSquare().init('key_test_123');
+      const testCards = new PublicSquareCards(testPublicsquare);
+
+      await testCards.updateCvc('card_token_123', cvcElement);
+
+      expect(testPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
+        'card_token_123',
+        { data: { cvc: cvcElement } },
+        { apiKey: testPublicsquare._cvcUpdateTestAppKey },
+      );
+    });
+
+    test('defaults to PRODUCTION environment when apiKey does not contain "test"', async () => {
+      await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+
+      expect(publicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
+        'card_token_123',
+        { data: { cvc: cvcElement } },
+        { apiKey: publicsquare._cvcUpdateAppKey },
+      );
+    });
+
+    test('does not override an explicitly passed environment', async () => {
+      const testPublicsquare = await new PublicSquare().init('key_test_123');
+      const testCards = new PublicSquareCards(testPublicsquare);
+
+      await testCards.updateCvc('card_token_123', cvcElement, 'PRODUCTION');
+
+      expect(testPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
+        'card_token_123',
+        { data: { cvc: cvcElement } },
+        { apiKey: testPublicsquare._cvcUpdateAppKey },
+      );
+    });
+
+    test('respects cvcUpdateAppKey/cvcUpdateTestAppKey init overrides', async () => {
+      const overriddenPublicsquare = await new PublicSquare().init('api_key', {
+        cvcUpdateAppKey: 'key_prod_us_pub_custom',
+        cvcUpdateTestAppKey: 'key_test_us_pub_custom',
+      });
+      const overriddenCards = new PublicSquareCards(overriddenPublicsquare);
+
+      await overriddenCards.updateCvc('card_token_123', cvcElement);
+      expect(overriddenPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
+        'card_token_123',
+        expect.anything(),
+        { apiKey: 'key_prod_us_pub_custom' },
+      );
+
+      await overriddenCards.updateCvc('card_token_123', cvcElement, 'TEST');
+      expect(overriddenPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
+        'card_token_123',
+        expect.anything(),
+        { apiKey: 'key_test_us_pub_custom' },
+      );
+    });
   });
 });
