@@ -97,6 +97,49 @@ describe('Cards', () => {
     );
   });
 
+  test('create() uses an explicitly configured testProxyKey even though the apiKey resolves to TEST', async () => {
+    const testPublicsquare = await new PublicSquare().init('key_test_123', {
+      testProxyKey: 'key_test_us_proxy_FrL4kJFRXU1AwuYVnMbTnP',
+    });
+    const testCards = new PublicSquareCards(testPublicsquare);
+    const input = generateCardCreateInput();
+
+    await testCards.create(input);
+
+    expect(testPublicsquare.bt?.client?.post).toHaveBeenCalledWith(
+      'https://api.test.basistheory.com/proxy',
+      expect.anything(),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'BT-PROXY-KEY': 'key_test_us_proxy_FrL4kJFRXU1AwuYVnMbTnP',
+        }),
+      }),
+    );
+  });
+
+  test('create() never leaks the production-branch proxyKey into the TEST branch', async () => {
+    // Guards the "production test mode" scenario from PR #28: a pk_test_ apiKey used together
+    // with a configured (production) proxyKey must still fall back to the SDK's own hardcoded
+    // TEST-tenant key, not the configured production key, unless testProxyKey is also set.
+    const testPublicsquare = await new PublicSquare().init('key_test_123', {
+      proxyKey: 'key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP',
+    });
+    const testCards = new PublicSquareCards(testPublicsquare);
+    const input = generateCardCreateInput();
+
+    await testCards.create(input);
+
+    expect(testPublicsquare.bt?.client?.post).toHaveBeenCalledWith(
+      'https://api.test.basistheory.com/proxy',
+      expect.anything(),
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          'BT-PROXY-KEY': 'key_test_us_proxy_AaEf6KrqHpa1ur7jyiZcNu',
+        }),
+      }),
+    );
+  });
+
   describe('updateCvc()', () => {
     const cvcElement = { targetId: 'cvcElement' } as any;
 

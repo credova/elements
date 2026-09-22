@@ -35,7 +35,9 @@ export interface PublicSquareInitOptions {
   threeDsCreateSessionUrl?: string;
   btApiBaseUrl?: string;
   public3dsAppKey?: string;
+  public3dsTestAppKey?: string;
   proxyKey?: string;
+  testProxyKey?: string;
   cvcUpdateAppKey?: string;
   cvcUpdateTestAppKey?: string;
   appInfo?: ApplicationInfo;

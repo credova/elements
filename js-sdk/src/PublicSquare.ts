@@ -34,6 +34,7 @@ export class PublicSquare {
   _apiUrl: string = 'https://api.publicsquare.com';
   _apiKey?: string;
   _proxyKey: string = 'key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP';
+  _testProxyKey?: string;
   _cardCreateUrl?: string;
   _applePayCreateUrl?: string;
   _applePayCreateSessionUrl?: string;
@@ -44,6 +45,7 @@ export class PublicSquare {
   _btApiBaseUrl: string = 'https://api.basistheory.com';
   _threeDsCreateSessionUrl?: string;
   _public3dsAppKey: string = 'key_prod_us_pub_7cC6EF431x2rKGwsnnuZPP';
+  _public3dsTestAppKey?: string;
   // TODO(sc-89255): replace with the real BT Public Application key (token:update only permission)
   // once it's created — see RFC "CVV Recollection for Saved Card", Next Steps #1.
   _cvcUpdateAppKey: string = 'key_prod_us_pub_REPLACE_WITH_CVC_UPDATE_KEY';
@@ -73,6 +75,7 @@ export class PublicSquare {
     this._apiKey = apiKey;
     if (options?.apiUrl) this._apiUrl = options?.apiUrl;
     if (options?.proxyKey) this._proxyKey = options?.proxyKey;
+    if (options?.testProxyKey) this._testProxyKey = options?.testProxyKey;
     if (options?.cardCreateUrl) this._cardCreateUrl = options?.cardCreateUrl;
     if (options?.bankAccountCreateUrl) this._bankAccountCreateUrl = options?.bankAccountCreateUrl;
     if (options?.bankAccountVerificationUrl)
@@ -87,6 +90,7 @@ export class PublicSquare {
       this._threeDsCreateSessionUrl = options?.threeDsCreateSessionUrl;
     if (options?.btApiBaseUrl) this._btApiBaseUrl = options?.btApiBaseUrl;
     if (options?.public3dsAppKey) this._public3dsAppKey = options?.public3dsAppKey;
+    if (options?.public3dsTestAppKey) this._public3dsTestAppKey = options?.public3dsTestAppKey;
     if (options?.cvcUpdateAppKey) this._cvcUpdateAppKey = options?.cvcUpdateAppKey;
     if (options?.cvcUpdateTestAppKey) this._cvcUpdateTestAppKey = options?.cvcUpdateTestAppKey;
 

@@ -34,7 +34,7 @@ export class PublicSquareCards {
             BASIS_THEORY_ENDPOINTS.PROXY(this._publicSquare._btApiBaseUrl));
       const proxyKey =
         environment === 'TEST'
-          ? 'key_test_us_proxy_AaEf6KrqHpa1ur7jyiZcNu'
+          ? (this._publicSquare._testProxyKey ?? 'key_test_us_proxy_AaEf6KrqHpa1ur7jyiZcNu')
           : this._publicSquare._proxyKey;
 
       return this._publicSquare.bt.client

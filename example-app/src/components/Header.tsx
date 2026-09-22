@@ -17,7 +17,7 @@ export default function Header() {
         aria-label="Global"
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
       >
-        <div className="flex lg:flex-1">
+        <div className="flex flex-none">
           <Link href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <Image
@@ -40,7 +40,7 @@ export default function Header() {
             <Bars3Icon aria-hidden="true" className="size-6" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
+        <div className="hidden lg:flex lg:gap-x-6">
           <Link
             href="/debit-credit-cards"
             className={cx(
@@ -51,6 +51,17 @@ export default function Header() {
             )}
           >
             Debit/Credit Cards
+          </Link>
+          <Link
+            href="/cvc-recollection"
+            className={cx(
+              'text-sm/6 font-semibold',
+              pathname === '/cvc-recollection'
+                ? 'border-b-2 border-indigo-500 text-indigo-500'
+                : 'border-b-2 border-transparent text-gray-900',
+            )}
+          >
+            CVV Recollection
           </Link>
           <Link
             href="/bank-accounts"
@@ -154,6 +165,17 @@ export default function Header() {
                   )}
                 >
                   Debit/Credit Cards
+                </Link>
+                <Link
+                  href="/cvc-recollection"
+                  className={cx(
+                    '-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold',
+                    pathname === '/cvc-recollection'
+                      ? 'border-b-2 border-indigo-500 text-indigo-500'
+                      : 'border-b-2 border-transparent text-gray-900',
+                  )}
+                >
+                  CVV Recollection
                 </Link>
                 <Link
                   href="/bank-accounts"

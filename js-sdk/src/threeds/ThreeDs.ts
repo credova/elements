@@ -27,9 +27,12 @@ export class PublicSquareThreeDs {
       if (env === 'TEST') {
         this._bt3ds.set(
           env,
-          BasisTheory3ds('key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES', {
-            apiBaseUrl: 'https://api.test.basistheory.com',
-          }),
+          BasisTheory3ds(
+            this._publicSquare._public3dsTestAppKey ?? 'key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES',
+            {
+              apiBaseUrl: 'https://api.test.basistheory.com',
+            },
+          ),
         );
       } else {
         this._bt3ds.set(

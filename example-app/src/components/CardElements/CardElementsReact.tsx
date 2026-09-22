@@ -66,12 +66,10 @@ function Elements({ allInOne }: { allInOne: boolean }) {
     if (formProps.cardholder_name && card && publicsquare) {
       setLoading(true);
       try {
-        const response = await publicsquare.cards.create(
-          {
-            cardholder_name: formProps.cardholder_name as string,
-            card,
-          },
-        );
+        const response = await publicsquare.cards.create({
+          cardholder_name: formProps.cardholder_name as string,
+          card,
+        });
         if (response) {
           setMessage({
             message: response,

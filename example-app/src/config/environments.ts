@@ -1,7 +1,7 @@
 import { PublicSquareInitOptions } from '@publicsquare/elements-js/types';
 
 type EnvironmentOptions = {
-  card: Pick<PublicSquareInitOptions, 'cardCreateUrl' | 'proxyKey'>;
+  card: Pick<PublicSquareInitOptions, 'cardCreateUrl' | 'proxyKey' | 'testProxyKey'>;
   bankAccount: Pick<PublicSquareInitOptions, 'bankAccountCreateUrl'>;
   bankVerification: Pick<
     PublicSquareInitOptions,
@@ -11,7 +11,7 @@ type EnvironmentOptions = {
   googlePay: Pick<PublicSquareInitOptions, 'googlePayCreateUrl' | 'getGooglePayConfiguration'>;
   threeDs: Pick<
     PublicSquareInitOptions,
-    'threeDsCreateSessionUrl' | 'btApiBaseUrl' | 'public3dsAppKey'
+    'threeDsCreateSessionUrl' | 'btApiBaseUrl' | 'public3dsAppKey' | 'public3dsTestAppKey'
   >;
   apiKey: string;
   apiUrl: string;
@@ -22,7 +22,7 @@ const staging: EnvironmentOptions = {
   apiKey: process.env.NEXT_PUBLIC_PUBLICSQUARE_KEY!,
   card: {
     cardCreateUrl: 'https://api.test.basistheory.com/proxy',
-    proxyKey: 'key_test_us_proxy_FrL4kJFRXU1AwuYVnMbTnP',
+    testProxyKey: 'key_test_us_proxy_FrL4kJFRXU1AwuYVnMbTnP',
   },
   bankAccount: {
     bankAccountCreateUrl: 'https://staging.api.publicsquare.com/payment-methods/bank-accounts',
@@ -44,7 +44,7 @@ const staging: EnvironmentOptions = {
   },
   threeDs: {
     btApiBaseUrl: 'https://api.test.basistheory.com',
-    public3dsAppKey: 'key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES',
+    public3dsTestAppKey: 'key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES',
     threeDsCreateSessionUrl: 'https://staging.api.publicsquare.com/three-d-secure/sessions',
   },
 };
