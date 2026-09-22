@@ -21,7 +21,7 @@ export default function Header() {
           <Link href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <Image
-              className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+              className="relative"
               src="/publicsquare-payments-logo.svg"
               alt="PublicSquare Logo"
               width={200}
@@ -40,7 +40,7 @@ export default function Header() {
             <Bars3Icon aria-hidden="true" className="size-6" />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-6">
+        <div className="hidden lg:ml-8 lg:flex lg:gap-x-6">
           <Link
             href="/debit-credit-cards"
             className={cx(
@@ -135,7 +135,7 @@ export default function Header() {
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <Image
-                className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
+                className="relative"
                 src="/publicsquare-payments-logo.svg"
                 alt="PublicSquare Logo"
                 width={200}
