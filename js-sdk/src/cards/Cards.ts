@@ -55,14 +55,6 @@ export class PublicSquareCards {
     }
   }
 
-  /**
-   * Attaches a re-entered CVC to a saved card's Basis Theory token. The CVC value
-   * goes from the browser to Basis Theory directly — it never reaches a PSQ or
-   * merchant server. The next charge on this card picks up the CVC automatically.
-   * @param cardToken the `token` field from the card create/get response
-   * @param cvcElement a mounted `cardVerificationCode` element holding the re-entered CVC
-   * @param environment defaults to `TEST` when the initialized apiKey is a test key
-   */
   public updateCvc(
     cardToken: string,
     cvcElement: CardVerificationCodeElement,
@@ -82,12 +74,22 @@ export class PublicSquareCards {
 
       return this._publicSquare.bt.tokens
         .update(cardToken, { data: { cvc: cvcElement } }, { apiKey: appKey })
-        .then((res: any) =>
-          res.error
-            ? {
-                error: res.error,
-              }
-            : res,
+        .then(
+          (res: any): CardUpdateCvcResponse =>
+            res.error
+              ? { error: { error: res.error, data: res.data } }
+              : {
+                  id: res.id,
+                  type: res.type,
+                  createdAt: res.createdAt,
+                  modifiedAt: res.modifiedAt,
+                },
+          (error: any): CardUpdateCvcResponse => ({
+            error: {
+              error: error?.message ?? 'Failed to update CVC',
+              data: error?.data,
+            },
+          }),
         );
     }
   }

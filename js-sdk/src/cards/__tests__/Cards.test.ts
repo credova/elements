@@ -161,6 +161,60 @@ describe('Cards', () => {
       expect(model.data.cvc).toBe(cvcElement);
     });
 
+    test('maps the BT token response down to CardUpdateCvcResponse', async () => {
+      (publicsquare.bt?.tokens?.update as jest.Mock).mockResolvedValueOnce({
+        id: 'card_token_123',
+        type: 'card',
+        createdAt: '2024-06-24T13:51:24.980Z',
+        modifiedAt: '2026-09-21T13:51:24.980Z',
+        tenantId: 'tenant_should_not_leak',
+        containers: ['/pci/'],
+        mask: { number: 'XXXX-XXXX-XXXX-1234' },
+      });
+
+      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+
+      expect(result).toEqual({
+        id: 'card_token_123',
+        type: 'card',
+        createdAt: '2024-06-24T13:51:24.980Z',
+        modifiedAt: '2026-09-21T13:51:24.980Z',
+      });
+    });
+
+    test('returns a CardUpdateCvcResponse error (with error.data) when the BT update fails', async () => {
+      (publicsquare.bt?.tokens?.update as jest.Mock).mockResolvedValueOnce({
+        error: 'invalid cvc',
+        data: { errors: { cvc: ['must be 3 or 4 digits'] } },
+      });
+
+      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+
+      expect(result).toEqual({
+        error: {
+          error: 'invalid cvc',
+          data: { errors: { cvc: ['must be 3 or 4 digits'] } },
+        },
+      });
+    });
+
+    test('resolves with error.data when the BT request itself rejects (e.g. a 404)', async () => {
+      const btError = Object.assign(new Error('The API responded with status code 404.'), {
+        status: 404,
+        data: { errors: { token: ['token not found'] } },
+      });
+      (publicsquare.bt?.tokens?.update as jest.Mock).mockRejectedValueOnce(btError);
+
+      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+
+      expect(result).toEqual({
+        error: {
+          error: 'The API responded with status code 404.',
+          data: { errors: { token: ['token not found'] } },
+        },
+      });
+    });
+
     test('defaults to TEST environment when apiKey contains "test"', async () => {
       const testPublicsquare = await new PublicSquare().init('key_test_123');
       const testCards = new PublicSquareCards(testPublicsquare);
