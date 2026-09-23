@@ -43,6 +43,26 @@ jobs:
         with:
           install: true
 
+      # cards.updateCvc() needs the BT CVC-update app keys inlined into the bundle at build
+      # time (dotenv-webpack + babel-plugin-inline-dotenv read js-sdk/.env). Without this
+      # file the published SDK ships with undefined keys, so fail the release instead.
+      # Use repo-level secrets: private-visibility org secrets resolve empty in this public repo.
+      - name: Write js-sdk .env
+        env:
+          PUBLICSQUARE_CVC_UPDATE_APP_KEY: ${{ secrets.PUBLICSQUARE_CVC_UPDATE_APP_KEY }}
+          PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY: ${{ secrets.PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY }}
+        run: |
+          for name in PUBLICSQUARE_CVC_UPDATE_APP_KEY PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY; do
+            if [ -z "${!name}" ] || [[ "${!name}" == *your_key* ]]; then
+              echo "::error::Secret $name is not set (or is the .env.example placeholder); refusing to publish an SDK without it"
+              exit 1
+            fi
+          done
+          {
+            echo "PUBLICSQUARE_CVC_UPDATE_APP_KEY=$PUBLICSQUARE_CVC_UPDATE_APP_KEY"
+            echo "PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY=$PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY"
+          } > js-sdk/.env
+
       - name: Build
         run: mise run build
 
