@@ -1,4 +1,5 @@
 import { CardCreateResponse, CardCreateInput, CardUpdateCvcResponse } from '@/types/sdk/cards';
+import type { BasisTheoryCardTokenUpdateResponse } from './types';
 import type { CardVerificationCodeElement } from '@basis-theory/basis-theory-js/types/elements';
 import { PublicSquare } from '..';
 import { BASIS_THEORY_ENDPOINTS, ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
@@ -75,15 +76,16 @@ export class PublicSquareCards {
       return this._publicSquare.bt.tokens
         .update(cardToken, { data: { cvc: cvcElement } }, { apiKey: appKey })
         .then(
-          (res: any): CardUpdateCvcResponse =>
-            res.error
-              ? { error: { error: res.error, data: res.data } }
-              : {
-                  id: res.id,
-                  type: res.type,
-                  createdAt: res.createdAt,
-                  modifiedAt: res.modifiedAt,
-                },
+          (res: any): CardUpdateCvcResponse => {
+            if (res.error) return { error: { error: res.error, data: res.data } };
+            const token = res as BasisTheoryCardTokenUpdateResponse;
+            return {
+              id: token.id,
+              type: token.type,
+              created_at: token.createdAt,
+              modified_at: token.modifiedAt,
+            };
+          },
           (error: any): CardUpdateCvcResponse => ({
             error: {
               error: error?.message ?? 'Failed to update CVC',

@@ -3,6 +3,7 @@ import { PublicSquareCards } from '..';
 import { getError } from '@/tests/utils';
 import { ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
 import { generateCardCreateInput } from '@/tests/factories/cards';
+import type { BasisTheoryCardTokenUpdateResponse } from '../types';
 
 jest.mock('@basis-theory/basis-theory-js', () => ({
   BasisTheory: jest.fn().mockImplementation(() => ({
@@ -142,6 +143,30 @@ describe('Cards', () => {
 
   describe('updateCvc()', () => {
     const cvcElement = { targetId: 'cvcElement' } as any;
+    // Real BT PATCH /tokens/{id} response for a card token (camelCase top-level keys).
+    const btCardTokenUpdateResponse: BasisTheoryCardTokenUpdateResponse = {
+      id: '8b0eac76-f566-40b5-8b92-5f0f0e32c014',
+      type: 'card',
+      tenantId: '2fff47ed-5759-4253-bf0e-fd56fbc20288',
+      data: { number: 'XXXXXXXXXXXX4242', expiration_month: 4, expiration_year: 2028 },
+      enrichments: { cardDetails: { bin: '424242', last4: '4242' } },
+      card: {
+        bin: '424242',
+        last4: '4242',
+        expirationMonth: 4,
+        expirationYear: 2028,
+        brand: 'visa',
+        funding: 'credit',
+      },
+      createdBy: 'fac9c8ff-b108-40e7-b076-3b1093bbbc70',
+      createdAt: '2026-09-22T14:57:03.5381029+00:00',
+      modifiedBy: '67936d37-b013-4e6d-a4b0-1517c566455f',
+      modifiedAt: '2026-09-22T15:19:40.670571+00:00',
+      fingerprint: '5vFj1H8zK9enBAXFp9Er1tbwr6XUJYKRqFw8bJBTYLxh',
+      privacy: { classification: 'pci', impactLevel: 'high', restrictionPolicy: 'mask' },
+      containers: ['/pci/high/'],
+      aliases: ['8b0eac76-f566-40b5-8b92-5f0f0e32c014'],
+    };
 
     test('sends the cvc element straight to the BT tokens.update endpoint', async () => {
       const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
@@ -162,23 +187,17 @@ describe('Cards', () => {
     });
 
     test('maps the BT token response down to CardUpdateCvcResponse', async () => {
-      (publicsquare.bt?.tokens?.update as jest.Mock).mockResolvedValueOnce({
-        id: 'card_token_123',
-        type: 'card',
-        createdAt: '2024-06-24T13:51:24.980Z',
-        modifiedAt: '2026-09-21T13:51:24.980Z',
-        tenantId: 'tenant_should_not_leak',
-        containers: ['/pci/'],
-        mask: { number: 'XXXX-XXXX-XXXX-1234' },
-      });
+      (publicsquare.bt?.tokens?.update as jest.Mock).mockResolvedValueOnce(
+        btCardTokenUpdateResponse,
+      );
 
-      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+      const result = await publicsquare.cards.updateCvc(btCardTokenUpdateResponse.id, cvcElement);
 
       expect(result).toEqual({
-        id: 'card_token_123',
+        id: '8b0eac76-f566-40b5-8b92-5f0f0e32c014',
         type: 'card',
-        createdAt: '2024-06-24T13:51:24.980Z',
-        modifiedAt: '2026-09-21T13:51:24.980Z',
+        created_at: '2026-09-22T14:57:03.5381029+00:00',
+        modified_at: '2026-09-22T15:19:40.670571+00:00',
       });
     });
 
