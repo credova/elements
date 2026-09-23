@@ -38,8 +38,6 @@ export interface PublicSquareInitOptions {
   public3dsTestAppKey?: string;
   proxyKey?: string;
   testProxyKey?: string;
-  cvcUpdateAppKey?: string;
-  cvcUpdateTestAppKey?: string;
   appInfo?: ApplicationInfo;
 }
 

@@ -149,7 +149,7 @@ describe('Cards', () => {
       expect(publicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
         'card_token_123',
         { data: { cvc: cvcElement } },
-        expect.objectContaining({ apiKey: expect.any(String) }),
+        { apiKey: publicsquare._cvcUpdateAppKey },
       );
       expect(result).toEqual({});
     });
@@ -248,28 +248,6 @@ describe('Cards', () => {
         'card_token_123',
         { data: { cvc: cvcElement } },
         { apiKey: testPublicsquare._cvcUpdateAppKey },
-      );
-    });
-
-    test('respects cvcUpdateAppKey/cvcUpdateTestAppKey init overrides', async () => {
-      const overriddenPublicsquare = await new PublicSquare().init('api_key', {
-        cvcUpdateAppKey: 'key_prod_us_pub_custom',
-        cvcUpdateTestAppKey: 'key_test_us_pub_custom',
-      });
-      const overriddenCards = new PublicSquareCards(overriddenPublicsquare);
-
-      await overriddenCards.updateCvc('card_token_123', cvcElement);
-      expect(overriddenPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
-        'card_token_123',
-        expect.anything(),
-        { apiKey: 'key_prod_us_pub_custom' },
-      );
-
-      await overriddenCards.updateCvc('card_token_123', cvcElement, 'TEST');
-      expect(overriddenPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
-        'card_token_123',
-        expect.anything(),
-        { apiKey: 'key_test_us_pub_custom' },
       );
     });
   });
