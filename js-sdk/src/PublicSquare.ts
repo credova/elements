@@ -46,8 +46,6 @@ export class PublicSquare {
   _threeDsCreateSessionUrl?: string;
   _public3dsAppKey: string = 'key_prod_us_pub_7cC6EF431x2rKGwsnnuZPP';
   _public3dsTestAppKey?: string;
-  // BT Public Application key (token:update only permission), inlined at build time from
-  // js-sdk/.env — see js-sdk/.env.example. Never hardcode a real value here.
   _cvcUpdateAppKey?: string = process.env.PUBLICSQUARE_CVC_UPDATE_APP_KEY;
   _cvcUpdateTestAppKey?: string = process.env.PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY;
 
