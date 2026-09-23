@@ -65,6 +65,9 @@ export type CardErrorResponse = {
   data?: unknown;
 };
 
+/** @deprecated Use `CardErrorResponse` instead. */
+export type CardCreateErrorResponse = CardErrorResponse;
+
 export type CardUpdateCvcResponse = {
   id?: string;
   type?: string;
