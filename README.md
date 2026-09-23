@@ -12,6 +12,20 @@ Contained within is the official **PublicSquare** Elements Javascript and React 
   - Install the pinned toolchain - `mise install`
 - [Playwright](https://playwright.dev/) - `bunx playwright install`
 
+### Environment variables
+
+Copy the example env files and fill in real values before building or testing:
+
+```sh
+cp example-app/.env.example example-app/.env
+cp js-sdk/.env.example js-sdk/.env
+```
+
+- `example-app/.env` — the example app's own API key/URLs (`NEXT_PUBLIC_PUBLICSQUARE_KEY`, `PSQ_SECRET_KEY`, etc). See `example-app/.env.example` for what each one is for.
+- `js-sdk/.env` — Basis Theory Public Application keys (`PUBLICSQUARE_CVC_UPDATE_APP_KEY`, `PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY`) used by `cards.updateCvc()` (CVV recollection). These are inlined into the built SDK bundle at build time, so `js-sdk/` needs to be rebuilt (`bun run build`) after changing them. Without this file, `js-sdk` still builds fine, but `updateCvc()` calls will fail to authenticate since no key gets baked in.
+
+Both `.env` files are gitignored — never commit real key values, including in the `.env.example` files themselves.
+
 ### Build the SDK and run Tests
 
 Run the following command from the root of the project:
