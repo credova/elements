@@ -47,7 +47,7 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
      * Step 1: Init the PublicSquare sdk
      */
     new PublicSquare()
-      .init(environment.apiKey, environment.card)
+      .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
 

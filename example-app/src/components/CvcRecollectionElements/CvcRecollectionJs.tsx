@@ -14,7 +14,7 @@ export default function CvcRecollectionJs() {
 
   useEffect(() => {
     new PublicSquare()
-      .init(environment.apiKey, environment.card)
+      .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
 
@@ -36,7 +36,7 @@ export default function CvcRecollectionJs() {
 
     setUpdatingCvc(true);
     try {
-      const response = await publicsquare.cards.updateCvc(cardToken, cvcElement, 'TEST');
+      const response = await publicsquare.cards.updateCvc(cardToken, cvcElement);
       setMessage({ message: response, error: !!response.error });
     } catch (error) {
       setMessage({ message: { error: String(error) }, error: true });

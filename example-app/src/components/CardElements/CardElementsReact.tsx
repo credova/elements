@@ -16,7 +16,10 @@ import { environment } from '@/config/environments';
 
 export default function CardElementsReact({ allInOne }: { allInOne: boolean }) {
   return (
-    <PublicSquareProvider apiKey={environment.apiKey} options={environment.card}>
+    <PublicSquareProvider
+      apiKey={environment.apiKey}
+      options={{ apiUrl: environment.apiUrl }}
+    >
       <Elements allInOne={allInOne} />
     </PublicSquareProvider>
   );

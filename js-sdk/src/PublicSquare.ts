@@ -1,5 +1,5 @@
 import { BasisTheory } from '@basis-theory/basis-theory-js';
-import { ELEMENTS_INIT_ERROR_MESSAGE, ELEMENTS_TYPE_NOT_SUPPORTED } from './constants';
+import { API_ENDPOINTS, BASIS_THEORY_ENDPOINTS, BASIS_THEORY_KEYS, ELEMENTS_INIT_ERROR_MESSAGE, ELEMENTS_TYPE_NOT_SUPPORTED } from './constants';
 import {
   CardElement,
   CardExpirationDateElement,
@@ -31,18 +31,15 @@ import { PublicSquareGooglePay } from '@/googlePay';
 import { PublicSquareThreeDs } from '@/threeds';
 
 export class PublicSquare {
-  _apiUrl: string = 'https://api.publicsquare.com';
+  _apiUrl: string = API_ENDPOINTS.API_BASE_URL;
   _apiKey?: string;
-  _proxyKey: string = 'key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP';
-  _testProxyKey?: string;
-  _cardCreateUrl?: string;
   _applePayCreateUrl?: string;
   _applePayCreateSessionUrl?: string;
   _bankAccountCreateUrl?: string;
   _bankAccountVerificationUrl?: string;
   _googlePayCreateUrl?: string;
   _getGooglePayConfiguration?: string;
-  _btApiBaseUrl: string = 'https://api.basistheory.com';
+  _btApiBaseUrl: string = BASIS_THEORY_ENDPOINTS.API_BASE_URL;
   _threeDsCreateSessionUrl?: string;
   _public3dsAppKey: string = 'key_prod_us_pub_7cC6EF431x2rKGwsnnuZPP';
   _public3dsTestAppKey?: string;
@@ -71,10 +68,12 @@ export class PublicSquare {
    */
   public async init(apiKey: string, options?: PublicSquareInitOptions) {
     this._apiKey = apiKey;
+    const environment = apiKey.includes('test') ? 'TEST' : 'PRODUCTION';
+    this._btApiBaseUrl = environment === 'TEST'
+          ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
+          : BASIS_THEORY_ENDPOINTS.API_BASE_URL;
+
     if (options?.apiUrl) this._apiUrl = options?.apiUrl;
-    if (options?.proxyKey) this._proxyKey = options?.proxyKey;
-    if (options?.testProxyKey) this._testProxyKey = options?.testProxyKey;
-    if (options?.cardCreateUrl) this._cardCreateUrl = options?.cardCreateUrl;
     if (options?.bankAccountCreateUrl) this._bankAccountCreateUrl = options?.bankAccountCreateUrl;
     if (options?.bankAccountVerificationUrl)
       this._bankAccountVerificationUrl = options?.bankAccountVerificationUrl;

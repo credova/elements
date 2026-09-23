@@ -2,7 +2,11 @@ import { CardCreateResponse, CardCreateInput, CardUpdateCvcResponse } from '@/ty
 import type { BasisTheoryCardTokenUpdateResponse } from './types';
 import type { CardVerificationCodeElement } from '@basis-theory/basis-theory-js/types/elements';
 import { PublicSquare } from '..';
-import { BASIS_THEORY_ENDPOINTS, ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
+import {
+  BASIS_THEORY_ENDPOINTS,
+  BASIS_THEORY_KEYS,
+  ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE,
+} from '@/constants';
 import { transformCreateCardInput } from '@/utils';
 import { validateCreateCardInput } from '@/validators';
 
@@ -28,15 +32,22 @@ export class PublicSquareCards {
       environment =
         environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
       const validatedInput = validateCreateCardInput(input);
-      const cardCreateUrl =
-        environment === 'TEST'
-          ? BASIS_THEORY_ENDPOINTS.PROXY('https://api.test.basistheory.com')
-          : (this._publicSquare._cardCreateUrl ??
-            BASIS_THEORY_ENDPOINTS.PROXY(this._publicSquare._btApiBaseUrl));
+
+      const apiUrlEnvironment = this._publicSquare._apiUrl?.toLowerCase().includes('staging')
+        ? 'STAGING'
+        : 'PRODUCTION';
+
       const proxyKey =
         environment === 'TEST'
-          ? (this._publicSquare._testProxyKey ?? 'key_test_us_proxy_AaEf6KrqHpa1ur7jyiZcNu')
-          : this._publicSquare._proxyKey;
+          ? (apiUrlEnvironment === 'STAGING'
+              ? BASIS_THEORY_KEYS.CREATE_CARD_TEST
+              : BASIS_THEORY_KEYS.CREATE_CARD_PRODUCTION_TEST_MODE)
+          : BASIS_THEORY_KEYS.CREATE_CARD_PRODUCTION;
+      const cardCreateUrl = BASIS_THEORY_ENDPOINTS.PROXY(
+        environment === 'TEST'
+          ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
+          : BASIS_THEORY_ENDPOINTS.API_BASE_URL,
+      );
 
       return this._publicSquare.bt.client
         .post(cardCreateUrl, transformCreateCardInput(validatedInput), {

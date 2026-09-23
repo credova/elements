@@ -1,7 +1,6 @@
 import { PublicSquareInitOptions } from '@publicsquare/elements-js/types';
 
 type EnvironmentOptions = {
-  card: Pick<PublicSquareInitOptions, 'cardCreateUrl' | 'proxyKey' | 'testProxyKey'>;
   bankAccount: Pick<PublicSquareInitOptions, 'bankAccountCreateUrl'>;
   bankVerification: Pick<
     PublicSquareInitOptions,
@@ -20,10 +19,6 @@ type EnvironmentOptions = {
 const staging: EnvironmentOptions = {
   apiUrl: 'https://staging.api.publicsquare.com',
   apiKey: process.env.NEXT_PUBLIC_PUBLICSQUARE_KEY!,
-  card: {
-    cardCreateUrl: 'https://api.test.basistheory.com/proxy',
-    testProxyKey: 'key_test_us_proxy_FrL4kJFRXU1AwuYVnMbTnP',
-  },
   bankAccount: {
     bankAccountCreateUrl: 'https://staging.api.publicsquare.com/payment-methods/bank-accounts',
   },
@@ -52,10 +47,6 @@ const staging: EnvironmentOptions = {
 const production: EnvironmentOptions = {
   apiUrl: 'https://api.publicsquare.com',
   apiKey: process.env.NEXT_PUBLIC_PUBLICSQUARE_KEY!,
-  card: {
-    cardCreateUrl: 'https://api.basistheory.com/proxy',
-    proxyKey: 'key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP',
-  },
   bankAccount: {
     bankAccountCreateUrl: 'https://api.publicsquare.com/payment-methods/bank-accounts',
   },

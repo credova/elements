@@ -11,7 +11,10 @@ import CaptureModal from '@/components/Modals/CaptureModal';
 
 export default function CvcRecollectionReact() {
   return (
-    <PublicSquareProvider apiKey={environment.apiKey} options={environment.card}>
+    <PublicSquareProvider
+      apiKey={environment.apiKey}
+      options={{ apiUrl: environment.apiUrl }}
+    >
       <Flow />
     </PublicSquareProvider>
   );
@@ -33,7 +36,7 @@ function Flow() {
 
     setUpdatingCvc(true);
     try {
-      const response = await publicsquare.cards.updateCvc(cardToken, cvcElement.current, 'TEST');
+      const response = await publicsquare.cards.updateCvc(cardToken, cvcElement.current);
       setMessage({ message: response, error: !!response.error });
     } catch (error) {
       setMessage({ message: { error: String(error) }, error: true });

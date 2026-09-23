@@ -96,7 +96,7 @@ export default function ThreeDSElementsJs({ flow, allInOne }: { flow: Flow; allI
 
   useEffect(() => {
     new PublicSquare()
-      .init(environment.apiKey, { ...environment.card, ...environment.threeDs })
+      .init(environment.apiKey, { apiUrl: environment.apiUrl, ...environment.threeDs })
       .then((instance) => setPublicSquare(instance));
   }, []);
 
