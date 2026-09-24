@@ -13,7 +13,6 @@ export type ThreeDSChallengeProps = {
   acsTransactionId: string;
   threeDsVersion: string;
   containerId?: string;
-  //environment?: 'TEST' | 'PRODUCTION';
   onComplete: (result: ThreeDSChallengeResult) => void;
   onFailure?: (error: Error) => void;
 };

@@ -76,6 +76,11 @@ export class PublicSquareCards {
         this._publicSquare._environment === 'TEST'
           ? this._publicSquare._cvcUpdateTestAppKey
           : this._publicSquare._cvcUpdateAppKey;
+      if (!appKey) {
+        throw new Error(
+          `CVC update key is not configured for the ${this._publicSquare._environment} environment; the SDK was built without it`,
+        );
+      }
 
       return this._publicSquare.bt.tokens
         .update(cardToken, { data: { cvc: cvcElement } }, { apiKey: appKey })

@@ -206,6 +206,21 @@ describe('Cards', () => {
       );
     });
 
+    test('throws instead of calling BT when the CVC update key was not inlined at build time', async () => {
+      const unconfiguredPublicsquare = await new PublicSquare().init('key_test_123');
+      unconfiguredPublicsquare._cvcUpdateTestAppKey = undefined;
+      const unconfiguredCards = new PublicSquareCards(unconfiguredPublicsquare);
+
+      const error = await getError<{ message: string }>(() =>
+        unconfiguredCards.updateCvc('card_token_123', cvcElement),
+      );
+
+      expect(error.message).toBe(
+        'CVC update key is not configured for the TEST environment; the SDK was built without it',
+      );
+      expect(unconfiguredPublicsquare.bt?.tokens?.update).not.toHaveBeenCalled();
+    });
+
     test('defaults to PRODUCTION environment when apiKey does not contain "test"', async () => {
       await publicsquare.cards.updateCvc('card_token_123', cvcElement);
 
