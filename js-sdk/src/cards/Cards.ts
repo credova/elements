@@ -39,9 +39,9 @@ export class PublicSquareCards {
 
       const proxyKey =
         environment === 'TEST'
-          ? (apiUrlEnvironment === 'STAGING'
-              ? BASIS_THEORY_KEYS.CREATE_CARD_TEST
-              : BASIS_THEORY_KEYS.CREATE_CARD_PRODUCTION_TEST_MODE)
+          ? apiUrlEnvironment === 'STAGING'
+            ? BASIS_THEORY_KEYS.CREATE_CARD_TEST
+            : BASIS_THEORY_KEYS.CREATE_CARD_PRODUCTION_TEST_MODE
           : BASIS_THEORY_KEYS.CREATE_CARD_PRODUCTION;
       const cardCreateUrl = BASIS_THEORY_ENDPOINTS.PROXY(
         environment === 'TEST'

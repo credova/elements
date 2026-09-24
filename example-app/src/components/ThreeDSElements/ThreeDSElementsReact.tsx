@@ -40,10 +40,7 @@ export type StepLogEntry = { label: string; data: unknown };
 
 export function ThreeDsProvider({ children }: { children: ReactNode }) {
   return (
-    <PublicSquareProvider
-      apiKey={environment.apiKey}
-      options={{ apiUrl: environment.apiUrl }}
-    >
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       {children}
     </PublicSquareProvider>
   );

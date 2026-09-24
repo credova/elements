@@ -124,7 +124,7 @@ describe('ThreeDs', () => {
     expect(error.message).toBe('apiKey must be sent at initialization');
   });
 
-  test('createSession() always uses the SDK\'s fixed TEST 3ds key in TEST mode, regardless of init options', async () => {
+  test("createSession() always uses the SDK's fixed TEST 3ds key in TEST mode, regardless of init options", async () => {
     mockBtCreateSession.mockResolvedValue({ id: 'bt_session_123', additionalCardBrands: [] });
     global.fetch = jest.fn().mockResolvedValue({
       json: () =>

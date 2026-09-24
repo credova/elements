@@ -11,10 +11,7 @@ import CaptureModal from '@/components/Modals/CaptureModal';
 
 export default function CvcRecollectionReact() {
   return (
-    <PublicSquareProvider
-      apiKey={environment.apiKey}
-      options={{ apiUrl: environment.apiUrl }}
-    >
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       <Flow />
     </PublicSquareProvider>
   );

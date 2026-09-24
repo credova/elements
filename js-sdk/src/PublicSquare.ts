@@ -1,5 +1,11 @@
 import { BasisTheory } from '@basis-theory/basis-theory-js';
-import { API_ENDPOINTS, BASIS_THEORY_ENDPOINTS, BASIS_THEORY_KEYS, ELEMENTS_INIT_ERROR_MESSAGE, ELEMENTS_TYPE_NOT_SUPPORTED } from './constants';
+import {
+  API_ENDPOINTS,
+  BASIS_THEORY_ENDPOINTS,
+  BASIS_THEORY_KEYS,
+  ELEMENTS_INIT_ERROR_MESSAGE,
+  ELEMENTS_TYPE_NOT_SUPPORTED,
+} from './constants';
 import {
   CardElement,
   CardExpirationDateElement,
@@ -59,9 +65,10 @@ export class PublicSquare {
   public async init(apiKey: string, options?: PublicSquareInitOptions) {
     this._apiKey = apiKey;
     const environment = apiKey.includes('test') ? 'TEST' : 'PRODUCTION';
-    const btApiBaseUrl = environment === 'TEST'
-          ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
-          : BASIS_THEORY_ENDPOINTS.API_BASE_URL;
+    const btApiBaseUrl =
+      environment === 'TEST'
+        ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
+        : BASIS_THEORY_ENDPOINTS.API_BASE_URL;
 
     if (options?.apiUrl) this._apiUrl = options?.apiUrl;
 

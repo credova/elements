@@ -1,4 +1,9 @@
-import { API_ENDPOINTS, BASIS_THEORY_ENDPOINTS, BASIS_THEORY_KEYS, ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
+import {
+  API_ENDPOINTS,
+  BASIS_THEORY_ENDPOINTS,
+  BASIS_THEORY_KEYS,
+  ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE,
+} from '@/constants';
 import type { PublicSquare } from '@/PublicSquare';
 import type {
   ThreeDsCreateSessionResponse,
@@ -24,18 +29,14 @@ export class PublicSquareThreeDs {
     environment =
       environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
     const appKey =
+      environment === 'TEST' ? BASIS_THEORY_KEYS.THREE_DS_TEST : BASIS_THEORY_KEYS.THREE_DS;
+    const btApiBaseUrl =
       environment === 'TEST'
-        ? BASIS_THEORY_KEYS.THREE_DS_TEST
-        : BASIS_THEORY_KEYS.THREE_DS;
-    const btApiBaseUrl = environment === 'TEST'
-      ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
-      : BASIS_THEORY_ENDPOINTS.API_BASE_URL;
+        ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
+        : BASIS_THEORY_ENDPOINTS.API_BASE_URL;
     if (!this._bt3ds.has(environment)) {
       const { BasisTheory3ds } = await import('@basis-theory/web-threeds');
-      this._bt3ds.set(
-        environment,
-        BasisTheory3ds( appKey, { apiBaseUrl: btApiBaseUrl }),
-      );
+      this._bt3ds.set(environment, BasisTheory3ds(appKey, { apiBaseUrl: btApiBaseUrl }));
     }
     return this._bt3ds.get(environment);
   }
@@ -64,17 +65,14 @@ export class PublicSquareThreeDs {
         exemption_request_reason: input.exemption_request_reason,
       });
 
-      return fetch(
-        API_ENDPOINTS.THREE_DS_CREATE_SESSION(this._publicSquare._apiUrl),
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': this._publicSquare._apiKey,
-          },
-          body: JSON.stringify(transformCreateThreeDsSessionInput(validatedInput)),
+      return fetch(API_ENDPOINTS.THREE_DS_CREATE_SESSION(this._publicSquare._apiUrl), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': this._publicSquare._apiKey,
         },
-      )
+        body: JSON.stringify(transformCreateThreeDsSessionInput(validatedInput)),
+      })
         .then((res) => res.json())
         .then((res) => (res.errors ? { error: res } : res));
     }
