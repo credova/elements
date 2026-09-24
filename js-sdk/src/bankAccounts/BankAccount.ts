@@ -82,8 +82,7 @@ export class PublicSquareBankAccount {
     } else {
       const validatedInput = validateCreateBankAccountInput(input);
       return fetch(
-        this._publicSquare._bankAccountCreateUrl ??
-          API_ENDPOINTS.BANK_ACCOUNT_CREATE(this._publicSquare._apiUrl),
+        API_ENDPOINTS.BANK_ACCOUNT_CREATE(this._publicSquare._apiUrl),
         {
           method: 'POST',
           headers: {

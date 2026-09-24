@@ -39,8 +39,7 @@ export class PublicSquareGooglePay {
 
   public getGooglePayConfiguration(): Promise<GooglePayEnvironmentsConfiguration> {
     return fetch(
-      this._publicSquare._getGooglePayConfiguration ??
-        API_ENDPOINTS.GOOGLE_PAY_CONFIGURATION(this._publicSquare._apiUrl),
+      API_ENDPOINTS.GOOGLE_PAY_CONFIGURATION(this._publicSquare._apiUrl),
       {
         method: 'GET',
         headers: {
@@ -67,8 +66,7 @@ export class PublicSquareGooglePay {
     } else {
       const validatedInput = validateCreateGooglePayInput(input);
       return fetch(
-        this._publicSquare._googlePayCreateUrl ??
-          API_ENDPOINTS.GOOGLE_PAY_CREATE(this._publicSquare._apiUrl),
+        API_ENDPOINTS.GOOGLE_PAY_CREATE(this._publicSquare._apiUrl),
         {
           method: 'POST',
           headers: {

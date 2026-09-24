@@ -31,7 +31,7 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
      * Step 1: Init the PublicSquare sdk
      */
     new PublicSquare()
-      .init(environment.apiKey, environment.bankAccount)
+      .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
 

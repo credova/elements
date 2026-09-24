@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
+import { API_ENDPOINTS, BASIS_THEORY_ENDPOINTS, BASIS_THEORY_KEYS, ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
 import type { PublicSquare } from '@/PublicSquare';
 import type {
   ThreeDsCreateSessionResponse,
@@ -21,29 +21,23 @@ export class PublicSquareThreeDs {
   }
 
   private async _getBt3ds(environment?: 'TEST' | 'PRODUCTION') {
-    const env = environment ?? 'PRODUCTION';
-    if (!this._bt3ds.has(env)) {
+    environment =
+      environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
+    const appKey =
+      environment === 'TEST'
+        ? BASIS_THEORY_KEYS.THREE_DS_TEST
+        : BASIS_THEORY_KEYS.THREE_DS;
+    const btApiBaseUrl = environment === 'TEST'
+      ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
+      : BASIS_THEORY_ENDPOINTS.API_BASE_URL;
+    if (!this._bt3ds.has(environment)) {
       const { BasisTheory3ds } = await import('@basis-theory/web-threeds');
-      if (env === 'TEST') {
-        this._bt3ds.set(
-          env,
-          BasisTheory3ds(
-            this._publicSquare._public3dsTestAppKey ?? 'key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES',
-            {
-              apiBaseUrl: 'https://api.test.basistheory.com',
-            },
-          ),
-        );
-      } else {
-        this._bt3ds.set(
-          env,
-          BasisTheory3ds(this._publicSquare._public3dsAppKey, {
-            apiBaseUrl: this._publicSquare._btApiBaseUrl,
-          }),
-        );
-      }
+      this._bt3ds.set(
+        environment,
+        BasisTheory3ds( appKey, { apiBaseUrl: btApiBaseUrl }),
+      );
     }
-    return this._bt3ds.get(env);
+    return this._bt3ds.get(environment);
   }
 
   public async createSession(input: {
@@ -71,8 +65,7 @@ export class PublicSquareThreeDs {
       });
 
       return fetch(
-        this._publicSquare._threeDsCreateSessionUrl ??
-          API_ENDPOINTS.THREE_DS_CREATE_SESSION(this._publicSquare._apiUrl),
+        API_ENDPOINTS.THREE_DS_CREATE_SESSION(this._publicSquare._apiUrl),
         {
           method: 'POST',
           headers: {

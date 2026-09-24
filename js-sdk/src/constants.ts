@@ -69,6 +69,8 @@ const BASIS_THEORY_KEYS = {
   CREATE_CARD_PRODUCTION: `key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP`,
   CREATE_CARD_PRODUCTION_TEST_MODE: `key_test_us_proxy_AaEf6KrqHpa1ur7jyiZcNu`,
   CREATE_CARD_TEST: `key_test_us_proxy_FrL4kJFRXU1AwuYVnMbTnP`,//API STAGING
+  THREE_DS: `key_prod_us_pub_7cC6EF431x2rKGwsnnuZPP`,
+  THREE_DS_TEST: `key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES`,
 };
 
 export {

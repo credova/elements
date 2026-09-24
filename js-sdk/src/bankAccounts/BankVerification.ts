@@ -108,8 +108,7 @@ export class PublicSquareBankVerification {
     request: BankAccountVerificationIdRequest,
   ): Promise<BankAccountVerificationIdResponse> {
     return fetch(
-      this._publicSquare._bankAccountVerificationUrl ??
-        API_ENDPOINTS.BANK_ACCOUNT_VERIFICATION(this._publicSquare._apiUrl),
+      API_ENDPOINTS.BANK_ACCOUNT_VERIFICATION(this._publicSquare._apiUrl),
       {
         method: 'POST',
         headers: {
@@ -168,8 +167,7 @@ export class PublicSquareBankVerification {
 
   private async getAuthorizationUrl(): Promise<BankAccountVerificationUrlResponse> {
     const res = await fetch(
-      this._publicSquare._bankAccountVerificationUrl ??
-        API_ENDPOINTS.BANK_ACCOUNT_VERIFICATION(this._publicSquare._apiUrl),
+      API_ENDPOINTS.BANK_ACCOUNT_VERIFICATION(this._publicSquare._apiUrl),
       {
         method: 'GET',
         headers: {

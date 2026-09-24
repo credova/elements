@@ -16,7 +16,7 @@ export default function ApplePayElementsReact() {
     /*
      * Step 1: Init the PublicSquare sdk
      */
-    <PublicSquareProvider apiKey={environment.apiKey} options={environment.applePay}>
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       <Elements />
     </PublicSquareProvider>
   );

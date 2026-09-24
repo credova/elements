@@ -42,7 +42,7 @@ export function ThreeDsProvider({ children }: { children: ReactNode }) {
   return (
     <PublicSquareProvider
       apiKey={environment.apiKey}
-      options={{ apiUrl: environment.apiUrl, ...environment.threeDs }}
+      options={{ apiUrl: environment.apiUrl }}
     >
       {children}
     </PublicSquareProvider>

@@ -17,7 +17,7 @@ export default function GooglePayElementsJs() {
 
   useEffect(() => {
     new PublicSquare()
-      .init(environment.apiKey, environment.googlePay)
+      .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
 

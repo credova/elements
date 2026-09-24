@@ -41,8 +41,7 @@ export class PublicSquareApplePay {
     } else {
       const validatedInput = validateCreateApplePayInput(input);
       return fetch(
-        this._publicSquare._applePayCreateUrl ??
-          API_ENDPOINTS.APPLE_PAY_CREATE(this._publicSquare._apiUrl),
+        API_ENDPOINTS.APPLE_PAY_CREATE(this._publicSquare._apiUrl),
         {
           method: 'POST',
           headers: {
@@ -71,8 +70,7 @@ export class PublicSquareApplePay {
     } else {
       const validatedInput = validateCreateApplePaySessionInput(input);
       return fetch(
-        this._publicSquare._applePayCreateSessionUrl ??
-          API_ENDPOINTS.APPLE_PAY_CREATE_SESSION(this._publicSquare._apiUrl),
+        API_ENDPOINTS.APPLE_PAY_CREATE_SESSION(this._publicSquare._apiUrl),
         {
           method: 'POST',
           headers: {
