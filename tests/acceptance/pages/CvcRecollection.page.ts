@@ -47,6 +47,7 @@ class CvcRecollectionJSPage {
 
   async expectSuccessModalIsVisible() {
     await expect(this.successModal).toBeVisible();
+    await expect(this.successModal).toContainText('Capture successful');
   }
 }
 
@@ -97,6 +98,7 @@ class CvcRecollectionReactPage {
 
   async expectSuccessModalIsVisible() {
     await expect(this.successModal).toBeVisible();
+    await expect(this.successModal).toContainText('Capture successful');
   }
 }
 

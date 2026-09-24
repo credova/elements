@@ -13,8 +13,10 @@ const fakeUpdatedToken = {
 // The BT Elements SDK sends the CVC update straight from the browser to the BT
 // tokens endpoint (PATCH /tokens/{id}) — it never goes through our proxy, and
 // never reaches a PSQ or merchant server.
+// BT's hosted Elements iframe always sends element-bearing token updates to
+// api.basistheory.com, even for test keys, so that's the host mocked here.
 async function mockCvcUpdate(page) {
-  await page.route('https://api.test.basistheory.com/tokens/**', async (route) => {
+  await page.route('https://api.basistheory.com/tokens/**', async (route) => {
     await route.fulfill({ json: fakeUpdatedToken });
   });
 }
