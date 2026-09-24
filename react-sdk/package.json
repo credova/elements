@@ -33,7 +33,7 @@
     "@publicsquare/elements-js": "1.16.1",
     "glob": "^13.0.1",
     "minimatch": "^10.2.3",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.6",
     "follow-redirects": "^1.16.0"
   },
   "overrides": {
