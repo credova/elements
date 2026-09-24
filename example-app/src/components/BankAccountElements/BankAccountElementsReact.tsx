@@ -17,7 +17,7 @@ import { environment } from '@/config/environments';
 
 export default function BankAccountElementsReact({ allInOne }: { allInOne: boolean }) {
   return (
-    <PublicSquareProvider apiKey={environment.apiKey} options={environment.bankAccount}>
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       <Elements allInOne={allInOne} />
     </PublicSquareProvider>
   );

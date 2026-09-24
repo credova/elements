@@ -7,7 +7,7 @@ import {
   CardElement,
   CardNumberElement,
   CardExpirationDateElement,
-  CardVerifcationCodeElement,
+  CardVerificationCodeElement,
   usePublicSquare,
 } from '@publicsquare/elements-react';
 import PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
@@ -16,7 +16,7 @@ import { environment } from '@/config/environments';
 
 export default function CardElementsReact({ allInOne }: { allInOne: boolean }) {
   return (
-    <PublicSquareProvider apiKey={environment.apiKey} options={environment.card}>
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       <Elements allInOne={allInOne} />
     </PublicSquareProvider>
   );
@@ -66,12 +66,10 @@ function Elements({ allInOne }: { allInOne: boolean }) {
     if (formProps.cardholder_name && card && publicsquare) {
       setLoading(true);
       try {
-        const response = await publicsquare.cards.create(
-          {
-            cardholder_name: formProps.cardholder_name as string,
-            card,
-          },
-        );
+        const response = await publicsquare.cards.create({
+          cardholder_name: formProps.cardholder_name as string,
+          card,
+        });
         if (response) {
           setMessage({
             message: response,
@@ -121,7 +119,7 @@ function Elements({ allInOne }: { allInOne: boolean }) {
                 <div>
                   <label>CVC</label>
                   <div className="w-full rounded-lg bg-white p-2 shadow">
-                    <CardVerifcationCodeElement
+                    <CardVerificationCodeElement
                       id="react-card-verification-code-element"
                       ref={cardVerificationCodeElement}
                     />

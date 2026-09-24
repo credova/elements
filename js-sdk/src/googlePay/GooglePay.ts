@@ -38,17 +38,13 @@ export class PublicSquareGooglePay {
   }
 
   public getGooglePayConfiguration(): Promise<GooglePayEnvironmentsConfiguration> {
-    return fetch(
-      this._publicSquare._getGooglePayConfiguration ??
-        API_ENDPOINTS.GOOGLE_PAY_CONFIGURATION(this._publicSquare._apiUrl),
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-KEY': this._publicSquare._apiKey ?? '',
-        },
+    return fetch(API_ENDPOINTS.GOOGLE_PAY_CONFIGURATION(this._publicSquare._apiUrl), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': this._publicSquare._apiKey ?? '',
       },
-    )
+    })
       .then((res) => res.json())
       .then((res) =>
         res.errors
@@ -66,18 +62,14 @@ export class PublicSquareGooglePay {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
       const validatedInput = validateCreateGooglePayInput(input);
-      return fetch(
-        this._publicSquare._googlePayCreateUrl ??
-          API_ENDPOINTS.GOOGLE_PAY_CREATE(this._publicSquare._apiUrl),
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': this._publicSquare._apiKey,
-          },
-          body: JSON.stringify(transformCreateGooglePayInput(validatedInput)),
+      return fetch(API_ENDPOINTS.GOOGLE_PAY_CREATE(this._publicSquare._apiUrl), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': this._publicSquare._apiKey,
         },
-      )
+        body: JSON.stringify(transformCreateGooglePayInput(validatedInput)),
+      })
         .then((res) => res.json())
         .then((res) =>
           res.errors

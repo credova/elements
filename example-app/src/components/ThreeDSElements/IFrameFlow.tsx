@@ -73,13 +73,10 @@ export default function IFrameFlow({ allInOne }: { allInOne: boolean }) {
     setStep('tokenizing');
     let cardResponse: { id: string; token: string; error?: unknown };
     try {
-      cardResponse = (await publicsquare.cards.create(
-        {
-          cardholder_name: cardholderName,
-          card,
-        },
-        'TEST',
-      )) as typeof cardResponse;
+      cardResponse = (await publicsquare.cards.create({
+        cardholder_name: cardholderName,
+        card,
+      })) as typeof cardResponse;
     } catch (err) {
       return fail('cards.create threw', String(err));
     }
@@ -114,7 +111,6 @@ export default function IFrameFlow({ allInOne }: { allInOne: boolean }) {
         token_id: cardResponse.token,
         payment_intent_id: intentRes.id,
         challenge_preference: 'no-preference',
-        environment: 'TEST',
       })) as typeof sessionRes;
     } catch (err) {
       return fail('createSession threw', String(err));
@@ -199,7 +195,6 @@ export default function IFrameFlow({ allInOne }: { allInOne: boolean }) {
           acsChallengeUrl={nextAction.acs_challenge_url!}
           acsTransactionId={nextAction.acs_transaction_id!}
           threeDsVersion={nextAction.three_ds_version!}
-          environment="TEST"
           onComplete={onChallengeComplete}
           onFailure={onChallengeFailure}
         />

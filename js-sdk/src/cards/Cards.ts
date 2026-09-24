@@ -1,6 +1,12 @@
-import { CardCreateResponse, CardCreateInput } from '@/types/sdk/cards';
+import { CardCreateResponse, CardCreateInput, CardUpdateCvcResponse } from '@/types/sdk/cards';
+import type { BasisTheoryCardTokenUpdateResponse } from './types';
+import type { CardVerificationCodeElement } from '@basis-theory/basis-theory-js/types/elements';
 import { PublicSquare } from '..';
-import { BASIS_THEORY_ENDPOINTS, ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
+import {
+  BASIS_THEORY_ENDPOINTS,
+  BASIS_THEORY_KEYS,
+  ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE,
+} from '@/constants';
 import { transformCreateCardInput } from '@/utils';
 import { validateCreateCardInput } from '@/validators';
 
@@ -14,27 +20,30 @@ export class PublicSquareCards {
     this._publicSquare = publicSquarePointer;
   }
 
-  public create(
-    input: CardCreateInput,
-    environment?: 'TEST' | 'PRODUCTION',
-  ): Promise<CardCreateResponse> {
+  public create(input: CardCreateInput): Promise<CardCreateResponse> {
     if (!this._publicSquare._apiKey) {
       throw new Error('apiKey must be sent at initialization');
     } else if (!this._publicSquare.bt || !this._publicSquare.bt.client) {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
-      environment =
-        environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
+      const environment = this._publicSquare._environment;
       const validatedInput = validateCreateCardInput(input);
-      const cardCreateUrl =
-        environment === 'TEST'
-          ? BASIS_THEORY_ENDPOINTS.PROXY('https://api.test.basistheory.com')
-          : (this._publicSquare._cardCreateUrl ??
-            BASIS_THEORY_ENDPOINTS.PROXY(this._publicSquare._btApiBaseUrl));
+
+      const apiUrlEnvironment = this._publicSquare._apiUrl?.toLowerCase().includes('staging')
+        ? 'STAGING'
+        : 'PRODUCTION';
+
       const proxyKey =
         environment === 'TEST'
-          ? 'key_test_us_proxy_AaEf6KrqHpa1ur7jyiZcNu'
-          : this._publicSquare._proxyKey;
+          ? apiUrlEnvironment === 'STAGING'
+            ? BASIS_THEORY_KEYS.CREATE_CARD_TEST
+            : BASIS_THEORY_KEYS.CREATE_CARD_PRODUCTION_TEST_MODE
+          : BASIS_THEORY_KEYS.CREATE_CARD_PRODUCTION;
+      const cardCreateUrl = BASIS_THEORY_ENDPOINTS.PROXY(
+        environment === 'TEST'
+          ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
+          : BASIS_THEORY_ENDPOINTS.API_BASE_URL,
+      );
 
       return this._publicSquare.bt.client
         .post(cardCreateUrl, transformCreateCardInput(validatedInput), {
@@ -50,6 +59,48 @@ export class PublicSquareCards {
                 error: res.error,
               }
             : res,
+        );
+    }
+  }
+
+  public updateCvc(
+    cardToken: string,
+    cvcElement: CardVerificationCodeElement,
+  ): Promise<CardUpdateCvcResponse> {
+    if (!this._publicSquare._apiKey) {
+      throw new Error('apiKey must be sent at initialization');
+    } else if (!this._publicSquare.bt || !this._publicSquare.bt.tokens) {
+      throw new Error('PublicSquare JS has not be initialized yet');
+    } else {
+      const appKey =
+        this._publicSquare._environment === 'TEST'
+          ? this._publicSquare._cvcUpdateTestAppKey
+          : this._publicSquare._cvcUpdateAppKey;
+      if (!appKey) {
+        throw new Error(
+          `CVC update key is not configured for the ${this._publicSquare._environment} environment; the SDK was built without it`,
+        );
+      }
+
+      return this._publicSquare.bt.tokens
+        .update(cardToken, { data: { cvc: cvcElement } }, { apiKey: appKey })
+        .then(
+          (res: any): CardUpdateCvcResponse => {
+            if (res.error) return { error: { error: res.error, data: res.data } };
+            const token = res as BasisTheoryCardTokenUpdateResponse;
+            return {
+              id: token.id,
+              type: token.type,
+              created_at: token.createdAt,
+              modified_at: token.modifiedAt,
+            };
+          },
+          (error: any): CardUpdateCvcResponse => ({
+            error: {
+              error: error?.message ?? 'Failed to update CVC',
+              data: error?.data,
+            },
+          }),
         );
     }
   }

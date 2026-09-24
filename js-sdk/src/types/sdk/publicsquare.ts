@@ -25,17 +25,6 @@ export interface ApplicationInfo {
 
 export interface PublicSquareInitOptions {
   apiUrl?: string;
-  cardCreateUrl?: string;
-  bankAccountCreateUrl?: string;
-  bankAccountVerificationUrl?: string;
-  applePayCreateUrl?: string;
-  applePayCreateSessionUrl?: string;
-  googlePayCreateUrl?: string;
-  getGooglePayConfiguration?: string;
-  threeDsCreateSessionUrl?: string;
-  btApiBaseUrl?: string;
-  public3dsAppKey?: string;
-  proxyKey?: string;
   appInfo?: ApplicationInfo;
 }
 
