@@ -124,7 +124,7 @@ describe('ThreeDs', () => {
     expect(error.message).toBe('apiKey must be sent at initialization');
   });
 
-  test("createSession() always uses the SDK's fixed TEST 3ds key in TEST mode, regardless of init options", async () => {
+  test("createSession() always uses the SDK's fixed TEST 3ds key in TEST mode, when PublicSquare apiKey has test value", async () => {
     mockBtCreateSession.mockResolvedValue({ id: 'bt_session_123', additionalCardBrands: [] });
     global.fetch = jest.fn().mockResolvedValue({
       json: () =>
@@ -146,7 +146,6 @@ describe('ThreeDs', () => {
       token_id: 'tok_123',
       payment_intent_id: 'pmt_int_1',
       challenge_preference: 'no-preference',
-      environment: 'TEST',
     });
 
     expect(BasisTheory3ds).toHaveBeenCalledWith('key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES', {

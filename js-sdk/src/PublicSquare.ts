@@ -39,6 +39,7 @@ import { PublicSquareThreeDs } from '@/threeds';
 export class PublicSquare {
   _apiUrl: string = API_ENDPOINTS.API_BASE_URL;
   _apiKey?: string;
+  _environment: string = 'PRODUCTION';
   _cvcUpdateAppKey?: string = process.env.PUBLICSQUARE_CVC_UPDATE_APP_KEY;
   _cvcUpdateTestAppKey?: string = process.env.PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY;
 
@@ -64,9 +65,9 @@ export class PublicSquare {
    */
   public async init(apiKey: string, options?: PublicSquareInitOptions) {
     this._apiKey = apiKey;
-    const environment = apiKey.includes('test') ? 'TEST' : 'PRODUCTION';
+    this._environment = apiKey.includes('test') ? 'TEST' : 'PRODUCTION';
     const btApiBaseUrl =
-      environment === 'TEST'
+      this._environment === 'TEST'
         ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
         : BASIS_THEORY_ENDPOINTS.API_BASE_URL;
 

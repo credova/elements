@@ -59,13 +59,10 @@ export default function RedirectFlow({ allInOne }: { allInOne: boolean }) {
     setStep('tokenizing');
     let cardResponse: { id: string; token: string; error?: unknown };
     try {
-      cardResponse = (await publicsquare.cards.create(
-        {
-          cardholder_name: cardholderName,
-          card,
-        },
-        'TEST',
-      )) as typeof cardResponse;
+      cardResponse = (await publicsquare.cards.create({
+        cardholder_name: cardholderName,
+        card,
+      })) as typeof cardResponse;
     } catch (err) {
       return fail('cards.create threw', String(err));
     }

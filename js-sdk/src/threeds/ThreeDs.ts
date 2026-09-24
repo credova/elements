@@ -25,11 +25,12 @@ export class PublicSquareThreeDs {
     this._publicSquare = publicSquarePointer;
   }
 
-  private async _getBt3ds(environment?: 'TEST' | 'PRODUCTION') {
-    environment =
-      environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
+  private async _getBt3ds() {
+    const environment = this._publicSquare._environment;
     const appKey =
-      environment === 'TEST' ? BASIS_THEORY_KEYS.THREE_DS_TEST : BASIS_THEORY_KEYS.THREE_DS;
+      this._publicSquare._environment === 'TEST'
+        ? BASIS_THEORY_KEYS.THREE_DS_TEST
+        : BASIS_THEORY_KEYS.THREE_DS;
     const btApiBaseUrl =
       environment === 'TEST'
         ? BASIS_THEORY_ENDPOINTS.API_BASE_URL_TEST
@@ -46,14 +47,13 @@ export class PublicSquareThreeDs {
     payment_intent_id: string;
     challenge_preference?: string;
     exemption_request_reason?: string;
-    environment?: 'TEST' | 'PRODUCTION';
   }): Promise<SaveThreeDsSessionResponse> {
     if (!this._publicSquare._apiKey) {
       throw new Error('apiKey must be sent at initialization');
     } else if (!this._publicSquare.bt || !this._publicSquare.bt.client) {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
-      const bt3ds = await this._getBt3ds(input.environment ?? 'PRODUCTION');
+      const bt3ds = await this._getBt3ds();
       const btSession = (await bt3ds.createSession({
         tokenId: input.token_id,
       })) as ThreeDsCreateSessionResponse;
@@ -81,7 +81,7 @@ export class PublicSquareThreeDs {
   public async startChallenge(
     input: ThreeDsStartChallengeInput,
   ): Promise<ThreeDsStartChallengeResponse> {
-    const bt3ds = await this._getBt3ds(input.environment ?? 'PRODUCTION');
+    const bt3ds = await this._getBt3ds();
     const result = await bt3ds.startChallenge({
       sessionId: input.sessionId,
       acsChallengeUrl: input.acsChallengeUrl,

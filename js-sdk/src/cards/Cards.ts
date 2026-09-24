@@ -20,17 +20,13 @@ export class PublicSquareCards {
     this._publicSquare = publicSquarePointer;
   }
 
-  public create(
-    input: CardCreateInput,
-    environment?: 'TEST' | 'PRODUCTION',
-  ): Promise<CardCreateResponse> {
+  public create(input: CardCreateInput): Promise<CardCreateResponse> {
     if (!this._publicSquare._apiKey) {
       throw new Error('apiKey must be sent at initialization');
     } else if (!this._publicSquare.bt || !this._publicSquare.bt.client) {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
-      environment =
-        environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
+      const environment = this._publicSquare._environment;
       const validatedInput = validateCreateCardInput(input);
 
       const apiUrlEnvironment = this._publicSquare._apiUrl?.toLowerCase().includes('staging')
@@ -70,17 +66,14 @@ export class PublicSquareCards {
   public updateCvc(
     cardToken: string,
     cvcElement: CardVerificationCodeElement,
-    environment?: 'TEST' | 'PRODUCTION',
   ): Promise<CardUpdateCvcResponse> {
     if (!this._publicSquare._apiKey) {
       throw new Error('apiKey must be sent at initialization');
     } else if (!this._publicSquare.bt || !this._publicSquare.bt.tokens) {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
-      environment =
-        environment ?? (this._publicSquare._apiKey?.includes('test') ? 'TEST' : 'PRODUCTION');
       const appKey =
-        environment === 'TEST'
+        this._publicSquare._environment === 'TEST'
           ? this._publicSquare._cvcUpdateTestAppKey
           : this._publicSquare._cvcUpdateAppKey;
 

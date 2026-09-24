@@ -80,24 +80,6 @@ describe('Cards', () => {
     );
   });
 
-  test('create() does not override an explicitly passed environment', async () => {
-    const testPublicsquare = await new PublicSquare().init('key_test_123');
-    const testCards = new PublicSquareCards(testPublicsquare);
-    const input = generateCardCreateInput();
-
-    await testCards.create(input, 'PRODUCTION');
-
-    expect(testPublicsquare.bt?.client?.post).toHaveBeenCalledWith(
-      'https://api.basistheory.com/proxy',
-      expect.anything(),
-      expect.objectContaining({
-        headers: expect.objectContaining({
-          'BT-PROXY-KEY': 'key_prod_us_proxy_HiFqDwW49EZ8szKi8cMvQP',
-        }),
-      }),
-    );
-  });
-
   test('create() uses BASIS_THEORY_KEYS.CREATE_CARD_TEST when apiUrl indicates a STAGING environment, even though the apiKey resolves to TEST', async () => {
     const testPublicsquare = await new PublicSquare().init('key_test_123', {
       apiUrl: 'https://staging.api.publicsquare.com',
@@ -231,19 +213,6 @@ describe('Cards', () => {
         'card_token_123',
         { data: { cvc: cvcElement } },
         { apiKey: publicsquare._cvcUpdateAppKey },
-      );
-    });
-
-    test('does not override an explicitly passed environment', async () => {
-      const testPublicsquare = await new PublicSquare().init('key_test_123');
-      const testCards = new PublicSquareCards(testPublicsquare);
-
-      await testCards.updateCvc('card_token_123', cvcElement, 'PRODUCTION');
-
-      expect(testPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
-        'card_token_123',
-        { data: { cvc: cvcElement } },
-        { apiKey: testPublicsquare._cvcUpdateAppKey },
       );
     });
   });
