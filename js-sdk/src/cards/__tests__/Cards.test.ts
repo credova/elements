@@ -25,6 +25,9 @@ describe('Cards', () => {
   beforeAll(async () => {
     publicsquare = await new PublicSquare().init('api_key');
     cards = new PublicSquareCards(publicsquare);
+    // Pin a deterministic value instead of relying on whatever PUBLICSQUARE_CVC_UPDATE_APP_KEY
+    // happens to be inlined locally/in CI.
+    publicsquare._cvcUpdateAppKey = 'key_prod_us_pub_test_override';
   });
 
   test('constructs', async () => {
@@ -133,7 +136,7 @@ describe('Cards', () => {
       expect(publicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
         'card_token_123',
         { data: { cvc: cvcElement } },
-        { apiKey: publicsquare._cvcUpdateAppKey },
+        { apiKey: 'key_prod_us_pub_test_override' },
       );
       expect(result).toEqual({});
     });
@@ -195,6 +198,7 @@ describe('Cards', () => {
 
     test('defaults to TEST environment when apiKey contains "test"', async () => {
       const testPublicsquare = await new PublicSquare().init('key_test_123');
+      testPublicsquare._cvcUpdateTestAppKey = 'key_test_us_pub_test_override';
       const testCards = new PublicSquareCards(testPublicsquare);
 
       await testCards.updateCvc('card_token_123', cvcElement);
@@ -202,7 +206,7 @@ describe('Cards', () => {
       expect(testPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
         'card_token_123',
         { data: { cvc: cvcElement } },
-        { apiKey: testPublicsquare._cvcUpdateTestAppKey },
+        { apiKey: 'key_test_us_pub_test_override' },
       );
     });
 
@@ -227,7 +231,7 @@ describe('Cards', () => {
       expect(publicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
         'card_token_123',
         { data: { cvc: cvcElement } },
-        { apiKey: publicsquare._cvcUpdateAppKey },
+        { apiKey: 'key_prod_us_pub_test_override' },
       );
     });
   });
