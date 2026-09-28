@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/credova/elements/compare/v1.16.1...v2.0.0) (2026-09-28)
+
+
+### Features
+
+* add update CVC to a saved card ([#30](https://github.com/credova/elements/issues/30)) ([5a6f3b3](https://github.com/credova/elements/commit/5a6f3b3947e734b2637470e6479f2f5d182d13e6))
+
+
+### BREAKING CHANGES
+
+* PublicSquareInitOptions now accepts only apiUrl and appInfo.
+
 ## [1.16.1](https://github.com/credova/elements/compare/v1.16.0...v1.16.1) (2026-08-26)
 
 
