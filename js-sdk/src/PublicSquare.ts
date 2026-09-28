@@ -2,7 +2,6 @@ import { BasisTheory } from '@basis-theory/basis-theory-js';
 import {
   API_ENDPOINTS,
   BASIS_THEORY_ENDPOINTS,
-  BASIS_THEORY_KEYS,
   ELEMENTS_INIT_ERROR_MESSAGE,
   ELEMENTS_TYPE_NOT_SUPPORTED,
 } from './constants';
@@ -40,8 +39,6 @@ export class PublicSquare {
   _apiUrl: string = API_ENDPOINTS.API_BASE_URL;
   _apiKey?: string;
   _environment: string = 'PRODUCTION';
-  _cvcUpdateAppKey?: string = process.env.PUBLICSQUARE_CVC_UPDATE_APP_KEY;
-  _cvcUpdateTestAppKey?: string = process.env.PUBLICSQUARE_CVC_UPDATE_TEST_APP_KEY;
 
   protected _bt?: BasisTheoryInstance;
   get bt(): BasisTheoryInstance | undefined {

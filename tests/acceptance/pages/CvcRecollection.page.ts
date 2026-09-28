@@ -5,7 +5,7 @@ class CvcRecollectionJSPage {
   private technologyToggle: Locator;
   private cvcForm: Locator;
   private cvcElement: Locator;
-  private cardTokenInput: Locator;
+  private cardIdInput: Locator;
   private successModal: Locator;
 
   constructor(page: Page) {
@@ -13,7 +13,7 @@ class CvcRecollectionJSPage {
     this.technologyToggle = page.getByTestId('js-type-button');
     this.cvcForm = page.locator('form[name="js-cvc-recollection-cvc-form"]');
     this.cvcElement = this.cvcForm.locator('#js-cvc-recollection-cvc-element');
-    this.cardTokenInput = this.cvcForm.locator('#js-cvc-recollection-card-token');
+    this.cardIdInput = this.cvcForm.locator('#js-cvc-recollection-card-id');
     this.successModal = page.getByTestId('capture-modal');
   }
 
@@ -32,9 +32,9 @@ class CvcRecollectionJSPage {
     ).toBeDefined();
   }
 
-  async fillCardTokenInput(value: string) {
-    await this.cardTokenInput.fill(value);
-    await expect(this.cardTokenInput).toHaveValue(value);
+  async fillCardIdInput(value: string) {
+    await this.cardIdInput.fill(value);
+    await expect(this.cardIdInput).toHaveValue(value);
   }
 
   async fillCvcElementInput(cvc: string) {
@@ -56,7 +56,7 @@ class CvcRecollectionReactPage {
   private technologyToggle: Locator;
   private cvcForm: Locator;
   private cvcElement: Locator;
-  private cardTokenInput: Locator;
+  private cardIdInput: Locator;
   private successModal: Locator;
 
   constructor(page: Page) {
@@ -64,7 +64,7 @@ class CvcRecollectionReactPage {
     this.technologyToggle = page.getByTestId('react-type-button');
     this.cvcForm = page.locator('form[name="react-cvc-recollection-cvc-form"]');
     this.cvcElement = page.locator('#react-cvc-recollection-cvc-element');
-    this.cardTokenInput = page.locator('#react-cvc-recollection-card-token');
+    this.cardIdInput = page.locator('#react-cvc-recollection-card-id');
     this.successModal = page.getByTestId('capture-modal');
   }
 
@@ -83,9 +83,9 @@ class CvcRecollectionReactPage {
     ).toBeDefined();
   }
 
-  async fillCardTokenInput(value: string) {
-    await this.cardTokenInput.fill(value);
-    await expect(this.cardTokenInput).toHaveValue(value);
+  async fillCardIdInput(value: string) {
+    await this.cardIdInput.fill(value);
+    await expect(this.cardIdInput).toHaveValue(value);
   }
 
   async fillCvcElementInput(cvc: string) {

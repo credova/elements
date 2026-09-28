@@ -15,6 +15,13 @@ jest.mock('@basis-theory/basis-theory-js', () => ({
       tokens: {
         update: jest.fn().mockResolvedValue({}),
       },
+      sessions: {
+        create: jest.fn().mockResolvedValue({
+          sessionKey: 'session_key_123',
+          nonce: 'nonce_123',
+          expiresAt: '2026-09-25T12:03:00Z',
+        }),
+      },
     }),
   })),
 }));
@@ -25,9 +32,6 @@ describe('Cards', () => {
   beforeAll(async () => {
     publicsquare = await new PublicSquare().init('api_key');
     cards = new PublicSquareCards(publicsquare);
-    // Pin a deterministic value instead of relying on whatever PUBLICSQUARE_CVC_UPDATE_APP_KEY
-    // happens to be inlined locally/in CI.
-    publicsquare._cvcUpdateAppKey = 'key_prod_us_pub_test_override';
   });
 
   test('constructs', async () => {
@@ -130,21 +134,77 @@ describe('Cards', () => {
       aliases: ['8b0eac76-f566-40b5-8b92-5f0f0e32c014'],
     };
 
-    test('sends the cvc element straight to the BT tokens.update endpoint', async () => {
-      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+    const mockCvcSession = (
+      body: unknown = { token: 'card_token_123', expires_at: '2026-09-25T12:03:00Z' },
+      status = 200,
+    ) =>
+      (global.fetch = jest.fn().mockResolvedValue({
+        ok: status >= 200 && status < 300,
+        status,
+        json: () => Promise.resolve(body),
+      }) as jest.Mock);
 
-      expect(publicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
+    beforeEach(() => {
+      mockCvcSession();
+    });
+
+    test('creates a BT session with the no-permission PRODUCTION session key', async () => {
+      await publicsquare.cards.updateCvc('card_123', cvcElement);
+
+      expect(publicsquare.bt?.sessions?.create).toHaveBeenLastCalledWith({
+        apiKey: 'key_prod_us_pub_VB98kQmYYPEmyJmmh3uteE',
+      });
+    });
+
+    test('creates the BT session with the TEST session key when apiKey contains "test"', async () => {
+      const testPublicsquare = await new PublicSquare().init('key_test_123');
+      const testCards = new PublicSquareCards(testPublicsquare);
+
+      await testCards.updateCvc('card_123', cvcElement);
+
+      expect(testPublicsquare.bt?.sessions?.create).toHaveBeenLastCalledWith({
+        apiKey: 'key_test_us_pub_UDQRHVsoe9TutKisG3azgs',
+      });
+    });
+
+    test('asks payments-api to authorize the session nonce for this card', async () => {
+      await publicsquare.cards.updateCvc('card_123', cvcElement);
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://api.publicsquare.com/payment-methods/cards/card_123/cvc-session',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-API-KEY': 'api_key' },
+          body: JSON.stringify({ nonce: 'nonce_123' }),
+        },
+      );
+    });
+
+    test('URL-encodes the card id in the payments-api path', async () => {
+      await publicsquare.cards.updateCvc('../applications', cvcElement);
+
+      expect((global.fetch as jest.Mock).mock.calls[0][0]).toBe(
+        'https://api.publicsquare.com/payment-methods/cards/..%2Fapplications/cvc-session',
+      );
+    });
+
+    test('updates the token payments-api returned, authenticated with the session key', async () => {
+      const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
+
+      expect(publicsquare.bt?.tokens?.update).toHaveBeenLastCalledWith(
         'card_token_123',
         { data: { cvc: cvcElement } },
-        { apiKey: 'key_prod_us_pub_test_override' },
+        { apiKey: 'session_key_123' },
       );
       expect(result).toEqual({});
     });
 
-    test('never puts the raw cvc value in a request the merchant/PSQ server can see', async () => {
-      await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+    test('never sends the cvc to payments-api', async () => {
+      await publicsquare.cards.updateCvc('card_123', cvcElement);
 
-      const [, model] = (publicsquare.bt?.tokens?.update as jest.Mock).mock.calls[0];
+      const [, init] = (global.fetch as jest.Mock).mock.calls[0];
+      expect(JSON.parse(init.body)).toEqual({ nonce: 'nonce_123' });
+      const [, model] = (publicsquare.bt?.tokens?.update as jest.Mock).mock.lastCall;
       expect(model.data.cvc).toBe(cvcElement);
     });
 
@@ -153,7 +213,7 @@ describe('Cards', () => {
         btCardTokenUpdateResponse,
       );
 
-      const result = await publicsquare.cards.updateCvc(btCardTokenUpdateResponse.id, cvcElement);
+      const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
 
       expect(result).toEqual({
         id: '8b0eac76-f566-40b5-8b92-5f0f0e32c014',
@@ -163,13 +223,45 @@ describe('Cards', () => {
       });
     });
 
+    test('returns an error and skips the BT update when payments-api rejects the session', async () => {
+      (publicsquare.bt?.tokens?.update as jest.Mock).mockClear();
+      mockCvcSession({ errors: [{ message: 'card not found' }] }, 404);
+
+      const result = await publicsquare.cards.updateCvc('card_other_account', cvcElement);
+
+      expect(result).toEqual({
+        error: {
+          error: 'Failed to authorize CVC update session (status 404)',
+          data: { errors: [{ message: 'card not found' }] },
+        },
+      });
+      expect(publicsquare.bt?.tokens?.update).not.toHaveBeenCalled();
+    });
+
+    test('returns an error when creating the BT session fails', async () => {
+      (publicsquare.bt?.sessions?.create as jest.Mock).mockRejectedValueOnce(
+        Object.assign(new Error('The API responded with status code 401.'), {
+          data: { title: 'Unauthorized' },
+        }),
+      );
+
+      const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
+
+      expect(result).toEqual({
+        error: {
+          error: 'The API responded with status code 401.',
+          data: { title: 'Unauthorized' },
+        },
+      });
+    });
+
     test('returns a CardUpdateCvcResponse error (with error.data) when the BT update fails', async () => {
       (publicsquare.bt?.tokens?.update as jest.Mock).mockResolvedValueOnce({
         error: 'invalid cvc',
         data: { errors: { cvc: ['must be 3 or 4 digits'] } },
       });
 
-      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+      const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
 
       expect(result).toEqual({
         error: {
@@ -179,14 +271,14 @@ describe('Cards', () => {
       });
     });
 
-    test('resolves with error.data when the BT request itself rejects (e.g. a 404)', async () => {
+    test('resolves with error.data when the BT update request rejects (e.g. a 404)', async () => {
       const btError = Object.assign(new Error('The API responded with status code 404.'), {
         status: 404,
         data: { errors: { token: ['token not found'] } },
       });
       (publicsquare.bt?.tokens?.update as jest.Mock).mockRejectedValueOnce(btError);
 
-      const result = await publicsquare.cards.updateCvc('card_token_123', cvcElement);
+      const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
 
       expect(result).toEqual({
         error: {
@@ -194,45 +286,6 @@ describe('Cards', () => {
           data: { errors: { token: ['token not found'] } },
         },
       });
-    });
-
-    test('defaults to TEST environment when apiKey contains "test"', async () => {
-      const testPublicsquare = await new PublicSquare().init('key_test_123');
-      testPublicsquare._cvcUpdateTestAppKey = 'key_test_us_pub_test_override';
-      const testCards = new PublicSquareCards(testPublicsquare);
-
-      await testCards.updateCvc('card_token_123', cvcElement);
-
-      expect(testPublicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
-        'card_token_123',
-        { data: { cvc: cvcElement } },
-        { apiKey: 'key_test_us_pub_test_override' },
-      );
-    });
-
-    test('throws instead of calling BT when the CVC update key was not inlined at build time', async () => {
-      const unconfiguredPublicsquare = await new PublicSquare().init('key_test_123');
-      unconfiguredPublicsquare._cvcUpdateTestAppKey = undefined;
-      const unconfiguredCards = new PublicSquareCards(unconfiguredPublicsquare);
-
-      const error = await getError<{ message: string }>(() =>
-        unconfiguredCards.updateCvc('card_token_123', cvcElement),
-      );
-
-      expect(error.message).toBe(
-        'CVC update key is not configured for the TEST environment; the SDK was built without it',
-      );
-      expect(unconfiguredPublicsquare.bt?.tokens?.update).not.toHaveBeenCalled();
-    });
-
-    test('defaults to PRODUCTION environment when apiKey does not contain "test"', async () => {
-      await publicsquare.cards.updateCvc('card_token_123', cvcElement);
-
-      expect(publicsquare.bt?.tokens?.update).toHaveBeenCalledWith(
-        'card_token_123',
-        { data: { cvc: cvcElement } },
-        { apiKey: 'key_prod_us_pub_test_override' },
-      );
     });
   });
 });

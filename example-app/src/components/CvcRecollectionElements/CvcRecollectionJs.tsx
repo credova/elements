@@ -31,12 +31,12 @@ export default function CvcRecollectionJs() {
     e.preventDefault();
     if (updatingCvc || !publicsquare || !cvcElement) return;
     const formData = new FormData(e.currentTarget);
-    const cardToken = formData.get('card_token') as string;
-    if (!cardToken) return;
+    const cardId = formData.get('card_id') as string;
+    if (!cardId) return;
 
     setUpdatingCvc(true);
     try {
-      const response = await publicsquare.cards.updateCvc(cardToken, cvcElement);
+      const response = await publicsquare.cards.updateCvc(cardId, cvcElement);
       setMessage({ message: response, error: !!response.error });
     } catch (error) {
       setMessage({ message: { error: String(error) }, error: true });
@@ -48,17 +48,17 @@ export default function CvcRecollectionJs() {
     <div className="w-full space-y-4">
       <form onSubmit={onUpdateCvc} name="js-cvc-recollection-cvc-form" className="space-y-4">
         <div>
-          <label htmlFor="js-cvc-recollection-card-token">Card token</label>
+          <label htmlFor="js-cvc-recollection-card-id">Card ID</label>
           <input
-            id="js-cvc-recollection-card-token"
-            name="card_token"
-            placeholder="e.g. 20713d75-6764-4818-9394-4ac47f1b4238"
+            id="js-cvc-recollection-card-id"
+            name="card_id"
+            placeholder="e.g. card_2f9jGnvKcQz8k1yqQpXqRe"
             required
             className="mt-2 block w-full rounded-lg border-0 bg-white px-4 py-3 shadow placeholder:text-gray-400 focus:outline-none"
           />
           <p className="mt-1 text-xs text-gray-500">
-            The Basis Theory <code>token</code> from the card create/get response — not the card{' '}
-            <code>id</code>. BT needs the token to attach the CVC to the right card.
+            The card <code>id</code> from the card create/get response. PublicSquare checks the card
+            belongs to your account, then authorizes a short-lived session to attach the CVC to it.
           </p>
         </div>
         <div className="space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-4">

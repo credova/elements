@@ -56,6 +56,8 @@ const API_ENDPOINTS = {
   BANK_ACCOUNT_VERIFICATION: (baseUrl: string) =>
     `${baseUrl}/payment-methods/bank-accounts/verification`,
   THREE_DS_CREATE_SESSION: (baseUrl: string) => `${baseUrl}/three-d-secure/sessions`,
+  CARD_CVC_SESSION: (baseUrl: string, cardId: string) =>
+    `${baseUrl}/payment-methods/cards/${encodeURIComponent(cardId)}/cvc-session`,
 };
 
 const BASIS_THEORY_ENDPOINTS = {
@@ -70,6 +72,9 @@ const BASIS_THEORY_KEYS = {
   CREATE_CARD_TEST: `key_test_us_proxy_FrL4kJFRXU1AwuYVnMbTnP`, //API STAGING
   THREE_DS: `key_prod_us_pub_7cC6EF431x2rKGwsnnuZPP`,
   THREE_DS_TEST: `key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES`,
+  // No token permissions: can only create BT sessions, which payments-api authorizes per card
+  CVC_SESSION: `key_prod_us_pub_VB98kQmYYPEmyJmmh3uteE`,
+  CVC_SESSION_TEST: `key_test_us_pub_UDQRHVsoe9TutKisG3azgs`,
 };
 
 export {

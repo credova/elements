@@ -4,6 +4,7 @@ type EnvironmentOptions = {
 };
 
 const staging: EnvironmentOptions = {
+  //apiUrl: 'http://localhost:5090',
   apiUrl: 'https://staging.api.publicsquare.com',
   apiKey: process.env.NEXT_PUBLIC_PUBLICSQUARE_KEY!,
 };

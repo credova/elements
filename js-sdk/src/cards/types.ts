@@ -50,3 +50,12 @@ export type BasisTheoryCardTokenUpdateResponse = {
   containers?: string[];
   aliases?: string[];
 };
+
+/**
+ * payments-api response to `POST /payment-methods/cards/{cardId}/cvc-session`: the BT session
+ * has been authorized for `token:update` on this card's token only. Internal to `cards.updateCvc()`.
+ */
+export type CardCvcSessionResponse = {
+  token: string;
+  expires_at: string;
+};

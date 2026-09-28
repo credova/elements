@@ -9,7 +9,7 @@ export default function CvcRecollectionFormColumn({ type }: { type: Technology }
     <div className="space-y-2 rounded-lg bg-white p-4 shadow">
       <h3 className="text-lg font-medium">CVV Recollection Form</h3>
       <p className="text-sm">
-        Enter an existing card token and a freshly re-entered CVV to attach it to that saved card,
+        Enter an existing card ID and a freshly re-entered CVV to attach it to that saved card,
         without the value ever reaching the merchant or PSQ servers.
       </p>
       {type === 'react' && <CvcRecollectionReact />}
