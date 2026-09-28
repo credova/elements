@@ -140,7 +140,7 @@ export class PublicSquareCards {
     if (res.error) return { error: { error: res.error, data: res.data } };
     const token = res as BasisTheoryCardTokenUpdateResponse;
     return {
-      id: token.id,
+      id: cardId,
       type: token.type,
       created_at: token.createdAt,
       modified_at: token.modifiedAt,

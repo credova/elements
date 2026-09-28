@@ -196,7 +196,7 @@ describe('Cards', () => {
         { data: { cvc: cvcElement } },
         { apiKey: 'session_key_123' },
       );
-      expect(result).toEqual({});
+      expect(result).toEqual({ id: 'card_123' });
     });
 
     test('never sends the cvc to payments-api', async () => {
@@ -216,7 +216,7 @@ describe('Cards', () => {
       const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
 
       expect(result).toEqual({
-        id: '8b0eac76-f566-40b5-8b92-5f0f0e32c014',
+        id: 'card_123',
         type: 'card',
         created_at: '2026-09-22T14:57:03.5381029+00:00',
         modified_at: '2026-09-22T15:19:40.670571+00:00',
