@@ -22,7 +22,7 @@ export default function ApplePayElementsJs() {
      * Step 1: Init the PublicSquare sdk
      */
     new PublicSquare()
-      .init(environment.apiKey, environment.applePay)
+      .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
 

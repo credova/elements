@@ -31,7 +31,7 @@ export default function BankAccountVerificationElementJs() {
 
     //Init public square
     publicSquare = new PublicSquare();
-    await publicSquare.init(environment.apiKey, environment.bankVerification);
+    await publicSquare.init(environment.apiKey, { apiUrl: environment.apiUrl });
 
     //Open verification element in container and Get data back
     bankAccountId = await publicSquare.bankVerify.openVerification(target);

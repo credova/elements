@@ -31,7 +31,6 @@ export type ThreeDsStartChallengeInput = {
   acsTransactionId: string;
   threeDsVersion: string;
   containerId?: string;
-  environment?: 'TEST' | 'PRODUCTION';
 };
 
 export type ThreeDsStartChallengeResponse = {

@@ -57,9 +57,21 @@ export type CardCreateResponse = {
   modified_at: string;
   token: string;
   billing_details?: CardBillingDetails;
-  error?: CardCreateErrorResponse;
+  error?: CardErrorResponse;
 };
 
-export type CardCreateErrorResponse = {
+export type CardErrorResponse = {
   error: string;
+  data?: unknown;
+};
+
+/** @deprecated Use `CardErrorResponse` instead. */
+export type CardCreateErrorResponse = CardErrorResponse;
+
+export type CardUpdateCvcResponse = {
+  id?: string;
+  type?: string;
+  created_at?: string;
+  modified_at?: string;
+  error?: CardErrorResponse;
 };

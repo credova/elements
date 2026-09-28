@@ -4,7 +4,7 @@ import {
   CardElement,
   CardNumberElement,
   CardExpirationDateElement,
-  CardVerifcationCodeElement,
+  CardVerificationCodeElement,
 } from '@publicsquare/elements-react';
 import PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
 import { ReactNode, useRef } from 'react';
@@ -40,10 +40,7 @@ export type StepLogEntry = { label: string; data: unknown };
 
 export function ThreeDsProvider({ children }: { children: ReactNode }) {
   return (
-    <PublicSquareProvider
-      apiKey={environment.apiKey}
-      options={{ ...environment.card, ...environment.threeDs }}
-    >
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       {children}
     </PublicSquareProvider>
   );
@@ -125,7 +122,7 @@ export function useCardForm(allInOne: boolean, idPrefix: string) {
             <div>
               <label>CVC</label>
               <div className="w-full rounded-lg bg-white p-2 shadow">
-                <CardVerifcationCodeElement
+                <CardVerificationCodeElement
                   id={`${idPrefix}-card-cvc`}
                   ref={cardVerificationCodeElement}
                 />

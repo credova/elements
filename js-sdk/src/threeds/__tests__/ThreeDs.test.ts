@@ -124,6 +124,35 @@ describe('ThreeDs', () => {
     expect(error.message).toBe('apiKey must be sent at initialization');
   });
 
+  test("createSession() always uses the SDK's fixed TEST 3ds key in TEST mode, when PublicSquare apiKey has test value", async () => {
+    mockBtCreateSession.mockResolvedValue({ id: 'bt_session_123', additionalCardBrands: [] });
+    global.fetch = jest.fn().mockResolvedValue({
+      json: () =>
+        Promise.resolve({
+          id: 'tds_abc',
+          bt_session_id: 'bt_session_123',
+          card_brand: 'visa',
+          acs_transaction_id: 'acs_tx_1',
+          additional_card_brands: [],
+        }),
+    }) as unknown as typeof fetch;
+
+    const testPublicsquare = await new PublicSquare().init('pk_test_123', {
+      apiUrl: 'https://staging.api.publicsquare.com',
+    });
+    const { BasisTheory3ds } = jest.requireMock('@basis-theory/web-threeds');
+
+    await testPublicsquare.threeDs.createSession({
+      token_id: 'tok_123',
+      payment_intent_id: 'pmt_int_1',
+      challenge_preference: 'no-preference',
+    });
+
+    expect(BasisTheory3ds).toHaveBeenCalledWith('key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES', {
+      apiBaseUrl: 'https://api.test.basistheory.com',
+    });
+  });
+
   test('startChallenge() delegates to BasisTheory with mapped params', async () => {
     const challengeResult = {
       id: 'tds_abc',

@@ -12,6 +12,16 @@ Contained within is the official **PublicSquare** Elements Javascript and React 
   - Install the pinned toolchain - `mise install`
 - [Playwright](https://playwright.dev/) - `bunx playwright install`
 
+### Environment variables
+
+Copy the example app's env file and fill in real values before building or testing:
+
+```sh
+cp example-app/.env.example example-app/.env
+```
+
+`example-app/.env` holds the example app's own API key/URLs (`NEXT_PUBLIC_PUBLICSQUARE_KEY`, `PSQ_SECRET_KEY`, etc). See `example-app/.env.example` for what each one is for. It's gitignored — never commit real key values, including in `.env.example` itself.
+
 ### Build the SDK and run Tests
 
 Run the following command from the root of the project:

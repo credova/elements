@@ -40,18 +40,14 @@ export class PublicSquareApplePay {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
       const validatedInput = validateCreateApplePayInput(input);
-      return fetch(
-        this._publicSquare._applePayCreateUrl ??
-          API_ENDPOINTS.APPLE_PAY_CREATE(this._publicSquare._apiUrl),
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': this._publicSquare._apiKey,
-          },
-          body: JSON.stringify(transformCreateApplePayInput(validatedInput)),
+      return fetch(API_ENDPOINTS.APPLE_PAY_CREATE(this._publicSquare._apiUrl), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': this._publicSquare._apiKey,
         },
-      )
+        body: JSON.stringify(transformCreateApplePayInput(validatedInput)),
+      })
         .then((res) => res.json())
         .then((res) =>
           res.errors
@@ -70,18 +66,14 @@ export class PublicSquareApplePay {
       throw new Error('PublicSquare JS has not be initialized yet');
     } else {
       const validatedInput = validateCreateApplePaySessionInput(input);
-      return fetch(
-        this._publicSquare._applePayCreateSessionUrl ??
-          API_ENDPOINTS.APPLE_PAY_CREATE_SESSION(this._publicSquare._apiUrl),
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-API-KEY': this._publicSquare._apiKey,
-          },
-          body: JSON.stringify(transformCreateApplePaySessionInput(validatedInput)),
+      return fetch(API_ENDPOINTS.APPLE_PAY_CREATE_SESSION(this._publicSquare._apiUrl), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': this._publicSquare._apiKey,
         },
-      )
+        body: JSON.stringify(transformCreateApplePaySessionInput(validatedInput)),
+      })
         .then((res) => res.json())
         .then((res) =>
           res.errors

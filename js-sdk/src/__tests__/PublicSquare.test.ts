@@ -39,6 +39,7 @@ describe('PublicSquare', () => {
     expect(typeof publicsquare.createCardExpirationDateElement).toEqual('function');
     expect(typeof publicsquare.createCardNumberElement).toEqual('function');
     expect(typeof publicsquare.createCardVerificationCodeElement).toEqual('function');
+    expect(typeof publicsquare.cards.updateCvc).toEqual('function');
     expect(typeof publicsquare.createBankAccountElement).toEqual('function');
     expect(typeof publicsquare.createBankAccountRoutingNumberElement).toEqual('function');
     expect(typeof publicsquare.createBankAccountAccountNumberElement).toEqual('function');

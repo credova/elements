@@ -12,7 +12,7 @@ import { environment } from '@/config/environments';
 
 export default function BankAccountVerificationElementReact() {
   return (
-    <PublicSquareProvider apiKey={environment.apiKey} options={environment.bankVerification}>
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       <Elements />
     </PublicSquareProvider>
   );

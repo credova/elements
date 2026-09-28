@@ -7,7 +7,7 @@ import { environment } from '@/config/environments';
 
 export default function GooglePayElementsReact() {
   return (
-    <PublicSquareProvider apiKey={environment.apiKey} options={environment.googlePay}>
+    <PublicSquareProvider apiKey={environment.apiKey} options={{ apiUrl: environment.apiUrl }}>
       <Elements />
     </PublicSquareProvider>
   );

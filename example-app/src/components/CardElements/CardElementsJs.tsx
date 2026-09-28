@@ -47,7 +47,7 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
      * Step 1: Init the PublicSquare sdk
      */
     new PublicSquare()
-      .init(environment.apiKey, environment.card)
+      .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
 
@@ -108,12 +108,10 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
     if (formProps.cardholder_name && card) {
       setLoading(true);
       try {
-        const response = await publicsquare?.cards.create(
-          {
-            cardholder_name: formProps.cardholder_name as string,
-            card,
-          },
-        );
+        const response = await publicsquare?.cards.create({
+          cardholder_name: formProps.cardholder_name as string,
+          card,
+        });
         if (response) {
           setMessage({
             message: response,
