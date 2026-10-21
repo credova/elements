@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/credova/elements/compare/v2.0.0...v2.0.1) (2026-10-21)
+
+
+### Bug Fixes
+
+* **deps:** patch Next.js October 2026 security release [sc-90206] ([#32](https://github.com/credova/elements/issues/32)) ([4a128dc](https://github.com/credova/elements/commit/4a128dce8b3da7faa543f855d81908935150ab29))
+
 # [2.0.0](https://github.com/credova/elements/compare/v1.16.1...v2.0.0) (2026-09-28)
 
 
