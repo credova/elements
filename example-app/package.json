@@ -13,8 +13,8 @@
   "dependencies": {
     "@headlessui/react": "^2.1.8",
     "@heroicons/react": "^2.1.5",
-    "@publicsquare/elements-js": "^1.16.1",
-    "@publicsquare/elements-react": "^1.16.1",
+    "@publicsquare/elements-js": "^2.0.0",
+    "@publicsquare/elements-react": "^2.0.0",
     "flatted": "^3.4.3",
     "minimatch": "^10.2.3",
     "next": "^16.4.2",
