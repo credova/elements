@@ -1,32 +1,32 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  # Tier 2: 14th of month, 4 AM LA. No Dependabot security updates for bun.
+  - package-ecosystem: "bun"
+    directories: ["/", "/js-sdk", "/react-sdk", "/example-app"]
     schedule:
-      interval: "weekly"
+      interval: cron
+      cronjob: "0 4 14 * *" # 14th, 4am LA
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 5
     rebase-strategy: disabled
+    groups:
+      bun-version:
+        applies-to: version-updates
+        patterns: ["*"]
 
-  - package-ecosystem: "npm"
-    directory: "/js-sdk"
-    schedule:
-      interval: "weekly"
-    rebase-strategy: disabled
-
-  - package-ecosystem: "npm"
-    directory: "/react-sdk"
-    schedule:
-      interval: "weekly"
-    rebase-strategy: disabled
-
-  - package-ecosystem: "npm"
-    directory: "/example-app"
-    schedule:
-      interval: "weekly"
-    rebase-strategy: disabled
-
+  # Tier 4: 28th of month, 4 AM LA
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: cron
+      cronjob: "0 4 28 * *" # 28th, 4am LA
+      timezone: America/Los_Angeles
     open-pull-requests-limit: 5
     rebase-strategy: disabled
+    groups:
+      gha-version:
+        applies-to: version-updates
+        patterns: ["*"]
+      gha-security:
+        applies-to: security-updates
+        patterns: ["*"]
