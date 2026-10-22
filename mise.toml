@@ -4,7 +4,7 @@
 node = "24"
 # Pinned to the version the monorepo build/tests were validated against. Bump
 # deliberately rather than tracking "latest" so CI is reproducible.
-bun = "1.4.3"
+bun = "1.4.4"
 
 [tasks.format]
 run = "./scripts/format.sh"
