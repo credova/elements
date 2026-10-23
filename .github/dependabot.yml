@@ -9,11 +9,6 @@ updates:
       timezone: America/Los_Angeles
     open-pull-requests-limit: 5
     rebase-strategy: disabled
-    # Major upgrades that need a migration first; bump these deliberately.
-    ignore:
-      # Babel 8: plugin-proposal-class-properties requires Babel 7. Drop when Babel is removed.
-      - dependency-name: "@babel/*"
-        update-types: ["version-update:semver-major"]
     groups:
       bun-version:
         applies-to: version-updates
