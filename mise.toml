@@ -5,9 +5,19 @@ node = "24"
 # Pinned to the version the monorepo build/tests were validated against. Bump
 # deliberately rather than tracking "latest" so CI is reproducible.
 bun = "1.4.4"
+hk = "2.7.1"
+pkl = "0.32.2"
+jactionlint = "2.3.0"
+shellcheck = "0.11.0"
+
+[tasks.install]
+description = "Install dependencies in every package"
+run = "for d in . js-sdk react-sdk example-app; do bun install --cwd \"$d\"; done"
 
 [tasks.format]
-run = "./scripts/format.sh"
+description = "Run hk fixes"
+depends = ["install"]
+run = "hk fix --all"
 
 [tasks.verify]
 run = "./scripts/verify.sh"
@@ -22,8 +32,10 @@ run = "cd example-app && bun run dev"
 description = "Typecheck TS code with Bun"
 run = "bun check -p js-sdk && bun check -p react-sdk && bun check -p example-app"
 
-# TODO: add a `lint` task back using oxlint (and oxfmt for formatting). ESLint
-# was removed: `next lint` no longer exists in Next 16 and nothing ran it.
+[tasks.lint]
+description = "Run hk checks"
+depends = ["install"]
+run = "hk check --all"
 
 [tasks.test]
 description = "Unit tests (jest). Pure/mocked, no live env — runs in PR CI."

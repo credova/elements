@@ -42,9 +42,11 @@ bun run test:ui      # Interactive Playwright UI
 
 ### Linting & Formatting
 ```bash
-mise run format      # Prettier across all packages
+mise run lint        # hk check --all (runs in PR CI)
+mise run format      # hk fix --all
+hk install           # pre-commit hook
 ```
-There is no lint task yet. ESLint was removed from example-app; oxlint/oxfmt still need to be added.
+Steps live in `hk.pkl`: Prettier per package, jactionlint (`correctness` profile, `.github/jactionlint.yaml`) and shellcheck.
 
 ## Architecture
 
