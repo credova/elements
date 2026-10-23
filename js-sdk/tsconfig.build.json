@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["src/**/__tests__", "src/tests"],
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "emitDeclarationOnly": false,
+    "importHelpers": false,
+    "useDefineForClassFields": true,
+    "types": ["node"]
+  }
+}

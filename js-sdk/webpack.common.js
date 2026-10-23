@@ -1,7 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const { merge } = require('webpack-merge');
-const babelConfig = require('./babel.bundle.config');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const base = {
@@ -29,8 +28,8 @@ const base = {
       {
         include: [path.resolve(__dirname, 'src')],
         test: /\.(ts|js)x?$/u,
-        loader: 'babel-loader',
-        options: babelConfig,
+        loader: 'esbuild-loader',
+        options: { target: 'es2019' },
       },
     ],
   },

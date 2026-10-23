@@ -73,7 +73,7 @@ The React SDK uses a Context + hooks pattern:
 
 JS SDK produces two outputs:
 1. **UMD bundle** (`webpack.prod.js`) — for CDN/script tag usage
-2. **ES modules** (`babel src/`) — for npm consumers
+2. **CommonJS modules** (`tsc -p tsconfig.build.json`) — for npm consumers
 
 `prepare.js` in each package copies/transforms `package.json` into `dist/` before publishing.
 

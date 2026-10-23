@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "emitDeclarationOnly": false,
+    "importHelpers": false,
+    "useDefineForClassFields": true
+  }
+}
