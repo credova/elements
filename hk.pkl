@@ -1,0 +1,18 @@
+amends "package://github.com/jdx/hk/releases/download/v2.7.1/hk@2.7.1#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v2.7.1/hk@2.7.1#/Builtins.pkl"
+
+local function prettier(pkg: String, pattern: String): Step = new {
+    dir = pkg
+    glob = pattern
+    check_list_files = "bunx prettier --list-different {{ files }}"
+    fix = "bunx prettier --write {{ files }}"
+}
+
+steps {
+    ["prettier-tests"] = prettier("tests", "**/*.{ts,tsx}")
+    ["prettier-js-sdk"] = prettier("js-sdk", "src/**/*.{ts,tsx}")
+    ["prettier-react-sdk"] = prettier("react-sdk", "src/**/*.{ts,tsx}")
+    ["prettier-example-app"] = prettier("example-app", "src/**/*.{ts,tsx}")
+    ["jactionlint"] = Builtins.jactionlint
+    ["shellcheck"] = Builtins.shellcheck
+}

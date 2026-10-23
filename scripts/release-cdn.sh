@@ -4,11 +4,11 @@ set -e
 script_directory="$PWD"
 
 # get bundle source
-cd $(dirname $0)/../js-sdk
+cd "$(dirname "$0")"/../js-sdk
 dist_directory="$PWD"/dist
 
 # back to script directory
-cd $script_directory
+cd "$script_directory"
 
 JS_HOST="js.publicsquare.com"
 MAJOR_VERSION=$(node -p -e "require('./package.json').version")
