@@ -13,7 +13,7 @@ module.exports = {
     '@babel/preset-typescript',
   ],
   plugins: [
-    'tsconfig-paths-module-resolver',
+    ['module-resolver', { alias: { '^@/(.+)': './src/\\1' } }],
     '@babel/proposal-class-properties',
     ['inline-dotenv', { unsafe: true }],
   ],

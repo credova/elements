@@ -23,11 +23,11 @@
     "build:module": "babel src --extensions .ts --out-dir dist",
     "build:types": "tsc && tsc-alias",
     "build:package": "node prepare.js",
-    "check": "tsc --noEmit",
     "clean": "rimraf dist",
     "test": "jest",
     "publish": "npm publish ./dist",
-    "publish:beta": "npm publish ./dist --tag beta"
+    "publish:beta": "npm publish ./dist --tag beta",
+    "typecheck": "bun check"
   },
   "dependencies": {
     "@basis-theory/basis-theory-js": "^4.30.0",
@@ -53,9 +53,10 @@
     "@babel/template": "^7.28.6",
     "@babel/traverse": "^7.29.0",
     "@types/jest": "^30.0.0",
+    "@types/node": "^26.6.5",
     "babel-loader": "^10.0.0",
     "babel-plugin-inline-dotenv": "^1.7.0",
-    "babel-plugin-tsconfig-paths-module-resolver": "^1.0.4",
+    "babel-plugin-module-resolver": "^4.1.0",
     "concurrently": "^10.0.6",
     "dotenv-webpack": "^9.0.0",
     "jest": "^30.0.4",
@@ -63,7 +64,7 @@
     "ts-jest": "^29.4.5",
     "tsc-alias": "^1.8.10",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
-    "typescript": "^5.6.2",
+    "typescript": "^7.0.2",
     "webpack": "^5.109.0",
     "webpack-cli": "^7.2.3"
   },
