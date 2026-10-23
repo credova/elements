@@ -19,6 +19,12 @@ Using [Yarn](https://classic.yarnpkg.com/en/docs/)
 yarn add @publicsquare/elements-react
 ```
 
+Using [Bun](https://bun.sh/docs/cli/add)
+
+```sh
+bun add @publicsquare/elements-react
+```
+
 ## Documentation
 
 For a complete list of options and examples, please refer to our [React Elements SDK docs](https://developers.publicsquare.com/sdks/web/react/)

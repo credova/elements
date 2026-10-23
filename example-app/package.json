@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "link:js-sdk": "cd ../js-sdk/dist && bun link && cd ../../example-app && bun link @publicsquare/elements-js",
-    "link:react-sdk": "cd ../react-sdk/dist && bun link && cd ../../example-app && bun link @publicsquare/elements-react",
+    "link:sdks": "(cd ../js-sdk/dist && bun link) && (cd ../react-sdk/dist && bun link) && bun link @publicsquare/elements-js @publicsquare/elements-react",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
