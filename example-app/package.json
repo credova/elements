@@ -7,8 +7,7 @@
     "link:react-sdk": "cd ../react-sdk/dist && bun link && cd ../../example-app && bun link @publicsquare/elements-react",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@headlessui/react": "^2.1.8",
@@ -18,19 +17,17 @@
     "flatted": "^3.4.3",
     "minimatch": "^10.2.3",
     "next": "^16.4.2",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
-    "@types/node": "^25.5.0",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.2.3",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "classnames": "^2.5.1",
-    "eslint": "^9.39.2",
-    "eslint-config-next": "^16.4.2",
-    "prettier": "^3.9.6",
-    "prettier-plugin-tailwindcss": "^0.6.8",
+    "prettier": "^3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.3"
   }

@@ -18,8 +18,8 @@ run = "./scripts/build.sh"
 [tasks.dev]
 run = "cd example-app && bun run dev"
 
-[tasks.lint]
-run = "cd example-app && bun run lint"
+# TODO: add a `lint` task back using oxlint (and oxfmt for formatting). ESLint
+# was removed: `next lint` no longer exists in Next 16 and nothing ran it.
 
 [tasks.test]
 description = "Unit tests (jest). Pure/mocked, no live env — runs in PR CI."

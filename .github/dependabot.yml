@@ -9,6 +9,17 @@ updates:
       timezone: America/Los_Angeles
     open-pull-requests-limit: 5
     rebase-strategy: disabled
+    # Major upgrades that need a migration first; bump these deliberately.
+    ignore:
+      # Babel 8: plugin-proposal-class-properties requires Babel 7. Drop when Babel is removed.
+      - dependency-name: "@babel/*"
+        update-types: ["version-update:semver-major"]
+      # TypeScript 7 removes tsconfig options js-sdk uses (moduleResolution node10, baseUrl, downlevelIteration).
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      # Tailwind 4 moves the PostCSS plugin to @tailwindcss/postcss (example-app).
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
     groups:
       bun-version:
         applies-to: version-updates
