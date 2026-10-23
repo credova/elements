@@ -9,6 +9,10 @@ updates:
       timezone: America/Los_Angeles
     open-pull-requests-limit: 5
     rebase-strategy: disabled
+    ignore:
+      # Babel 8 breaks the js-sdk/react-sdk builds; pinned to 7 until Babel is removed.
+      - dependency-name: "@babel/*"
+        update-types: ["version-update:semver-major"]
     groups:
       bun-version:
         applies-to: version-updates
