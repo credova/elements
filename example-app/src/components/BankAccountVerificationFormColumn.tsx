@@ -6,7 +6,7 @@ import BankAccountVerificationElementReact from './BankAccountElements/BankAccou
 
 export default function BankAccountVerificationFormColumn({ type }: { type: Technology }) {
   return (
-    <div className="space-y-2 rounded-lg bg-white p-4 shadow">
+    <div className="space-y-2 rounded-lg bg-white p-4 shadow-sm">
       <h3 className="text-lg font-medium">Bank Account Form</h3>
       <p className="text-sm">This is a form for bank account verification.</p>
 

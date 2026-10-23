@@ -106,12 +106,12 @@ function Elements({ allInOne }: { allInOne: boolean }) {
                 routingNumberOptions={{
                   placeholder: 'Routing number',
                   className:
-                    'w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow focus:outline-none',
+                    'w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow-sm focus:outline-hidden',
                 }}
                 accountNumberOptions={{
                   placeholder: 'Account number',
                   className:
-                    'w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow focus:outline-none',
+                    'w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow-sm focus:outline-hidden',
                 }}
                 className="space-x-4"
               />
@@ -125,7 +125,7 @@ function Elements({ allInOne }: { allInOne: boolean }) {
                     id="react-bank-account-routing-number-element"
                     ref={bankRoutingNumberElement}
                     placeholder="Routing number"
-                    className="w-full rounded-lg border-0 bg-white px-4 py-3 shadow placeholder:text-gray-400 focus:outline-none"
+                    className="w-full rounded-lg border-0 bg-white px-4 py-3 shadow-sm placeholder:text-gray-400 focus:outline-hidden"
                   />
                 </div>
                 <div>
@@ -134,7 +134,7 @@ function Elements({ allInOne }: { allInOne: boolean }) {
                     id="react-bank-account-account-number-element"
                     ref={bankAccountNumberElement}
                     placeholder="Account number"
-                    className="w-full rounded-lg border-0 bg-white px-4 py-3 shadow placeholder:text-gray-400 focus:outline-none"
+                    className="w-full rounded-lg border-0 bg-white px-4 py-3 shadow-sm placeholder:text-gray-400 focus:outline-hidden"
                   />
                 </div>
               </div>

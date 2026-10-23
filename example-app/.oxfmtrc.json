@@ -7,5 +7,7 @@
   "tabWidth": 2,
   "useTabs": false,
   "sortPackageJson": false,
-  "sortTailwindcss": {}
+  "sortTailwindcss": {
+    "stylesheet": "./src/app/globals.css"
+  }
 }

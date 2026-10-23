@@ -45,11 +45,11 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
         const bankAccountElement = publicsquare.createBankAccountElement({
           routingNumberOptions: {
             className:
-              'block w-full border-0 px-4 py-3 placeholder:text-gray-400 focus:outline-none',
+              'block w-full border-0 px-4 py-3 placeholder:text-gray-400 focus:outline-hidden',
           },
           accountNumberOptions: {
             className:
-              'block w-full border-0 px-4 py-3 placeholder:text-gray-400 focus:outline-none',
+              'block w-full border-0 px-4 py-3 placeholder:text-gray-400 focus:outline-hidden',
           },
         });
         bankAccountElement.mount('#bank-account-element');
@@ -58,7 +58,7 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
         const routingNumberElement = publicsquare.createBankAccountRoutingNumberElement({
           placeholder: 'Routing number',
           className:
-            'block w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow focus:outline-none',
+            'block w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow-sm focus:outline-hidden',
         });
         routingNumberElement.mount('#routing-number-element');
         setRoutingNumberElement(routingNumberElement);
@@ -66,7 +66,7 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
         const accountNumberElement = publicsquare.createBankAccountAccountNumberElement({
           placeholder: 'Account number',
           className:
-            'block w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow focus:outline-none',
+            'block w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow-sm focus:outline-hidden',
         });
         accountNumberElement.mount('#account-number-element');
         setAccountNumberElement(accountNumberElement);
@@ -129,7 +129,7 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
           {allInOne ? (
             <div className="space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-4">
               <label>Bank Account element</label>
-              <div className="w-full overflow-hidden rounded-lg bg-white shadow">
+              <div className="w-full overflow-hidden rounded-lg bg-white shadow-sm">
                 <div id="bank-account-element" ref={bankAccountRef}></div>
               </div>
             </div>

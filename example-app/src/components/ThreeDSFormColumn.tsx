@@ -27,7 +27,7 @@ function TabButton({
       onClick={onClick}
       className={`rounded-md px-3 py-1.5 text-sm transition-colors ${
         active
-          ? 'bg-indigo-600 text-white shadow-sm'
+          ? 'bg-indigo-600 text-white shadow-xs'
           : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
       }`}
     >
@@ -46,7 +46,7 @@ export default function ThreeDSFormColumn({
   const [flow, setFlow] = useState<FlowTab>('iframe');
 
   return (
-    <div className="space-y-3 rounded-lg bg-white p-4 shadow">
+    <div className="space-y-3 rounded-lg bg-white p-4 shadow-sm">
       <h3 className="text-lg font-medium">3DS Challenge Form</h3>
       <p className="text-sm">This is a form for the 3D Secure challenge flow.</p>
 

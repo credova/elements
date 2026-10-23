@@ -58,7 +58,7 @@ export default function RedirectCompletePage() {
           <div className="mb-2 font-semibold text-green-800">
             Flow complete — status: <code>{result.status}</code>
           </div>
-          <pre className="overflow-x-auto whitespace-pre-wrap break-all text-xs">
+          <pre className="overflow-x-auto text-xs break-all whitespace-pre-wrap">
             {JSON.stringify(result, null, 2)}
           </pre>
         </div>
@@ -72,7 +72,7 @@ export default function RedirectCompletePage() {
 
       <Link
         href="/three-ds"
-        className="inline-block rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-indigo-500"
+        className="inline-block rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-xs hover:bg-indigo-500"
       >
         Back to 3DS
       </Link>

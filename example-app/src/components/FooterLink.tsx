@@ -10,7 +10,7 @@ export default function FooterLink({
   return (
     <a
       href={href}
-      className="group flex flex-col items-center justify-center rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-white lg:mx-4 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+      className="group flex flex-col items-center justify-center rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-white lg:mx-4 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/30"
       target="_blank"
       rel="noopener noreferrer"
     >

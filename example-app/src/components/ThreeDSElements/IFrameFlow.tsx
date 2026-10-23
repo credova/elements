@@ -213,7 +213,7 @@ export default function IFrameFlow({ allInOne }: { allInOne: boolean }) {
         <StepLog entries={stepLog} />
         <button
           onClick={reset}
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-indigo-500"
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-xs hover:bg-indigo-500"
         >
           Reset
         </button>
@@ -230,7 +230,7 @@ export default function IFrameFlow({ allInOne }: { allInOne: boolean }) {
         <StepLog entries={stepLog} />
         <button
           onClick={reset}
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-indigo-500"
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-xs hover:bg-indigo-500"
         >
           Reset
         </button>
