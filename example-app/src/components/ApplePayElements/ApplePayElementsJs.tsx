@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { PublicSquare } from '@publicsquare/elements-js';
 import CaptureModal from '../Modals/CaptureModal';
 import { environment } from '@/config/environments';
@@ -25,22 +25,6 @@ export default function ApplePayElementsJs() {
       .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
-
-  useEffect(() => {
-    if (publicsquare && buttonContainerRef.current) {
-      /*
-       * Step 2: Render the Apple Pay button
-       */
-      publicsquare.applePay.renderButton(buttonContainerRef.current!, {
-        id: 'apple-pay-btn',
-        buttonStyle: 'black',
-        type: 'buy',
-        locale: 'en-US',
-        disabled: loading,
-        onClick: onSubmitApplePay,
-      });
-    }
-  }, [publicsquare]);
 
   function onSubmitApplePay() {
     if (!ApplePaySession) {
@@ -134,6 +118,26 @@ export default function ApplePayElementsJs() {
       }
     }
   }
+
+  const renderButton = useEffectEvent((publicsquare: PublicSquare, container: HTMLDivElement) => {
+    /*
+     * Step 2: Render the Apple Pay button
+     */
+    publicsquare.applePay.renderButton(container, {
+      id: 'apple-pay-btn',
+      buttonStyle: 'black',
+      type: 'buy',
+      locale: 'en-US',
+      disabled: loading,
+      onClick: onSubmitApplePay,
+    });
+  });
+
+  useEffect(() => {
+    if (publicsquare && buttonContainerRef.current) {
+      renderButton(publicsquare, buttonContainerRef.current);
+    }
+  }, [publicsquare]);
 
   return (
     <>

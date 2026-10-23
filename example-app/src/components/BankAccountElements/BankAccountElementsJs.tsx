@@ -15,11 +15,9 @@ import { environment } from '@/config/environments';
 export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean }) {
   const [publicsquare, setPublicSquare] = useState<PublicSquare>();
   const bankAccountRef = useRef<HTMLDivElement>(null);
-  const [bankAccountElement, setBankAccountElement] = useState<BankAccountElement>();
-  const [routingNumberElement, setRoutingNumberElement] =
-    useState<BankAccountRoutingNumberElement>();
-  const [accountNumberElement, setAccountNumberElement] =
-    useState<BankAccountAccountNumberElement>();
+  const bankAccountElementRef = useRef<BankAccountElement>(undefined);
+  const routingNumberElementRef = useRef<BankAccountRoutingNumberElement>(undefined);
+  const accountNumberElementRef = useRef<BankAccountAccountNumberElement>(undefined);
   const [message, setMessage] = useState<{
     message?: object;
     error?: boolean;
@@ -53,7 +51,7 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
           },
         });
         bankAccountElement.mount('#bank-account-element');
-        setBankAccountElement(bankAccountElement);
+        bankAccountElementRef.current = bankAccountElement;
       } else if (!allInOne) {
         const routingNumberElement = publicsquare.createBankAccountRoutingNumberElement({
           placeholder: 'Routing number',
@@ -61,7 +59,7 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
             'block w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow-sm focus:outline-hidden',
         });
         routingNumberElement.mount('#routing-number-element');
-        setRoutingNumberElement(routingNumberElement);
+        routingNumberElementRef.current = routingNumberElement;
 
         const accountNumberElement = publicsquare.createBankAccountAccountNumberElement({
           placeholder: 'Account number',
@@ -69,12 +67,13 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
             'block w-full border-0 px-4 py-3 placeholder:text-gray-400 rounded-lg bg-white shadow-sm focus:outline-hidden',
         });
         accountNumberElement.mount('#account-number-element');
-        setAccountNumberElement(accountNumberElement);
+        accountNumberElementRef.current = accountNumberElement;
       }
     }
   }, [publicsquare, allInOne]);
 
   function onSubmitBankAccountElement(e: FormEvent<HTMLFormElement>) {
+    const bankAccountElement = bankAccountElementRef.current;
     if (bankAccountElement) {
       onSubmit(e, {
         account_number: bankAccountElement.accountNumber.el.value,
@@ -84,6 +83,8 @@ export default function BankAccountElementsJs({ allInOne }: { allInOne: boolean 
   }
 
   function onSubmitBankAccountElements(e: FormEvent<HTMLFormElement>) {
+    const accountNumberElement = accountNumberElementRef.current;
+    const routingNumberElement = routingNumberElementRef.current;
     if (accountNumberElement && routingNumberElement) {
       onSubmit(e, {
         account_number: accountNumberElement.el.value,

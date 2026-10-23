@@ -1,4 +1,11 @@
-import React, { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
+import React, {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { PublicSquare } from '@publicsquare/elements-js';
 import * as Types from '../types';
 
@@ -11,14 +18,14 @@ export const PublicSquareProvider = ({
 }: PropsWithChildren<Types.PublicSquareProviderProps>) => {
   const [publicsquare, setPublicSquare] = useState<PublicSquare>();
 
-  let init = false;
+  const initialized = useRef(false);
   useEffect(() => {
-    if (!init) {
-      new PublicSquare().init(apiKey, options).then((_publicsquare) => {
-        setPublicSquare(_publicsquare);
-      });
-    }
-  }, []);
+    if (initialized.current) return;
+    initialized.current = true;
+    new PublicSquare().init(apiKey, options).then((_publicsquare) => {
+      setPublicSquare(_publicsquare);
+    });
+  }, [apiKey, options]);
 
   const createElement: Types.PublicSquareProviderValue['createElement'] = (...args) =>
     publicsquare!.createElement(...args);

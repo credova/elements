@@ -1,5 +1,5 @@
 'use client';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { PublicSquare } from '@publicsquare/elements-js';
 import SubmitButton from '@/components/SubmitButton';
 import {
@@ -15,32 +15,15 @@ import { environment } from '@/config/environments';
 
 export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
   const [publicsquare, setPublicSquare] = useState<PublicSquare>();
-  const [cardElement, setCardElement] = useState<CardElement>();
-  const [cardNumberElement, setCardNumberElement] = useState<CardNumberElement>();
-  const [cardExpirationDateElement, setCardExpirationDateElement] =
-    useState<CardExpirationDateElement>();
-  const [cardVerificationCodeElement, setCardVerificationCodeElement] =
-    useState<CardVerificationCodeElement>();
+  const cardElementRef = useRef<CardElement>(undefined);
+  const cardNumberElementRef = useRef<CardNumberElement>(undefined);
+  const cardExpirationDateElementRef = useRef<CardExpirationDateElement>(undefined);
+  const cardVerificationCodeElementRef = useRef<CardVerificationCodeElement>(undefined);
   const [message, setMessage] = useState<{
     message?: object;
     error?: boolean;
   }>();
   const [loading, setLoading] = useState(false);
-
-  function unmountElements() {
-    try {
-      cardElement?.unmount();
-    } catch {}
-    try {
-      cardNumberElement?.unmount();
-    } catch {}
-    try {
-      cardExpirationDateElement?.unmount();
-    } catch {}
-    try {
-      cardVerificationCodeElement?.unmount();
-    } catch {}
-  }
 
   useEffect(() => {
     /**
@@ -55,7 +38,16 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
     if (publicsquare) {
       // This is to make sure the DOM is updated before we mount the elements
       requestAnimationFrame(() => {
-        unmountElements();
+        for (const element of [
+          cardElementRef.current,
+          cardNumberElementRef.current,
+          cardExpirationDateElementRef.current,
+          cardVerificationCodeElementRef.current,
+        ]) {
+          try {
+            element?.unmount();
+          } catch {}
+        }
         if (allInOne) {
           /**
            * Step 2: Initialize the elements you want to use
@@ -63,32 +55,36 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
           // The whole card
           const cardElement = publicsquare.createCardElement({});
           cardElement.mount('#card-element');
-          setCardElement(cardElement);
+          cardElementRef.current = cardElement;
         } else {
           // Just the number
           const cardNumberElement = publicsquare.createCardNumberElement({});
           cardNumberElement.mount('#card-number-element');
-          setCardNumberElement(cardNumberElement);
+          cardNumberElementRef.current = cardNumberElement;
           // Just the expiration date
           const cardExpirationDateElement = publicsquare.createCardExpirationDateElement({});
           cardExpirationDateElement.mount('#card-expiration-date-element');
-          setCardExpirationDateElement(cardExpirationDateElement);
+          cardExpirationDateElementRef.current = cardExpirationDateElement;
           // Just the verification code
           const cardVerificationCodeElement = publicsquare.createCardVerificationCodeElement({});
           cardVerificationCodeElement.mount('#card-verification-code-element');
-          setCardVerificationCodeElement(cardVerificationCodeElement);
+          cardVerificationCodeElementRef.current = cardVerificationCodeElement;
         }
       });
     }
   }, [publicsquare, allInOne]);
 
   function onSubmitCardElement(e: FormEvent<HTMLFormElement>) {
+    const cardElement = cardElementRef.current;
     if (cardElement) {
       onSubmit(e, cardElement);
     }
   }
 
   function onSubmitCardElements(e: FormEvent<HTMLFormElement>) {
+    const cardNumberElement = cardNumberElementRef.current;
+    const cardExpirationDateElement = cardExpirationDateElementRef.current;
+    const cardVerificationCodeElement = cardVerificationCodeElementRef.current;
     if (cardNumberElement && cardExpirationDateElement && cardVerificationCodeElement) {
       onSubmit(e, {
         number: cardNumberElement!,

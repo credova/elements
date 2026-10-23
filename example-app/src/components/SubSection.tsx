@@ -22,9 +22,7 @@ export default function HomeSection({
 }) {
   const [selected, setSelected] = React.useState<Technology>('react');
 
-  const memoizedRightColumn = React.useMemo(() => {
-    return rightColumn(selected);
-  }, [selected]);
+  const memoizedRightColumn = rightColumn(selected);
 
   return (
     <div className="grid grid-cols-1 gap-8 py-8 md:grid-cols-2">

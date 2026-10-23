@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from 'react';
+import React, { forwardRef, useEffect, useRef } from 'react';
 import { usePublicSquare } from '../core/PublicSquareProvider';
 import { ElementProps } from '../types';
 
@@ -8,18 +8,10 @@ const PublicSquareElement = forwardRef<any, ElementProps>(function Component(
 ) {
   const { publicsquare, createElement } = usePublicSquare();
 
-  function setRef(element: ReturnType<typeof createElement>) {
-    if (typeof ref === 'function') {
-      ref(element);
-    } else if (ref) {
-      ref.current = element;
-    }
-  }
-
-  let init = false;
+  const mounted = useRef(false);
   useEffect(() => {
-    if (!init && publicsquare) {
-      init = true;
+    if (!mounted.current && publicsquare) {
+      mounted.current = true;
       const element = createElement(type, options);
       const mountResult = element.mount(`#${id}`);
 
@@ -34,9 +26,13 @@ const PublicSquareElement = forwardRef<any, ElementProps>(function Component(
         }
       }
 
-      setRef(element);
+      if (typeof ref === 'function') {
+        ref(element);
+      } else if (ref) {
+        ref.current = element;
+      }
     }
-  }, [publicsquare]);
+  }, [publicsquare, createElement, type, options, id, ref]);
 
   if (!id || !type || !ref) {
     console.error(`PublicSquare element requires an id, type, & ref!`);

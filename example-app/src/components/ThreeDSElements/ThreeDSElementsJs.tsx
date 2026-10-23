@@ -1,5 +1,5 @@
 'use client';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useEffectEvent, useRef, useState } from 'react';
 import { PublicSquare } from '@publicsquare/elements-js';
 import {
   CardElement,
@@ -57,12 +57,10 @@ const STEP_LABELS: Partial<Record<Step, string>> = {
 
 export default function ThreeDSElementsJs({ flow, allInOne }: { flow: Flow; allInOne: boolean }) {
   const [publicsquare, setPublicSquare] = useState<PublicSquare>();
-  const [cardElement, setCardElement] = useState<CardElement>();
-  const [cardNumberElement, setCardNumberElement] = useState<CardNumberElement>();
-  const [cardExpirationDateElement, setCardExpirationDateElement] =
-    useState<CardExpirationDateElement>();
-  const [cardVerificationCodeElement, setCardVerificationCodeElement] =
-    useState<CardVerificationCodeElement>();
+  const cardElementRef = useRef<CardElement>(undefined);
+  const cardNumberElementRef = useRef<CardNumberElement>(undefined);
+  const cardExpirationDateElementRef = useRef<CardExpirationDateElement>(undefined);
+  const cardVerificationCodeElementRef = useRef<CardVerificationCodeElement>(undefined);
 
   const [step, setStep] = useState<Step>('idle');
   const [intentId, setIntentId] = useState<string>();
@@ -103,43 +101,40 @@ export default function ThreeDSElementsJs({ flow, allInOne }: { flow: Flow; allI
   useEffect(() => {
     if (!publicsquare) return;
 
-    function unmount() {
-      try {
-        cardElement?.unmount();
-      } catch {}
-      try {
-        cardNumberElement?.unmount();
-      } catch {}
-      try {
-        cardExpirationDateElement?.unmount();
-      } catch {}
-      try {
-        cardVerificationCodeElement?.unmount();
-      } catch {}
-    }
-
     requestAnimationFrame(() => {
-      unmount();
+      for (const element of [
+        cardElementRef.current,
+        cardNumberElementRef.current,
+        cardExpirationDateElementRef.current,
+        cardVerificationCodeElementRef.current,
+      ]) {
+        try {
+          element?.unmount();
+        } catch {}
+      }
       if (allInOne) {
         const element = publicsquare.createCardElement({});
         element.mount('#js-threeds-card-element');
-        setCardElement(element);
+        cardElementRef.current = element;
       } else {
         const number = publicsquare.createCardNumberElement({});
         number.mount('#js-threeds-card-number');
-        setCardNumberElement(number);
+        cardNumberElementRef.current = number;
         const expiration = publicsquare.createCardExpirationDateElement({});
         expiration.mount('#js-threeds-card-exp');
-        setCardExpirationDateElement(expiration);
+        cardExpirationDateElementRef.current = expiration;
         const cvc = publicsquare.createCardVerificationCodeElement({});
         cvc.mount('#js-threeds-card-cvc');
-        setCardVerificationCodeElement(cvc);
+        cardVerificationCodeElementRef.current = cvc;
       }
     });
   }, [publicsquare, allInOne]);
 
   function getCard(): CardsCreateInput['card'] | null {
-    if (allInOne) return cardElement ?? null;
+    if (allInOne) return cardElementRef.current ?? null;
+    const cardNumberElement = cardNumberElementRef.current;
+    const cardExpirationDateElement = cardExpirationDateElementRef.current;
+    const cardVerificationCodeElement = cardVerificationCodeElementRef.current;
     if (cardNumberElement && cardExpirationDateElement && cardVerificationCodeElement) {
       return {
         number: cardNumberElement,
@@ -279,23 +274,6 @@ export default function ThreeDSElementsJs({ flow, allInOne }: { flow: Flow; allI
     setStep('done');
   }
 
-  useEffect(() => {
-    if (step !== 'challenge' || !publicsquare || !nextAction || !btSessionId) return;
-    if (challengeStarted.current) return;
-    challengeStarted.current = true;
-
-    publicsquare.threeDs
-      .startChallenge({
-        sessionId: btSessionId,
-        acsChallengeUrl: nextAction.acs_challenge_url!,
-        acsTransactionId: nextAction.acs_transaction_id!,
-        threeDsVersion: nextAction.three_ds_version!,
-        containerId: CHALLENGE_CONTAINER_ID,
-      })
-      .then((result) => onChallengeComplete(result))
-      .catch((err) => fail('challenge failure', err instanceof Error ? err.message : String(err)));
-  }, [step, publicsquare, nextAction, btSessionId]);
-
   async function onChallengeComplete(result: unknown) {
     log('5. challenge complete', result);
     if (!intentId || !nextAction) return;
@@ -317,6 +295,28 @@ export default function ThreeDSElementsJs({ flow, allInOne }: { flow: Flow; allI
     setFinalIntent(completeRes);
     setStep('done');
   }
+
+  const onChallengeSuccess = useEffectEvent((result: unknown) => onChallengeComplete(result));
+  const onChallengeFailure = useEffectEvent((err: unknown) =>
+    fail('challenge failure', err instanceof Error ? err.message : String(err)),
+  );
+
+  useEffect(() => {
+    if (step !== 'challenge' || !publicsquare || !nextAction || !btSessionId) return;
+    if (challengeStarted.current) return;
+    challengeStarted.current = true;
+
+    publicsquare.threeDs
+      .startChallenge({
+        sessionId: btSessionId,
+        acsChallengeUrl: nextAction.acs_challenge_url!,
+        acsTransactionId: nextAction.acs_transaction_id!,
+        threeDsVersion: nextAction.three_ds_version!,
+        containerId: CHALLENGE_CONTAINER_ID,
+      })
+      .then(onChallengeSuccess)
+      .catch(onChallengeFailure);
+  }, [step, publicsquare, nextAction, btSessionId]);
 
   const isLoading = LOADING_STEPS.includes(step);
 

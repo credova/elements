@@ -10,12 +10,11 @@
     "restriction": "off",
     "nursery": "off"
   },
-  // TODO: make these errors once the effects that mount the iframes are reworked.
   "rules": {
-    "react-hooks/exhaustive-deps": "warn",
-    "react/immutability": "warn",
-    "react/refs": "warn",
-    "react/set-state-in-effect": "warn"
+    "react-hooks/exhaustive-deps": "error",
+    "react/immutability": "error",
+    "react/refs": "error",
+    "react/set-state-in-effect": "error"
   },
   "ignorePatterns": ["**/dist/**", "**/.next/**", "**/next-env.d.ts"],
   "overrides": [

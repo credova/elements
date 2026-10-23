@@ -6,27 +6,38 @@ import {
 import { validateGooglePayButtonWidgetOptions } from '@publicsquare/elements-js/validators';
 import { usePublicSquare } from '../core/PublicSquareProvider';
 
+const DEFAULT_STYLE: NonNullable<GooglePayButtonWidgetOptions['style']> = {
+  width: '160px',
+  height: '40px',
+  borderRadius: 4,
+  borderType: 'default_border',
+};
+
+const updateButtonStyle = (button?: Element | null, disabled?: boolean): void => {
+  const cursor = disabled === true ? 'not-allowed' : 'pointer';
+  const opacity = disabled === true ? '0.5' : '1';
+  button?.setAttribute('style', `cursor: ${cursor}; opacity: ${opacity};`);
+  if (disabled) {
+    button?.setAttribute('disabled', 'true');
+  } else {
+    button?.removeAttribute('disabled');
+  }
+};
+
 const GooglePayButtonElement: React.FC<GooglePayButtonWidgetOptions> = (props) => {
   const { validated } = validateGooglePayButtonWidgetOptions(props);
   const {
     id,
-    environment,
-    merchantId,
-    merchantName,
-    allowedCardAuthMethods = ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-    allowedCardNetworks = ['AMEX', 'DISCOVER', 'INTERAC', 'JCB', 'MASTERCARD', 'VISA'],
-    buttonColor = 'black',
-    buttonType = 'buy',
-    locale = 'en',
-    style = { width: '160px', height: '40px', borderRadius: 4, borderType: 'default_border' },
-    transactionInfo,
+    style = DEFAULT_STYLE,
+    disabled = false,
     shippingAddressRequired = false,
     shippingAddressParameters,
-    disabled = false,
-    onClick,
-    onPaymentDataLoaded,
   } = validated;
   const containerRef = useRef<HTMLDivElement>(null);
+  const optionsRef = useRef(validated);
+  useEffect(() => {
+    optionsRef.current = validated;
+  });
   const { publicsquare } = usePublicSquare();
   const publicSquareRef = useRef(publicsquare);
   useEffect(() => {
@@ -34,6 +45,22 @@ const GooglePayButtonElement: React.FC<GooglePayButtonWidgetOptions> = (props) =
   }, [publicsquare]);
 
   useEffect(() => {
+    const {
+      environment,
+      merchantId,
+      merchantName,
+      allowedCardAuthMethods = ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+      allowedCardNetworks = ['AMEX', 'DISCOVER', 'INTERAC', 'JCB', 'MASTERCARD', 'VISA'],
+      buttonColor = 'black',
+      buttonType = 'buy',
+      locale = 'en',
+      style = DEFAULT_STYLE,
+      transactionInfo,
+      disabled = false,
+      onClick,
+      onPaymentDataLoaded,
+    } = optionsRef.current;
+    const container = containerRef.current;
     let paymentsClient: any;
 
     const baseRequest = {
@@ -87,7 +114,7 @@ const GooglePayButtonElement: React.FC<GooglePayButtonWidgetOptions> = (props) =
     }
 
     function createAndAddButton() {
-      if (!paymentsClient || !containerRef.current) return;
+      if (!paymentsClient || !container) return;
       const button = paymentsClient.createButton({
         buttonColor: buttonColor,
         buttonType: buttonType,
@@ -98,8 +125,8 @@ const GooglePayButtonElement: React.FC<GooglePayButtonWidgetOptions> = (props) =
         onClick: onGooglePaymentButtonClicked,
         allowedPaymentMethods: [baseCardPaymentMethod],
       });
-      containerRef.current.innerHTML = '';
-      containerRef.current.appendChild(button);
+      container.innerHTML = '';
+      container.appendChild(button);
 
       const actualButton = button.querySelector('button');
       if (actualButton && disabled !== true && typeof onClick === 'function') {
@@ -174,33 +201,22 @@ const GooglePayButtonElement: React.FC<GooglePayButtonWidgetOptions> = (props) =
       if (createdScript && script) {
         document.body.removeChild(script);
       }
-      if (containerRef.current) {
-        const button = containerRef.current.querySelector('button');
+      if (container) {
+        const button = container.querySelector('button');
         if (button && typeof onClick === 'function') {
           button.removeEventListener('click', onClick);
         }
-        containerRef.current.innerHTML = '';
+        container.innerHTML = '';
       }
     };
   }, [shippingAddressRequired, shippingAddressParameters]);
-
-  const updateButtonStyle = (button?: Element | null, disabled?: boolean): void => {
-    const cursor = disabled === true ? 'not-allowed' : 'pointer';
-    const opacity = disabled === true ? '0.5' : '1';
-    button?.setAttribute('style', `cursor: ${cursor}; opacity: ${opacity};`);
-    if (disabled) {
-      button?.setAttribute('disabled', 'true');
-    } else {
-      button?.removeAttribute('disabled');
-    }
-  };
 
   useEffect(() => {
     if (containerRef.current) {
       const button = containerRef.current.querySelector('div > div > button');
       updateButtonStyle(button, disabled);
     }
-  }, [disabled, containerRef.current]);
+  }, [disabled]);
 
   return (
     <div ref={containerRef} id={id} style={{ width: style.width, height: style.height }}></div>

@@ -1,6 +1,12 @@
 import React, { RefObject, useEffect, useRef } from 'react';
 import * as Types from '../types';
 
+const updateButtonStyle = (button?: Element | null, disabled?: boolean): void => {
+  const cursor = disabled === true ? 'not-allowed' : 'pointer';
+  const opacity = disabled === true ? '0.5' : '1';
+  button?.setAttribute('style', `cursor: ${cursor}; opacity: ${opacity};`);
+};
+
 const ApplePayButtonElement: React.FC<Types.ApplePayButtonElementProps> = ({
   id,
   buttonStyle = 'black',
@@ -11,12 +17,6 @@ const ApplePayButtonElement: React.FC<Types.ApplePayButtonElementProps> = ({
   disabled,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-
-  const handleClick = (): void => {
-    if (disabled !== true && onClick !== undefined) {
-      onClick();
-    }
-  };
 
   useEffect(() => {
     const scriptId = 'apple-pay-sdk-script';
@@ -34,32 +34,36 @@ const ApplePayButtonElement: React.FC<Types.ApplePayButtonElementProps> = ({
   }, []);
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.addEventListener('click', handleClick);
-    }
+    const button = ref.current;
+    if (!button) return;
 
-    return () => {
-      if (ref.current) {
-        ref.current.removeEventListener('click', handleClick);
+    const handleClick = (): void => {
+      if (disabled !== true && onClick !== undefined) {
+        onClick();
       }
     };
-  }, [onClick, disabled]);
+    button.addEventListener('click', handleClick);
 
-  const updateButtonStyle = (button?: Element | null, disabled?: boolean): void => {
-    const cursor = disabled === true ? 'not-allowed' : 'pointer';
-    const opacity = disabled === true ? '0.5' : '1';
-    button?.setAttribute('style', `cursor: ${cursor}; opacity: ${opacity};`);
-  };
+    return () => {
+      button.removeEventListener('click', handleClick);
+    };
+  }, [onClick, disabled]);
 
   useEffect(() => {
     // This workaround modifies the cursor and opacity of the button. Due to the button being rendered in a Shadow DOM,
     // we face limitations with CSS and element attributes. Direct style application from the parent element,
     // or using pseudo-classes like :hover or :disabled, is not possible.
-    if (ref.current?.shadowRoot) {
-      const button = ref.current.shadowRoot.querySelector('div > button');
-      updateButtonStyle(button, disabled);
-    }
-  }, [disabled, ref.current?.shadowRoot]);
+    let cancelled = false;
+    customElements.whenDefined('apple-pay-button').then(() => {
+      const shadowRoot = ref.current?.shadowRoot;
+      if (!cancelled && shadowRoot) {
+        updateButtonStyle(shadowRoot.querySelector('div > button'), disabled);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [disabled]);
 
   const createApplePayButtonStyle = (style?: Types.ApplePayButtonElementProps['style']): string => `
     apple-pay-button {

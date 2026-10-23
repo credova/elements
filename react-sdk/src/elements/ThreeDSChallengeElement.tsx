@@ -51,6 +51,7 @@ export const ThreeDSChallengeElement = ({
     acsChallengeUrl,
     acsTransactionId,
     threeDsVersion,
+    containerId,
     onComplete,
     onFailure,
   ]);

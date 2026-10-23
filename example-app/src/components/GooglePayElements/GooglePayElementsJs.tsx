@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { PublicSquare } from '@publicsquare/elements-js';
 import CaptureModal from '../Modals/CaptureModal';
 import { GooglePayButtonWidget } from '@publicsquare/elements-js/googlePay/GooglePayButtonWidget';
@@ -20,41 +20,6 @@ export default function GooglePayElementsJs() {
       .init(environment.apiKey, { apiUrl: environment.apiUrl })
       .then((_publicsquare) => setPublicSquare(_publicsquare));
   }, []);
-
-  useEffect(() => {
-    if (publicsquare && buttonContainerRef.current) {
-      buttonContainerRef.current.innerHTML = '';
-      googlePayButtonRef.current = publicsquare.googlePay.renderButton(
-        buttonContainerRef.current!,
-        {
-          id: 'google-pay-btn',
-          environment: 'TEST',
-          merchantName: 'PSQ Merchant Test',
-          allowedCardAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-          allowedCardNetworks: ['AMEX', 'DISCOVER', 'INTERAC', 'JCB', 'MASTERCARD', 'VISA'],
-          buttonColor: 'black',
-          buttonType: 'buy',
-          locale: 'en',
-          style: {
-            width: '160px',
-            height: '40px',
-            borderRadius: 4,
-            borderType: 'default_border',
-          },
-          transactionInfo: {
-            totalPriceStatus: 'FINAL',
-            totalPrice: '1.00',
-            currencyCode: 'USD',
-            countryCode: 'US',
-          },
-          shippingAddressRequired,
-          onPaymentDataLoaded: async (paymentData) => {
-            onPaymentAuthorized(paymentData);
-          },
-        },
-      );
-    }
-  }, [publicsquare, shippingAddressRequired]);
 
   async function onPaymentAuthorized(event: any) {
     if (publicsquare && buttonContainerRef.current) {
@@ -109,6 +74,42 @@ export default function GooglePayElementsJs() {
       }
     }
   }
+
+  const renderButton = useEffectEvent((publicsquare: PublicSquare, container: HTMLDivElement) => {
+    container.innerHTML = '';
+    googlePayButtonRef.current = publicsquare.googlePay.renderButton(container, {
+      id: 'google-pay-btn',
+      environment: 'TEST',
+      merchantName: 'PSQ Merchant Test',
+      allowedCardAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
+      allowedCardNetworks: ['AMEX', 'DISCOVER', 'INTERAC', 'JCB', 'MASTERCARD', 'VISA'],
+      buttonColor: 'black',
+      buttonType: 'buy',
+      locale: 'en',
+      style: {
+        width: '160px',
+        height: '40px',
+        borderRadius: 4,
+        borderType: 'default_border',
+      },
+      transactionInfo: {
+        totalPriceStatus: 'FINAL',
+        totalPrice: '1.00',
+        currencyCode: 'USD',
+        countryCode: 'US',
+      },
+      shippingAddressRequired,
+      onPaymentDataLoaded: async (paymentData) => {
+        onPaymentAuthorized(paymentData);
+      },
+    });
+  });
+
+  useEffect(() => {
+    if (publicsquare && buttonContainerRef.current) {
+      renderButton(publicsquare, buttonContainerRef.current);
+    }
+  }, [publicsquare, shippingAddressRequired]);
 
   return (
     <>

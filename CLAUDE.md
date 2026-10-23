@@ -46,7 +46,7 @@ mise run lint        # hk check --all (runs in PR CI)
 mise run format      # hk fix --all
 hk install           # pre-commit hook
 ```
-Steps live in `hk.pkl`: oxfmt (root `.oxfmtrc.json`; `example-app/.oxfmtrc.json` adds Tailwind class sorting), oxlint (`.oxlintrc.json`: `correctness` rules as errors; React hook rules are warnings until the effects that mount the iframes are reworked), jactionlint (`correctness` profile, `.github/jactionlint.yaml`) and shellcheck.
+Steps live in `hk.pkl`: oxfmt (root `.oxfmtrc.json`; `example-app/.oxfmtrc.json` adds Tailwind class sorting), oxlint (`.oxlintrc.json`: `correctness` rules and the React hook rules as errors), jactionlint (`correctness` profile, `.github/jactionlint.yaml`) and shellcheck.
 
 ## Architecture
 
