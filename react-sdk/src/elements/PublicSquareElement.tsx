@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect } from 'react';
 import { usePublicSquare } from '../core/PublicSquareProvider';
-import { ElementProps } from '@/types';
+import { ElementProps } from '../types';
 
 const PublicSquareElement = forwardRef<any, ElementProps>(function Component(
   { id, type, options = {} },

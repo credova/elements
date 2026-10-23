@@ -20,12 +20,13 @@ This is a monorepo for the PublicSquare Elements SDK — a payment elements libr
 ```bash
 mise run build       # Build all packages (js-sdk, react-sdk, example-app)
 mise run dev         # Run example-app in dev mode
+mise run typecheck   # bun check on js-sdk, react-sdk, example-app (after build)
 ```
 
 Per-package (run inside `js-sdk/` or `react-sdk/`):
 ```bash
 bun run build        # Full build (clean, bundle, module, types, package)
-bun run check        # TypeScript type-check only (no emit, js-sdk only)
+bun run typecheck    # bun check: type-check only, no emit
 ```
 
 ### Testing

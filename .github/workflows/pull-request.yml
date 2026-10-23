@@ -20,13 +20,7 @@ jobs:
     secrets: inherit
     with:
       container: false
-      # compliance + security (grype/grant/opengrep, replacing the old local
-      # ./.github/actions/security) + `mise run lint` run built-in.
-      # Run the jest unit tests (`mise run test`) and validate the build in the
-      # shared workflow's test step. The Playwright acceptance suite
-      # (`mise run acceptance`) needs a live environment and the SDK key, so it
-      # stays out of PR CI and is run out-of-band.
-      test-command: mise run test && mise run build
+      test-command: mise run test && mise run build && mise run typecheck
 
   gate:
     name: Gate
