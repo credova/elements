@@ -364,25 +364,34 @@ export default function ThreeDSElementsJs({ flow, allInOne }: { flow: Flow; allI
           {allInOne ? (
             <div className="space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-4">
               <label>Card element</label>
-              <div className="w-full rounded-lg bg-white p-2 shadow" id="js-threeds-card-element" />
+              <div
+                className="w-full rounded-lg bg-white p-2 shadow-sm"
+                id="js-threeds-card-element"
+              />
             </div>
           ) : (
             <div className="grid grid-cols-2 items-start gap-4 rounded-lg border-2 border-dashed border-gray-300 p-4">
               <div>
                 <label>Card number</label>
                 <div
-                  className="w-full rounded-lg bg-white p-2 shadow"
+                  className="w-full rounded-lg bg-white p-2 shadow-sm"
                   id="js-threeds-card-number"
                 />
               </div>
               <div className="grid grid-cols-2 items-start gap-4">
                 <div>
                   <label>Expiration</label>
-                  <div className="w-full rounded-lg bg-white p-2 shadow" id="js-threeds-card-exp" />
+                  <div
+                    className="w-full rounded-lg bg-white p-2 shadow-sm"
+                    id="js-threeds-card-exp"
+                  />
                 </div>
                 <div>
                   <label>CVC</label>
-                  <div className="w-full rounded-lg bg-white p-2 shadow" id="js-threeds-card-cvc" />
+                  <div
+                    className="w-full rounded-lg bg-white p-2 shadow-sm"
+                    id="js-threeds-card-cvc"
+                  />
                 </div>
               </div>
             </div>
@@ -396,7 +405,7 @@ export default function ThreeDSElementsJs({ flow, allInOne }: { flow: Flow; allI
       {(step === 'done' || step === 'error') && (
         <button
           onClick={reset}
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-indigo-500"
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-xs hover:bg-indigo-500"
         >
           Reset
         </button>

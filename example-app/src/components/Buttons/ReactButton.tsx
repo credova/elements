@@ -18,7 +18,7 @@ export default function ReactButton(
       <span className="inline-flex items-center font-sans font-bold" style={{ height: 24 }}>
         <Image src={ReactLogo} alt="React Logo" width={20} height={20} />
       </span>
-      <span className="text-sm italic text-cyan-700">React</span>
+      <span className="text-sm text-cyan-700 italic">React</span>
     </button>
   );
 }

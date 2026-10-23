@@ -18,7 +18,7 @@ export default function RedirectFailurePage() {
       </p>
       <Link
         href="/three-ds"
-        className="inline-block rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-indigo-500"
+        className="inline-block rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-xs hover:bg-indigo-500"
       >
         Back to 3DS
       </Link>

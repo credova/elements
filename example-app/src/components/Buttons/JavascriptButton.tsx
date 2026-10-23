@@ -14,7 +14,7 @@ export default function JavascriptButton(
       {...props}
     >
       <span className="font-sans font-bold">JS</span>
-      <span className="text-sm italic text-yellow-700">Javascript</span>
+      <span className="text-sm text-yellow-700 italic">Javascript</span>
     </button>
   );
 }

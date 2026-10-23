@@ -94,7 +94,7 @@ function Elements({ allInOne }: { allInOne: boolean }) {
           {allInOne ? (
             <div className="space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-4">
               <label>Card element</label>
-              <div className="w-full rounded-lg bg-white p-2 shadow">
+              <div className="w-full rounded-lg bg-white p-2 shadow-sm">
                 <CardElement id="react-card-element" ref={cardElement} />
               </div>
             </div>
@@ -102,14 +102,14 @@ function Elements({ allInOne }: { allInOne: boolean }) {
             <div className="grid grid-cols-2 items-start gap-4 rounded-lg border-2 border-dashed border-gray-300 p-4">
               <div>
                 <label>Card number element</label>
-                <div className="w-full rounded-lg bg-white p-2 shadow">
+                <div className="w-full rounded-lg bg-white p-2 shadow-sm">
                   <CardNumberElement id="react-card-number-element" ref={cardNumberElement} />
                 </div>
               </div>
               <div className="grid grid-cols-2 items-start gap-4">
                 <div>
                   <label>Expiration</label>
-                  <div className="w-full rounded-lg bg-white p-2 shadow">
+                  <div className="w-full rounded-lg bg-white p-2 shadow-sm">
                     <CardExpirationDateElement
                       id="react-card-expiration-date-element"
                       ref={cardExpirationDateElement}
@@ -118,7 +118,7 @@ function Elements({ allInOne }: { allInOne: boolean }) {
                 </div>
                 <div>
                   <label>CVC</label>
-                  <div className="w-full rounded-lg bg-white p-2 shadow">
+                  <div className="w-full rounded-lg bg-white p-2 shadow-sm">
                     <CardVerificationCodeElement
                       id="react-card-verification-code-element"
                       ref={cardVerificationCodeElement}

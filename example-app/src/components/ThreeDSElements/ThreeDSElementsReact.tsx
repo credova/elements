@@ -97,7 +97,7 @@ export function useCardForm(allInOne: boolean, idPrefix: string) {
       {allInOne ? (
         <div className="space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-4">
           <label>Card element</label>
-          <div className="w-full rounded-lg bg-white p-2 shadow">
+          <div className="w-full rounded-lg bg-white p-2 shadow-sm">
             <CardElement id={`${idPrefix}-card-element`} ref={cardElement} />
           </div>
         </div>
@@ -105,14 +105,14 @@ export function useCardForm(allInOne: boolean, idPrefix: string) {
         <div className="grid grid-cols-2 items-start gap-4 rounded-lg border-2 border-dashed border-gray-300 p-4">
           <div>
             <label>Card number</label>
-            <div className="w-full rounded-lg bg-white p-2 shadow">
+            <div className="w-full rounded-lg bg-white p-2 shadow-sm">
               <CardNumberElement id={`${idPrefix}-card-number`} ref={cardNumberElement} />
             </div>
           </div>
           <div className="grid grid-cols-2 items-start gap-4">
             <div>
               <label>Expiration</label>
-              <div className="w-full rounded-lg bg-white p-2 shadow">
+              <div className="w-full rounded-lg bg-white p-2 shadow-sm">
                 <CardExpirationDateElement
                   id={`${idPrefix}-card-exp`}
                   ref={cardExpirationDateElement}
@@ -121,7 +121,7 @@ export function useCardForm(allInOne: boolean, idPrefix: string) {
             </div>
             <div>
               <label>CVC</label>
-              <div className="w-full rounded-lg bg-white p-2 shadow">
+              <div className="w-full rounded-lg bg-white p-2 shadow-sm">
                 <CardVerificationCodeElement
                   id={`${idPrefix}-card-cvc`}
                   ref={cardVerificationCodeElement}
@@ -143,7 +143,7 @@ export function StepLog({ entries }: { entries: StepLogEntry[] }) {
       {entries.map((entry, i) => (
         <details key={i} className="rounded-lg border border-gray-200 bg-gray-50 p-3 text-xs">
           <summary className="cursor-pointer font-medium">{entry.label}</summary>
-          <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all">
+          <pre className="mt-2 overflow-x-auto break-all whitespace-pre-wrap">
             {JSON.stringify(entry.data, null, 2)}
           </pre>
         </details>

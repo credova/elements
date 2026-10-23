@@ -136,14 +136,14 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
           {allInOne ? (
             <div className="space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-4">
               <label>Card element</label>
-              <div className="w-full rounded-lg bg-white p-2 shadow" id="card-element"></div>
+              <div className="w-full rounded-lg bg-white p-2 shadow-sm" id="card-element"></div>
             </div>
           ) : (
             <div className="grid grid-cols-2 items-start gap-4 rounded-lg border-2 border-dashed border-gray-300 p-4">
               <div>
                 <label>Card number element</label>
                 <div
-                  className="w-full rounded-lg bg-white p-2 shadow"
+                  className="w-full rounded-lg bg-white p-2 shadow-sm"
                   id="card-number-element"
                 ></div>
               </div>
@@ -151,14 +151,14 @@ export default function CardElementsJs({ allInOne }: { allInOne: boolean }) {
                 <div>
                   <label>Expiration</label>
                   <div
-                    className="w-full rounded-lg bg-white p-2 shadow"
+                    className="w-full rounded-lg bg-white p-2 shadow-sm"
                     id="card-expiration-date-element"
                   ></div>
                 </div>
                 <div>
                   <label>CVC</label>
                   <div
-                    className="w-full rounded-lg bg-white p-2 shadow"
+                    className="w-full rounded-lg bg-white p-2 shadow-sm"
                     id="card-verification-code-element"
                   ></div>
                 </div>

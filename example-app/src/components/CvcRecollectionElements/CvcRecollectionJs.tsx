@@ -54,7 +54,7 @@ export default function CvcRecollectionJs() {
             name="card_id"
             placeholder="e.g. card_2f9jGnvKcQz8k1yqQpXqRe"
             required
-            className="mt-2 block w-full rounded-lg border-0 bg-white px-4 py-3 shadow placeholder:text-gray-400 focus:outline-none"
+            className="mt-2 block w-full rounded-lg border-0 bg-white px-4 py-3 shadow-sm placeholder:text-gray-400 focus:outline-hidden"
           />
           <p className="mt-1 text-xs text-gray-500">
             The card <code>id</code> from the card create/get response. PublicSquare checks the card
@@ -64,14 +64,14 @@ export default function CvcRecollectionJs() {
         <div className="space-y-2 rounded-lg border-2 border-dashed border-gray-300 p-4">
           <label>CVV</label>
           <div
-            className="w-full rounded-lg bg-white p-2 shadow"
+            className="w-full rounded-lg bg-white p-2 shadow-sm"
             id="js-cvc-recollection-cvc-element"
           ></div>
         </div>
         <div className="flex justify-end">
           <button
             type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 focus-visible:outline-solid"
           >
             {updatingCvc ? 'Updating…' : 'Update CVV'}
           </button>
