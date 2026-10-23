@@ -204,12 +204,12 @@ describe('Cards', () => {
 
       const [, init] = (global.fetch as jest.Mock).mock.calls[0];
       expect(JSON.parse(init.body)).toEqual({ nonce: 'nonce_123' });
-      const [, model] = (publicsquare.bt?.tokens?.update as jest.Mock).mock.lastCall;
+      const [, model] = (publicsquare.bt!.tokens!.update as jest.Mock).mock.lastCall;
       expect(model.data.cvc).toBe(cvcElement);
     });
 
     test('maps the BT token response down to CardUpdateCvcResponse', async () => {
-      (publicsquare.bt?.tokens?.update as jest.Mock).mockResolvedValueOnce(
+      (publicsquare.bt!.tokens!.update as jest.Mock).mockResolvedValueOnce(
         btCardTokenUpdateResponse,
       );
 
@@ -224,7 +224,7 @@ describe('Cards', () => {
     });
 
     test('returns an error and skips the BT update when payments-api rejects the session', async () => {
-      (publicsquare.bt?.tokens?.update as jest.Mock).mockClear();
+      (publicsquare.bt!.tokens!.update as jest.Mock).mockClear();
       mockCvcSession({ errors: [{ message: 'card not found' }] }, 404);
 
       const result = await publicsquare.cards.updateCvc('card_other_account', cvcElement);
@@ -239,7 +239,7 @@ describe('Cards', () => {
     });
 
     test('returns an error when creating the BT session fails', async () => {
-      (publicsquare.bt?.sessions?.create as jest.Mock).mockRejectedValueOnce(
+      (publicsquare.bt!.sessions!.create as jest.Mock).mockRejectedValueOnce(
         Object.assign(new Error('The API responded with status code 401.'), {
           data: { title: 'Unauthorized' },
         }),
@@ -256,7 +256,7 @@ describe('Cards', () => {
     });
 
     test('returns a CardUpdateCvcResponse error (with error.data) when the BT update fails', async () => {
-      (publicsquare.bt?.tokens?.update as jest.Mock).mockResolvedValueOnce({
+      (publicsquare.bt!.tokens!.update as jest.Mock).mockResolvedValueOnce({
         error: 'invalid cvc',
         data: { errors: { cvc: ['must be 3 or 4 digits'] } },
       });
@@ -276,7 +276,7 @@ describe('Cards', () => {
         status: 404,
         data: { errors: { token: ['token not found'] } },
       });
-      (publicsquare.bt?.tokens?.update as jest.Mock).mockRejectedValueOnce(btError);
+      (publicsquare.bt!.tokens!.update as jest.Mock).mockRejectedValueOnce(btError);
 
       const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
 

@@ -60,7 +60,7 @@ export class ApplePayButtonWidget {
       this.ref = btn;
       container.appendChild(btn);
 
-      btn.addEventListener('click', (e: Event) => {
+      btn.addEventListener('click', () => {
         if (!this.options.disabled && typeof this.options.onClick === 'function') {
           this.options.onClick();
         }

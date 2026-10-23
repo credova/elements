@@ -41,7 +41,7 @@ function createInputElement({
     input.pattern = pattern;
   }
 
-  input.addEventListener('invalid', (e) => {
+  input.addEventListener('invalid', () => {
     if (onValidate && !onValidate(input.value)) {
       if (patternError) {
         input.setCustomValidity(patternError);

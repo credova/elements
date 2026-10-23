@@ -7,6 +7,11 @@ steps {
         check = "bunx oxfmt --check {{ files }}"
         fix = "bunx oxfmt {{ files }}"
     }
+    ["oxlint"] {
+        glob = List("**/*.{js,jsx,ts,tsx,mjs,cjs}")
+        check = "bunx oxlint {{ files }}"
+        fix = "bunx oxlint --fix {{ files }}"
+    }
     ["jactionlint"] = Builtins.jactionlint
     ["shellcheck"] = Builtins.shellcheck
 }

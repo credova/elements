@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import", "react"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "off",
+    "pedantic": "off",
+    "perf": "off",
+    "style": "off",
+    "restriction": "off",
+    "nursery": "off"
+  },
+  // TODO: make these errors once the effects that mount the iframes are reworked.
+  "rules": {
+    "react-hooks/exhaustive-deps": "warn",
+    "react/immutability": "warn",
+    "react/refs": "warn",
+    "react/set-state-in-effect": "warn"
+  },
+  "ignorePatterns": ["**/dist/**", "**/.next/**", "**/next-env.d.ts"],
+  "overrides": [
+    {
+      "files": ["js-sdk/src/**/__tests__/**", "**/*.test.{ts,tsx}"],
+      "plugins": ["jest"]
+    },
+    {
+      "files": ["example-app/**"],
+      "plugins": ["nextjs"]
+    }
+  ]
+}
