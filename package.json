@@ -21,13 +21,13 @@
     "@types/node": "^26.6.5",
     "dotenv": "^18.0.8",
     "semantic-release": "^25.0.3",
-    "typescript": ">=3.0.0"
+    "typescript": ">=3.0.0",
+    "oxfmt": "^0.74.0"
   },
   "dependencies": {
     "lodash": "^4.18.0",
     "lodash-es": "^4.18.0",
     "minimatch": "^10.2.3",
-    "prettier": "^3.9.10",
     "tar": "^7.5.16",
     "undici": "^8.12.3"
   }

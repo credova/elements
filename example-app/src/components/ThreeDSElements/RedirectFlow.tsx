@@ -11,7 +11,13 @@ import {
 } from './ThreeDSElementsReact';
 
 type Step =
-  'idle' | 'tokenizing' | 'creating_intent' | 'confirming' | 'redirecting' | 'done' | 'error';
+  | 'idle'
+  | 'tokenizing'
+  | 'creating_intent'
+  | 'confirming'
+  | 'redirecting'
+  | 'done'
+  | 'error';
 
 const STEP_LABELS: Partial<Record<Step, string>> = {
   tokenizing: '1/4 Tokenizing card',
