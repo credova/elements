@@ -21,7 +21,6 @@
     "@types/node": "^26.6.5",
     "dotenv": "^18.0.8",
     "semantic-release": "^25.0.3",
-    "synckit": "^0.12.3",
     "typescript": ">=3.0.0"
   },
   "dependencies": {
