@@ -13,6 +13,18 @@ Using [Node Package Manager](https://docs.npmjs.com/)
 npm install --save @publicsquare/publicsquare-js
 ```
 
+Using [Bun](https://bun.sh/docs/cli/add)
+
+```sh
+bun add @publicsquare/publicsquare-js
+```
+
+Using [pnpm](https://pnpm.io/cli/add)
+
+```sh
+pnpm add @publicsquare/publicsquare-js
+```
+
 Using [Yarn](https://classic.yarnpkg.com/en/docs/)
 
 ```sh
