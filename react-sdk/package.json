@@ -34,7 +34,6 @@
     "@publicsquare/elements-js": "2.0.1",
     "glob": "^13.0.1",
     "minimatch": "^10.2.3",
-    "prettier": "^3.9.6",
     "follow-redirects": "^1.16.0"
   },
   "overrides": {

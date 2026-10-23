@@ -46,7 +46,7 @@ mise run lint        # hk check --all (runs in PR CI)
 mise run format      # hk fix --all
 hk install           # pre-commit hook
 ```
-Steps live in `hk.pkl`: Prettier per package, jactionlint (`correctness` profile, `.github/jactionlint.yaml`) and shellcheck.
+Steps live in `hk.pkl`: oxfmt (root `.oxfmtrc.json`; `example-app/.oxfmtrc.json` adds Tailwind class sorting), jactionlint (`correctness` profile, `.github/jactionlint.yaml`) and shellcheck.
 
 ## Architecture
 
