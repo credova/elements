@@ -13,16 +13,22 @@ Using [Node Package Manager](https://docs.npmjs.com/)
 npm install --save @publicsquare/elements-react
 ```
 
-Using [Yarn](https://classic.yarnpkg.com/en/docs/)
-
-```sh
-yarn add @publicsquare/elements-react
-```
-
 Using [Bun](https://bun.sh/docs/cli/add)
 
 ```sh
 bun add @publicsquare/elements-react
+```
+
+Using [pnpm](https://pnpm.io/cli/add)
+
+```sh
+pnpm add @publicsquare/elements-react
+```
+
+Using [Yarn](https://classic.yarnpkg.com/en/docs/)
+
+```sh
+yarn add @publicsquare/elements-react
 ```
 
 ## Documentation
