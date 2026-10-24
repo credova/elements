@@ -15,7 +15,7 @@ import {
 } from '@/types';
 
 export type { ElementWrapper } from '@basis-theory/basis-theory-js/types/elements';
-export * from '@basis-theory/basis-theory-js/types/elements';
+export * from '@basis-theory/basis-theory-js/types/elements/index.js';
 
 export interface ApplicationInfo {
   name?: string;

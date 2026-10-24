@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "description": "PublicSquare React Elements",
   "main": "dist/index.js",
-  "module": "dist/index.js",
+  "module": "dist/esm/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -19,8 +19,9 @@
   "license": "MIT",
   "scripts": {
     "link:js-sdk": "cd ../js-sdk/dist && bun link && cd ../../react-sdk && bun link @publicsquare/elements-js",
-    "build": "bun run clean && bun run --parallel build:module build:package",
+    "build": "bun run clean && bun run --parallel build:module build:rslib build:package",
     "build:module": "tsc -p tsconfig.build.json",
+    "build:rslib": "rslib build",
     "build:package": "node prepare.js",
     "clean": "rimraf dist",
     "publish": "npm publish ./dist",
@@ -37,6 +38,7 @@
     "shell-quote": "^1.8.4"
   },
   "devDependencies": {
+    "@rslib/core": "1.0.3",
     "@types/react": "^19.1.8",
     "react": "^19.2.1",
     "rimraf": "^6.1.3",

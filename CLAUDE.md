@@ -71,9 +71,12 @@ The React SDK uses a Context + hooks pattern:
 
 ### Build Pipeline
 
-JS SDK produces two outputs:
-1. **UMD bundle** (`rspack.config.js`) — for CDN/script tag usage
-2. **CommonJS modules** (`tsc -p tsconfig.build.json`) — for npm consumers
+Each SDK builds with `bun run --parallel`:
+1. **CommonJS + `.d.ts`** (`tsc -p tsconfig.build.json`) — `dist/`, the package `main`
+2. **ESM** (`rslib build`, bundleless) — `dist/esm/*.mjs`, the package `module`
+3. **UMD bundle**, js-sdk only (`rslib build`) — `dist/publicsquare-js.bundle.js`, for the CDN/script tag
+
+Deep imports into `@basis-theory/*` or `@publicsquare/elements-js` that carry runtime values need an explicit `/index.js`, because Node ESM rejects directory imports.
 
 `prepare.js` in each package copies/transforms `package.json` into `dist/` before publishing.
 
