@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import {
+import type {
   GooglePayConfiguration,
   GooglePayButtonWidgetOptions,
 } from '@publicsquare/elements-js/types';
-import { validateGooglePayButtonWidgetOptions } from '@publicsquare/elements-js/validators';
+import { validateGooglePayButtonWidgetOptions } from '@publicsquare/elements-js';
 import { usePublicSquare } from '../core/PublicSquareProvider';
 
 const GooglePayButtonElement: React.FC<GooglePayButtonWidgetOptions> = (props) => {

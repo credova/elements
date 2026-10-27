@@ -2,18 +2,13 @@ version: 2
 updates:
   # Tier 2: 14th of month, 4 AM LA. No Dependabot security updates for bun.
   - package-ecosystem: "bun"
-    directories: ["/", "/js-sdk", "/react-sdk", "/example-app"]
+    directory: "/"
     schedule:
       interval: cron
       cronjob: "0 4 14 * *" # 14th, 4am LA
       timezone: America/Los_Angeles
     open-pull-requests-limit: 5
     rebase-strategy: disabled
-    # Major upgrades that need a migration first; bump these deliberately.
-    ignore:
-      # Babel 8: plugin-proposal-class-properties requires Babel 7. Drop when Babel is removed.
-      - dependency-name: "@babel/*"
-        update-types: ["version-update:semver-major"]
     groups:
       bun-version:
         applies-to: version-updates

@@ -16,3 +16,4 @@ cypress/downloads
 .idea
 .env
 .vscode/
+.turbo

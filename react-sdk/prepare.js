@@ -16,6 +16,9 @@ libPackage.files = ['*'];
 ['main', 'module', 'types'].forEach((prop) => {
   libPackage[prop] = libPackage[prop].replace('dist/', '');
 });
+libPackage.exports = JSON.parse(
+  JSON.stringify(libPackage.exports).replaceAll('./dist/', './')
+);
 
 fs.mkdirSync('./dist', { recursive: true });
 fs.copyFileSync('./README.md', './dist/README.md');
