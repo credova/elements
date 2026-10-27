@@ -26,8 +26,7 @@ echo "Building project..."
 
 rm -rf node_modules
 bun install
-bun run link:js-sdk
-bun run link:react-sdk
+bun run link:sdks
 bun run build
 
 result=$?

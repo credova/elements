@@ -50,10 +50,10 @@ After changing a dependency version in a `package.json`, run from that package's
 bun install
 ```
 
-If you did this in `example-app/`, it will re-resolve `@publicsquare/elements-js`/`elements-react` from the registry and drop the local symlinks set up by `link:js-sdk`/`link:react-sdk`. Re-link both in one call afterward:
+If you did this in `example-app/`, it will re-resolve `@publicsquare/elements-js`/`elements-react` from the registry and drop the local symlinks. Re-link both afterward:
 
 ```sh
-bun link @publicsquare/elements-js @publicsquare/elements-react
+bun run link:sdks
 ```
 
 ## Running the example app (`/example-app`)
