@@ -1,4 +1,4 @@
-import {
+import type {
   ApplePayCreateResponse,
   ApplePayCreateErrorResponse,
   ApplePayCreateInput,
@@ -52,7 +52,7 @@ import {
   GooglePayCreateResponse,
   GooglePayCreateErrorResponse,
 } from '@publicsquare/elements-js/types';
-import { PublicSquare } from '@publicsquare/elements-js';
+import type { PublicSquare } from '@publicsquare/elements-js';
 
 export type PublicSquareProviderValue = {
   publicsquare?: PublicSquare;
@@ -142,7 +142,7 @@ export type ApplePayButtonElementProps = {
 
 export type GooglePayButtonElement = React.Ref<HTMLDivElement>;
 
-export {
+export type {
   ApplePayCreateResponse,
   ApplePayCreateErrorResponse,
   ApplePayCreateInput,

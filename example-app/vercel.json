@@ -1,5 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cd ../js-sdk && bun install && bun run build && cd ../react-sdk && bun install && bun run link:js-sdk && bun run build && cd ../example-app && bun install && bun run link:sdks",
-  "buildCommand": "bun run build"
+  "buildCommand": "turbo run build"
 }

@@ -6,7 +6,7 @@ current_directory="$PWD"
 cd "$(dirname "$0")"
 
 time {
-    ./build.sh
+    mise run build
     ./acceptance-test.sh
 }
 

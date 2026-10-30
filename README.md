@@ -36,25 +36,21 @@ To just build all packages (`js-sdk`, `react-sdk`, `example-app`) without runnin
 mise run build
 ```
 
-Or build a single package (run inside `js-sdk/` or `react-sdk/`):
+Or build a single package and its workspace dependencies (run inside `js-sdk/` or `react-sdk/`):
 
 ```sh
-bun run build
+bunx turbo run build
 ```
 
 ### Updating Dependencies
 
-After changing a dependency version in a `package.json`, run from that package's directory:
+After changing a dependency version in any `package.json`, run from the repo root:
 
 ```sh
 bun install
 ```
 
-If you did this in `example-app/`, it will re-resolve `@publicsquare/elements-js`/`elements-react` from the registry and drop the local symlinks. Re-link both afterward:
-
-```sh
-bun run link:sdks
-```
+The repo is a bun workspace with one `bun.lock`; the SDKs are linked into each other and into `example-app` automatically.
 
 ## Running the example app (`/example-app`)
 

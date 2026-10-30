@@ -9,7 +9,7 @@ import {
   usePublicSquare,
   BankAccountElement,
 } from '@publicsquare/elements-react';
-import PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
+import type * as PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
 import { FormEvent, useRef, useState } from 'react';
 import AccountHolderTypeSelect from '../Form/AccountHolderTypeSelect';
 import AccountTypeSelect from '../Form/AccountTypeSelect';

@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["src/**/__tests__", "src/tests"],
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "emitDeclarationOnly": false,
+    "useDefineForClassFields": true,
+    "types": ["node"]
+  }
+}
