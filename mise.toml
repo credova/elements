@@ -1,7 +1,7 @@
 # Task runner for the elements SDK (replaces the Makefile).
 # Run tasks with `mise run <task>`, e.g. `mise run build`.
 [tools]
-node = "24"
+node = "26"
 # Pinned to the version the monorepo build/tests were validated against. Bump
 # deliberately rather than tracking "latest" so CI is reproducible.
 bun = "1.4.4"
