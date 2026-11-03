@@ -10,9 +10,12 @@ pkl = "0.32.2"
 jactionlint = "2.3.0"
 shellcheck = "0.11.0"
 
+[env]
+_.path = ["node_modules/.bin"]
+
 [tasks.install]
-description = "Install dependencies in every package"
-run = "for d in . js-sdk react-sdk example-app; do bun install --cwd \"$d\"; done"
+description = "Install workspace dependencies"
+run = "bun install"
 
 [tasks.format]
 description = "Run hk fixes"
@@ -23,14 +26,17 @@ run = "hk fix --all"
 run = "./scripts/verify.sh"
 
 [tasks.build]
-run = "./scripts/build.sh"
+depends = ["install"]
+run = "turbo run build"
 
 [tasks.dev]
-run = "cd example-app && bun run dev"
+depends = ["install"]
+run = "turbo run dev"
 
 [tasks.typecheck]
 description = "Typecheck TS code with Bun"
-run = "bun check -p js-sdk && bun check -p react-sdk && bun check -p example-app"
+depends = ["install"]
+run = "turbo run typecheck"
 
 [tasks.lint]
 description = "Run hk checks"
@@ -38,13 +44,12 @@ depends = ["install"]
 run = "hk check --all"
 
 [tasks.test]
-description = "Unit tests (jest). Pure/mocked, no live env — runs in PR CI."
-# js-sdk holds the unit suite; react-sdk has no unit tests yet. Self-installs so
-# it also works standalone (in CI the preceding build has already installed deps).
-run = "cd js-sdk && bun install && bun run test"
+description = "Unit tests. Pure and mocked, no live env."
+depends = ["install"]
+run = "turbo run test"
 
 [tasks.acceptance]
-description = "Playwright acceptance tests — needs a live env + the SDK key; run out-of-band, not in PR CI"
+description = "Playwright acceptance tests. Needs a live env and the SDK key."
 run = "./scripts/acceptance-test.sh"
 
 [tasks.release]

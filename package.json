@@ -1,7 +1,18 @@
 {
   "name": "publicsquare-elements",
   "version": "2.0.1",
+  "private": true,
+  "packageManager": "bun@1.4.4",
+  "workspaces": [
+    "js-sdk",
+    "react-sdk",
+    "example-app"
+  ],
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "typecheck": "turbo run typecheck",
+    "test:unit": "turbo run test",
     "release": "semantic-release",
     "test": "bunx playwright test",
     "test:ui": "bunx playwright test --ui"
@@ -20,10 +31,11 @@
     "@semantic-release/release-notes-generator": "^14.0.3",
     "@types/node": "^26.6.5",
     "dotenv": "^18.0.8",
-    "semantic-release": "^25.0.3",
-    "typescript": ">=3.0.0",
     "oxfmt": "^0.74.0",
-    "oxlint": "^1.89.0"
+    "oxlint": "^1.89.0",
+    "semantic-release": "^25.0.3",
+    "turbo": "2.11.8",
+    "typescript": ">=3.0.0"
   },
   "dependencies": {
     "lodash": "^4.18.0",

@@ -6,7 +6,7 @@ import {
   CardExpirationDateElement,
   CardVerificationCodeElement,
 } from '@publicsquare/elements-react';
-import PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
+import type * as PublicSquareTypes from '@publicsquare/elements-react/types/sdk';
 import { ReactNode, useRef } from 'react';
 import { environment } from '@/config/environments';
 import NameInput from '@/components/Form/NameInput';

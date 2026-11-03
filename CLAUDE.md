@@ -14,7 +14,7 @@ This is a monorepo for the PublicSquare Elements SDK — a payment elements libr
 
 ## Commands
 
-`mise` is the task runner for this repo (replaces the old Makefile) and manages the pinned Node/Bun versions — run `mise install` once to get the pinned toolchain.
+`mise` manages the pinned Node/Bun versions — run `mise install` once to get the pinned toolchain. The repo is a bun workspace (`js-sdk`, `react-sdk`, `example-app`, one root `bun.lock`), and [Turborepo](https://turborepo.com) runs the package tasks: `turbo.json` holds the task graph, each package's `package.json` scripts hold the commands, and the `mise` tasks and root `package.json` scripts call `turbo run`.
 
 ### Building
 ```bash
@@ -23,16 +23,16 @@ mise run dev         # Run example-app in dev mode
 mise run typecheck   # bun check on js-sdk, react-sdk, example-app (after build)
 ```
 
-Per-package (run inside `js-sdk/` or `react-sdk/`):
+Per-package (`turbo` scopes to the package in the current directory and builds its workspace dependencies first):
 ```bash
-bun run build        # Full build (clean, bundle, module, types, package)
-bun run typecheck    # bun check: type-check only, no emit
+cd react-sdk && bunx turbo run build   # js-sdk, then react-sdk
+bunx turbo run build --filter=@publicsquare/elements-js
 ```
 
 ### Testing
 ```bash
 # Unit tests (js-sdk only — react-sdk has no unit tests)
-mise run test        # or: cd js-sdk && bun run test
+mise run test        # turbo run test; or: cd js-sdk && bun run test
 
 # Acceptance tests (Playwright, from root)
 mise run acceptance
@@ -71,24 +71,18 @@ The React SDK uses a Context + hooks pattern:
 
 ### Build Pipeline
 
-JS SDK produces two outputs:
-1. **UMD bundle** (`webpack.prod.js`) — for CDN/script tag usage
-2. **ES modules** (`babel src/`) — for npm consumers
+`turbo run build` runs each SDK's `clean`, then these in parallel (the outputs in `turbo.json` are disjoint so cached runs restore all of `dist/`):
+1. **CommonJS + `.d.ts`** (`tsc -p tsconfig.build.json`) — `dist/`, the package `main`
+2. **ESM** (`rslib build`, bundleless) — `dist/esm/*.mjs`, the package `module`
+3. **UMD bundle**, js-sdk only (`rslib build`) — `dist/publicsquare-js.bundle.js`, for the CDN/script tag
+
+Each SDK's `package.json` `exports` map lists its public subpaths; a new deep import needs an entry there with `types`, `import` and `require` targets. Deep imports into `@basis-theory/*` that carry runtime values need an explicit `/index.js`, because it has no `exports` map and Node ESM rejects directory imports.
 
 `prepare.js` in each package copies/transforms `package.json` into `dist/` before publishing.
 
-### Local Development with Linked Packages
+### Workspace links
 
-When working across js-sdk and react-sdk simultaneously, link the local build(s) with `bun link` rather than installing from npm. `scripts/build.sh` (invoked via `mise run build`) does this automatically across all three packages.
-
-To link manually:
-```bash
-cd react-sdk && bun run link:js-sdk   # Links local js-sdk build into react-sdk
-```
-When linking multiple packages into the same consumer (e.g. both js-sdk and react-sdk into example-app), link them in a single `bun link` call — linking them one at a time causes each call to reinstall (and clobber) the other's symlink:
-```bash
-cd example-app && bun link @publicsquare/elements-js @publicsquare/elements-react
-```
+`bun install` at the root links `@publicsquare/elements-js` into react-sdk and both SDKs into example-app, because their version ranges match the workspace packages. The links point at the package roots, so consumers resolve `dist/` through `main`/`module`/`exports` — build the SDKs before running example-app (`turbo run dev` does). Keep those ranges satisfied by the workspace version, or bun installs the registry copy instead.
 
 ## Publishing (npm OIDC trusted publishing)
 

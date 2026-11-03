@@ -17,11 +17,13 @@ jest.mock('@basis-theory/basis-theory-js', () => ({
   })),
 }));
 
+const mockBasisTheory3ds = jest.fn(() => ({
+  createSession: (...args: unknown[]) => mockBtCreateSession(...args),
+  startChallenge: (...args: unknown[]) => mockBtStartChallenge(...args),
+}));
+
 jest.mock('@basis-theory/web-threeds', () => ({
-  BasisTheory3ds: jest.fn(() => ({
-    createSession: (...args: unknown[]) => mockBtCreateSession(...args),
-    startChallenge: (...args: unknown[]) => mockBtStartChallenge(...args),
-  })),
+  BasisTheory3ds: mockBasisTheory3ds,
 }));
 
 describe('ThreeDs', () => {
@@ -140,7 +142,6 @@ describe('ThreeDs', () => {
     const testPublicsquare = await new PublicSquare().init('pk_test_123', {
       apiUrl: 'https://staging.api.publicsquare.com',
     });
-    const { BasisTheory3ds } = jest.requireMock('@basis-theory/web-threeds');
 
     await testPublicsquare.threeDs.createSession({
       token_id: 'tok_123',
@@ -148,7 +149,7 @@ describe('ThreeDs', () => {
       challenge_preference: 'no-preference',
     });
 
-    expect(BasisTheory3ds).toHaveBeenCalledWith('key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES', {
+    expect(mockBasisTheory3ds).toHaveBeenCalledWith('key_test_us_pub_Tkia8nWTAWwFZ8QJyUJvES', {
       apiBaseUrl: 'https://api.test.basistheory.com',
     });
   });

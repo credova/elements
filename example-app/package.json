@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "link:sdks": "(cd ../js-sdk/dist && bun link) && (cd ../react-sdk/dist && bun link) && bun link @publicsquare/elements-js @publicsquare/elements-react",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
