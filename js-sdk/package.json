@@ -35,7 +35,7 @@
     "glob": "^13.0.6",
     "minimatch": "^10.2.5",
     "serialize-javascript": "^7.0.5",
-    "follow-redirects": "^1.16.0"
+    "follow-redirects": "^1.16.2"
   },
   "overrides": {
     "shell-quote": "^1.8.4"
