@@ -1,7 +1,7 @@
-import { beforeAll, describe, expect, mock, test } from 'bun:test';
 import { PublicSquare } from '..';
+import { PublicSquareBankAccount } from '@/bankAccounts';
 import { ELEMENTS_INIT_ERROR_MESSAGE, ELEMENTS_TYPE_NOT_SUPPORTED } from '@/constants';
-import { getError } from '@/tests/utils';
+import { getError, mock, spyOn } from '@/tests/utils';
 
 mock.module('@basis-theory/basis-theory-js', () => ({
   BasisTheory: mock().mockImplementation(() => ({
@@ -14,22 +14,24 @@ mock.module('@basis-theory/basis-theory-js', () => ({
   })),
 }));
 
-mock.module('../bankAccounts', () => ({
-  PublicSquareBankAccount: mock().mockImplementation(() => {
-    function MockPublicSquareBankAccount() {}
-    MockPublicSquareBankAccount.prototype.createElement = mock().mockResolvedValue({});
-    return {
-      createElement: mock().mockResolvedValue({}),
-      createRoutingNumberElement: mock().mockResolvedValue({}),
-      createAccountNumberElement: mock().mockResolvedValue({}),
-    };
-  }),
-}));
-
 describe('PublicSquare', () => {
   let publicsquare: PublicSquare;
   beforeAll(async () => {
     publicsquare = await new PublicSquare().init('api_key');
+  });
+
+  const bankAccountStubs = [
+    spyOn(PublicSquareBankAccount.prototype, 'createElement').mockReturnValue({} as any),
+    spyOn(PublicSquareBankAccount.prototype, 'createRoutingNumberElement').mockReturnValue(
+      {} as any,
+    ),
+    spyOn(PublicSquareBankAccount.prototype, 'createAccountNumberElement').mockReturnValue(
+      {} as any,
+    ),
+  ];
+
+  afterAll(() => {
+    for (const stub of bankAccountStubs) stub.mockRestore();
   });
 
   test('constructs', () => {

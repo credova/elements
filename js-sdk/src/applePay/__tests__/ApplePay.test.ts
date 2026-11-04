@@ -1,7 +1,6 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, mock, test } from 'bun:test';
 import { PublicSquare } from '../../index';
 import { PublicSquareApplePay } from '..';
-import { getError, mockFetch, type AnyMock } from '../../tests/utils';
+import { getError, mockFetch, type AnyMock, mock } from '../../tests/utils';
 import { ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '../../constants';
 import { ApplePayCreateInput } from '../../types';
 

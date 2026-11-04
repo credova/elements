@@ -27,6 +27,7 @@
     },
     "types": [
       "bun",
+      "bun-types/test-globals",
       "node"
     ]
   }

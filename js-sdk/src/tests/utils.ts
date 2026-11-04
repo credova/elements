@@ -1,5 +1,7 @@
 import { mock, type Mock } from 'bun:test';
 
+export { mock, spyOn } from 'bun:test';
+
 export class NoErrorThrownError extends Error {}
 
 export const getError = async <TError>(call: () => unknown): Promise<TError> => {

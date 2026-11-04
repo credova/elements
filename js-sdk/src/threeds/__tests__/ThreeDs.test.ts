@@ -1,7 +1,6 @@
-import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { PublicSquare } from '@/index';
 import { PublicSquareThreeDs } from '..';
-import { getError } from '@/tests/utils';
+import { getError, mock } from '@/tests/utils';
 import { ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
 
 const mockBtCreateSession = mock();
