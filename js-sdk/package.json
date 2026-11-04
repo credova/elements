@@ -20,8 +20,8 @@
   "scripts": {
     "build": "bun run clean && concurrently \"bun run build:bundle\" \"bun run build:module\" \"bun run build:types\" \"bun run build:package\" -n \"bundle,module,types,package\" -c \"yellow,magenta,blue,green\" --kill-others-on-fail -g",
     "build:bundle": "webpack --config webpack.prod.js",
-    "build:module": "babel src --extensions .ts --out-dir dist",
-    "build:types": "tsc && tsc-alias",
+    "build:module": "babel src --extensions .ts --out-dir dist --ignore \"src/**/__tests__/**\",\"src/tests/**\"",
+    "build:types": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "build:package": "node prepare.js",
     "clean": "rimraf dist",
     "test": "jest",
@@ -35,7 +35,7 @@
     "glob": "^13.0.6",
     "minimatch": "^10.2.5",
     "serialize-javascript": "^7.0.5",
-    "follow-redirects": "^1.16.0"
+    "follow-redirects": "^1.16.2"
   },
   "overrides": {
     "shell-quote": "^1.8.4"
