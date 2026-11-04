@@ -19,9 +19,8 @@
   "license": "MIT",
   "scripts": {
     "link:js-sdk": "cd ../js-sdk/dist && bun link && cd ../../react-sdk && bun link @publicsquare/elements-js",
-    "build": "bun run clean && concurrently \"bun run build:module\" \"bun run build:types\" \"bun run build:package\" --kill-others-on-fail",
-    "build:module": "babel src --extensions .ts,.tsx --out-dir dist",
-    "build:types": "tsc",
+    "build": "bun run clean && concurrently \"bun run build:module\" \"bun run build:package\" --kill-others-on-fail",
+    "build:module": "tsc -p tsconfig.build.json",
     "build:package": "node prepare.js",
     "clean": "rimraf dist",
     "publish": "npm publish ./dist",
@@ -38,11 +37,6 @@
     "shell-quote": "^1.8.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.28.6",
-    "@babel/core": "^7.29.6",
-    "@babel/preset-env": "^7.29.0",
-    "@babel/preset-react": "^7.28.5",
-    "@babel/preset-typescript": "^7.28.5",
     "@types/react": "^19.1.8",
     "concurrently": "^10.0.6",
     "react": "^19.2.1",

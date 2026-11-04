@@ -71,9 +71,9 @@ The React SDK uses a Context + hooks pattern:
 
 ### Build Pipeline
 
-JS SDK produces two outputs:
-1. **UMD bundle** (`webpack.prod.js`) — for CDN/script tag usage
-2. **ES modules** (`babel src/`) — for npm consumers
+Each SDK's `build` script runs these in parallel after `clean`:
+1. **CommonJS + `.d.ts`** (`build:module`: `tsc -p tsconfig.build.json`, ES2018; js-sdk adds `tsc-alias` for the `@/` paths) — `dist/`, for npm consumers
+2. **UMD bundle**, js-sdk only (`build:bundle`: `rslib build`, ES2019, one file with the 3DS code inlined) — `dist/publicsquare-js.bundle.js`, for the CDN/script tag
 
 `prepare.js` in each package copies/transforms `package.json` into `dist/` before publishing.
 

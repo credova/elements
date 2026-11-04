@@ -9,7 +9,6 @@
       "dom",
       "esnext"
     ],
-    "importHelpers": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "outDir": "dist",
