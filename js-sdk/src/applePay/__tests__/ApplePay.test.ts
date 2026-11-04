@@ -1,15 +1,16 @@
+import { afterAll, beforeAll, beforeEach, describe, expect, mock, test } from 'bun:test';
 import { PublicSquare } from '../../index';
 import { PublicSquareApplePay } from '..';
-import { getError } from '../../tests/utils';
+import { getError, mockFetch, type AnyMock } from '../../tests/utils';
 import { ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '../../constants';
 import { ApplePayCreateInput } from '../../types';
 
-jest.mock('@basis-theory/basis-theory-js', () => ({
-  BasisTheory: jest.fn().mockImplementation(() => ({
-    init: jest.fn().mockResolvedValue({
-      createElement: jest.fn(),
+mock.module('@basis-theory/basis-theory-js', () => ({
+  BasisTheory: mock().mockImplementation(() => ({
+    init: mock().mockResolvedValue({
+      createElement: mock(),
       client: {
-        post: jest.fn().mockResolvedValue({}),
+        post: mock().mockResolvedValue({}),
       },
     }),
   })),
@@ -24,10 +25,11 @@ describe('ApplePay', () => {
   let publicSquare: PublicSquare;
   let applePay: PublicSquareApplePay;
   let originalFetch: typeof global.fetch;
+  let fetchMock: AnyMock;
 
   beforeAll(async () => {
     originalFetch = global.fetch;
-    global.fetch = jest.fn();
+    fetchMock = mockFetch();
     publicSquare = await new PublicSquare().init('api_key');
     applePay = new PublicSquareApplePay(publicSquare);
   });
@@ -37,7 +39,7 @@ describe('ApplePay', () => {
   });
 
   beforeEach(() => {
-    (global.fetch as jest.Mock).mockClear();
+    fetchMock.mockClear();
   });
 
   test('constructs', async () => {
@@ -51,7 +53,7 @@ describe('ApplePay', () => {
       id: 'applepay_123',
       ...validApplePayCreateInput,
     };
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+    fetchMock.mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(mockResponse),
       }),
@@ -69,14 +71,14 @@ describe('ApplePay', () => {
         body: JSON.stringify(validApplePayCreateInput),
       },
     );
-    expect(result).toEqual(mockResponse);
+    expect<unknown>(result).toEqual(mockResponse);
   });
 
   test('create() works with minimal valid input', async () => {
     const mockResponse = {
       id: 'applepay_123',
     };
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+    fetchMock.mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(mockResponse),
       }),
@@ -96,7 +98,7 @@ describe('ApplePay', () => {
         body: JSON.stringify(input),
       },
     );
-    expect(result).toEqual(mockResponse);
+    expect<unknown>(result).toEqual(mockResponse);
   });
 
   test('create() fails with invalid apple_payment_data', async () => {
@@ -108,7 +110,7 @@ describe('ApplePay', () => {
     const mockResponse = {
       id: 'applepay_123',
     };
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+    fetchMock.mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(mockResponse),
       }),

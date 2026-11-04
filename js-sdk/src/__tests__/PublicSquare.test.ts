@@ -1,26 +1,27 @@
+import { beforeAll, describe, expect, mock, test } from 'bun:test';
 import { PublicSquare } from '..';
 import { ELEMENTS_INIT_ERROR_MESSAGE, ELEMENTS_TYPE_NOT_SUPPORTED } from '@/constants';
 import { getError } from '@/tests/utils';
 
-jest.mock('@basis-theory/basis-theory-js', () => ({
-  BasisTheory: jest.fn().mockImplementation(() => ({
-    init: jest.fn().mockResolvedValue({
-      createElement: jest.fn().mockResolvedValue({}),
+mock.module('@basis-theory/basis-theory-js', () => ({
+  BasisTheory: mock().mockImplementation(() => ({
+    init: mock().mockResolvedValue({
+      createElement: mock().mockResolvedValue({}),
       client: {
-        post: jest.fn().mockResolvedValue({}),
+        post: mock().mockResolvedValue({}),
       },
     }),
   })),
 }));
 
-jest.mock('../bankAccounts', () => ({
-  PublicSquareBankAccount: jest.fn().mockImplementation(() => {
+mock.module('../bankAccounts', () => ({
+  PublicSquareBankAccount: mock().mockImplementation(() => {
     function MockPublicSquareBankAccount() {}
-    MockPublicSquareBankAccount.prototype.createElement = jest.fn().mockResolvedValue({});
+    MockPublicSquareBankAccount.prototype.createElement = mock().mockResolvedValue({});
     return {
-      createElement: jest.fn().mockResolvedValue({}),
-      createRoutingNumberElement: jest.fn().mockResolvedValue({}),
-      createAccountNumberElement: jest.fn().mockResolvedValue({}),
+      createElement: mock().mockResolvedValue({}),
+      createRoutingNumberElement: mock().mockResolvedValue({}),
+      createAccountNumberElement: mock().mockResolvedValue({}),
     };
   }),
 }));

@@ -1,28 +1,29 @@
+import { beforeEach, describe, expect, mock, test } from 'bun:test';
 import { PublicSquare } from '@/index';
 import { PublicSquareThreeDs } from '..';
 import { getError } from '@/tests/utils';
 import { ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
 
-const mockBtCreateSession = jest.fn();
-const mockBtStartChallenge = jest.fn();
+const mockBtCreateSession = mock();
+const mockBtStartChallenge = mock();
 
-jest.mock('@basis-theory/basis-theory-js', () => ({
-  BasisTheory: jest.fn().mockImplementation(() => ({
-    init: jest.fn().mockResolvedValue({
-      createElement: jest.fn(),
+mock.module('@basis-theory/basis-theory-js', () => ({
+  BasisTheory: mock().mockImplementation(() => ({
+    init: mock().mockResolvedValue({
+      createElement: mock(),
       client: {
-        post: jest.fn().mockResolvedValue({}),
+        post: mock().mockResolvedValue({}),
       },
     }),
   })),
 }));
 
-const mockBasisTheory3ds = jest.fn(() => ({
+const mockBasisTheory3ds = mock(() => ({
   createSession: (...args: unknown[]) => mockBtCreateSession(...args),
   startChallenge: (...args: unknown[]) => mockBtStartChallenge(...args),
 }));
 
-jest.mock('@basis-theory/web-threeds', () => ({
+mock.module('@basis-theory/web-threeds', () => ({
   BasisTheory3ds: mockBasisTheory3ds,
 }));
 
@@ -30,7 +31,7 @@ describe('ThreeDs', () => {
   let publicsquare: PublicSquare;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    mock.clearAllMocks();
     publicsquare = await new PublicSquare().init('pk_test_123');
   });
 
@@ -52,7 +53,7 @@ describe('ThreeDs', () => {
       acs_transaction_id: 'acs_tx_1',
       additional_card_brands: [],
     };
-    const fetchMock = jest.fn().mockResolvedValue({ json: () => Promise.resolve(apiResponse) });
+    const fetchMock = mock().mockResolvedValue({ json: () => Promise.resolve(apiResponse) });
     global.fetch = fetchMock as unknown as typeof fetch;
 
     const result = await publicsquare.threeDs.createSession({
@@ -84,9 +85,9 @@ describe('ThreeDs', () => {
       additionalCardBrands: [],
     });
     const errorBody = { errors: { payment_intent_id: ["'payment_intent_id' is required"] } };
-    global.fetch = jest
-      .fn()
-      .mockResolvedValue({ json: () => Promise.resolve(errorBody) }) as unknown as typeof fetch;
+    global.fetch = mock().mockResolvedValue({
+      json: () => Promise.resolve(errorBody),
+    }) as unknown as typeof fetch;
 
     const result = await publicsquare.threeDs.createSession({
       token_id: 'tok_123',
@@ -94,12 +95,12 @@ describe('ThreeDs', () => {
       challenge_preference: 'no-preference',
     });
 
-    expect(result).toEqual({ error: errorBody });
+    expect<unknown>(result).toEqual({ error: errorBody });
   });
 
   test('createSession() throws when the BT session has no id', async () => {
     mockBtCreateSession.mockResolvedValue({ id: '', additionalCardBrands: [] });
-    global.fetch = jest.fn() as unknown as typeof fetch;
+    global.fetch = mock() as unknown as typeof fetch;
 
     const error = await getError<{ message: string }>(() =>
       publicsquare.threeDs.createSession({
@@ -128,7 +129,7 @@ describe('ThreeDs', () => {
 
   test("createSession() always uses the SDK's fixed TEST 3ds key in TEST mode, when PublicSquare apiKey has test value", async () => {
     mockBtCreateSession.mockResolvedValue({ id: 'bt_session_123', additionalCardBrands: [] });
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = mock().mockResolvedValue({
       json: () =>
         Promise.resolve({
           id: 'tds_abc',
