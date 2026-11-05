@@ -38,7 +38,7 @@ depends = ["install"]
 run = "hk check --all"
 
 [tasks.test]
-description = "Unit tests (jest). Pure/mocked, no live env — runs in PR CI."
+description = "Unit tests (bun test). Pure/mocked, no live env — runs in PR CI."
 # js-sdk holds the unit suite; react-sdk has no unit tests yet. Self-installs so
 # it also works standalone (in CI the preceding build has already installed deps).
 run = "cd js-sdk && bun install && bun run test"

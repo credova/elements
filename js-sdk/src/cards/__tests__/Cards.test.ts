@@ -1,22 +1,22 @@
 import { PublicSquare } from '@/index';
 import { PublicSquareCards } from '..';
-import { getError } from '@/tests/utils';
+import { getError, mockFetch, type AnyMock, mock } from '@/tests/utils';
 import { ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '@/constants';
 import { generateCardCreateInput } from '@/tests/factories/cards';
 import type { BasisTheoryCardTokenUpdateResponse } from '../types';
 
-jest.mock('@basis-theory/basis-theory-js', () => ({
-  BasisTheory: jest.fn().mockImplementation(() => ({
-    init: jest.fn().mockResolvedValue({
-      createElement: jest.fn(),
+mock.module('@basis-theory/basis-theory-js', () => ({
+  BasisTheory: mock().mockImplementation(() => ({
+    init: mock().mockResolvedValue({
+      createElement: mock(),
       client: {
-        post: jest.fn().mockResolvedValue({}),
+        post: mock().mockResolvedValue({}),
       },
       tokens: {
-        update: jest.fn().mockResolvedValue({}),
+        update: mock().mockResolvedValue({}),
       },
       sessions: {
-        create: jest.fn().mockResolvedValue({
+        create: mock().mockResolvedValue({
           sessionKey: 'session_key_123',
           nonce: 'nonce_123',
           expiresAt: '2026-09-25T12:03:00Z',
@@ -43,7 +43,7 @@ describe('Cards', () => {
   test('create() works', async () => {
     const input = generateCardCreateInput();
     const result = await publicsquare.cards.create(input);
-    expect(result).toEqual({});
+    expect<unknown>(result).toEqual({});
   });
 
   test('create() fails with invalid input', async () => {
@@ -134,15 +134,16 @@ describe('Cards', () => {
       aliases: ['8b0eac76-f566-40b5-8b92-5f0f0e32c014'],
     };
 
+    let fetchMock: AnyMock;
     const mockCvcSession = (
       body: unknown = { token: 'card_token_123', expires_at: '2026-09-25T12:03:00Z' },
       status = 200,
     ) =>
-      (global.fetch = jest.fn().mockResolvedValue({
+      (fetchMock = mockFetch().mockResolvedValue({
         ok: status >= 200 && status < 300,
         status,
         json: () => Promise.resolve(body),
-      }) as jest.Mock);
+      }));
 
     beforeEach(() => {
       mockCvcSession();
@@ -183,7 +184,7 @@ describe('Cards', () => {
     test('URL-encodes the card id in the payments-api path', async () => {
       await publicsquare.cards.updateCvc('../applications', cvcElement);
 
-      expect((global.fetch as jest.Mock).mock.calls[0][0]).toBe(
+      expect(fetchMock.mock.calls[0][0]).toBe(
         'https://api.publicsquare.com/payment-methods/cards/..%2Fapplications/cvc-session',
       );
     });
@@ -202,16 +203,14 @@ describe('Cards', () => {
     test('never sends the cvc to payments-api', async () => {
       await publicsquare.cards.updateCvc('card_123', cvcElement);
 
-      const [, init] = (global.fetch as jest.Mock).mock.calls[0];
+      const [, init] = fetchMock.mock.calls[0];
       expect(JSON.parse(init.body)).toEqual({ nonce: 'nonce_123' });
-      const [, model] = (publicsquare.bt!.tokens!.update as jest.Mock).mock.lastCall;
+      const [, model] = (publicsquare.bt!.tokens!.update as AnyMock).mock.lastCall!;
       expect(model.data.cvc).toBe(cvcElement);
     });
 
     test('maps the BT token response down to CardUpdateCvcResponse', async () => {
-      (publicsquare.bt!.tokens!.update as jest.Mock).mockResolvedValueOnce(
-        btCardTokenUpdateResponse,
-      );
+      (publicsquare.bt!.tokens!.update as AnyMock).mockResolvedValueOnce(btCardTokenUpdateResponse);
 
       const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
 
@@ -224,7 +223,7 @@ describe('Cards', () => {
     });
 
     test('returns an error and skips the BT update when payments-api rejects the session', async () => {
-      (publicsquare.bt!.tokens!.update as jest.Mock).mockClear();
+      (publicsquare.bt!.tokens!.update as AnyMock).mockClear();
       mockCvcSession({ errors: [{ message: 'card not found' }] }, 404);
 
       const result = await publicsquare.cards.updateCvc('card_other_account', cvcElement);
@@ -239,7 +238,7 @@ describe('Cards', () => {
     });
 
     test('returns an error when creating the BT session fails', async () => {
-      (publicsquare.bt!.sessions!.create as jest.Mock).mockRejectedValueOnce(
+      (publicsquare.bt!.sessions!.create as AnyMock).mockRejectedValueOnce(
         Object.assign(new Error('The API responded with status code 401.'), {
           data: { title: 'Unauthorized' },
         }),
@@ -256,7 +255,7 @@ describe('Cards', () => {
     });
 
     test('returns a CardUpdateCvcResponse error (with error.data) when the BT update fails', async () => {
-      (publicsquare.bt!.tokens!.update as jest.Mock).mockResolvedValueOnce({
+      (publicsquare.bt!.tokens!.update as AnyMock).mockResolvedValueOnce({
         error: 'invalid cvc',
         data: { errors: { cvc: ['must be 3 or 4 digits'] } },
       });
@@ -276,7 +275,7 @@ describe('Cards', () => {
         status: 404,
         data: { errors: { token: ['token not found'] } },
       });
-      (publicsquare.bt!.tokens!.update as jest.Mock).mockRejectedValueOnce(btError);
+      (publicsquare.bt!.tokens!.update as AnyMock).mockRejectedValueOnce(btError);
 
       const result = await publicsquare.cards.updateCvc('card_123', cvcElement);
 

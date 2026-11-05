@@ -26,7 +26,8 @@
       ]
     },
     "types": [
-      "jest",
+      "bun",
+      "bun-types/test-globals",
       "node"
     ]
   }

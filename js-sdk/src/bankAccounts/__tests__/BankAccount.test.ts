@@ -1,15 +1,15 @@
 import { PublicSquare } from '../../index';
 import { PublicSquareBankAccount } from '..';
-import { getError } from '../../tests/utils';
+import { getError, mockFetch, type AnyMock, mock } from '../../tests/utils';
 import { ELEMENTS_PUBLICSQUARE_NO_POINTER_MESSAGE } from '../../constants';
 import { BankAccountCreateInput } from '../../types';
 
-jest.mock('@basis-theory/basis-theory-js', () => ({
-  BasisTheory: jest.fn().mockImplementation(() => ({
-    init: jest.fn().mockResolvedValue({
-      createElement: jest.fn(),
+mock.module('@basis-theory/basis-theory-js', () => ({
+  BasisTheory: mock().mockImplementation(() => ({
+    init: mock().mockResolvedValue({
+      createElement: mock(),
       client: {
-        post: jest.fn().mockResolvedValue({}),
+        post: mock().mockResolvedValue({}),
       },
     }),
   })),
@@ -36,10 +36,11 @@ describe('BankAccounts', () => {
   let publicSquare: PublicSquare;
   let bankAccount: PublicSquareBankAccount;
   let originalFetch: typeof global.fetch;
+  let fetchMock: AnyMock;
 
   beforeAll(async () => {
     originalFetch = global.fetch;
-    global.fetch = jest.fn();
+    fetchMock = mockFetch();
     publicSquare = await new PublicSquare().init('api_key');
     bankAccount = new PublicSquareBankAccount(publicSquare);
   });
@@ -49,7 +50,7 @@ describe('BankAccounts', () => {
   });
 
   beforeEach(() => {
-    (global.fetch as jest.Mock).mockClear();
+    fetchMock.mockClear();
   });
 
   test('constructs', async () => {
@@ -63,7 +64,7 @@ describe('BankAccounts', () => {
       id: 'bank_123',
       ...validBankAccountCreateInput,
     };
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+    fetchMock.mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(mockResponse),
       }),
@@ -81,7 +82,7 @@ describe('BankAccounts', () => {
         body: JSON.stringify(validBankAccountCreateInput),
       },
     );
-    expect(result).toEqual(mockResponse);
+    expect<unknown>(result).toEqual(mockResponse);
   });
 
   test('create() works with minimal valid input', async () => {
@@ -90,7 +91,7 @@ describe('BankAccounts', () => {
       routing_number: '123456789',
       account_number: '987654321',
     };
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+    fetchMock.mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(mockResponse),
       }),
@@ -111,7 +112,7 @@ describe('BankAccounts', () => {
         body: JSON.stringify(input),
       },
     );
-    expect(result).toEqual(mockResponse);
+    expect<unknown>(result).toEqual(mockResponse);
   });
 
   test('create() fails with invalid routing number', async () => {
@@ -138,7 +139,7 @@ describe('BankAccounts', () => {
       routing_number: '123456789',
       account_number: '987654321',
     };
-    (global.fetch as jest.Mock).mockImplementationOnce(() =>
+    fetchMock.mockImplementationOnce(() =>
       Promise.resolve({
         json: () => Promise.resolve(mockResponse),
       }),

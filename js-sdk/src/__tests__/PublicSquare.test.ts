@@ -1,34 +1,37 @@
 import { PublicSquare } from '..';
+import { PublicSquareBankAccount } from '@/bankAccounts';
 import { ELEMENTS_INIT_ERROR_MESSAGE, ELEMENTS_TYPE_NOT_SUPPORTED } from '@/constants';
-import { getError } from '@/tests/utils';
+import { getError, mock, spyOn } from '@/tests/utils';
 
-jest.mock('@basis-theory/basis-theory-js', () => ({
-  BasisTheory: jest.fn().mockImplementation(() => ({
-    init: jest.fn().mockResolvedValue({
-      createElement: jest.fn().mockResolvedValue({}),
+mock.module('@basis-theory/basis-theory-js', () => ({
+  BasisTheory: mock().mockImplementation(() => ({
+    init: mock().mockResolvedValue({
+      createElement: mock().mockResolvedValue({}),
       client: {
-        post: jest.fn().mockResolvedValue({}),
+        post: mock().mockResolvedValue({}),
       },
     }),
   })),
-}));
-
-jest.mock('../bankAccounts', () => ({
-  PublicSquareBankAccount: jest.fn().mockImplementation(() => {
-    function MockPublicSquareBankAccount() {}
-    MockPublicSquareBankAccount.prototype.createElement = jest.fn().mockResolvedValue({});
-    return {
-      createElement: jest.fn().mockResolvedValue({}),
-      createRoutingNumberElement: jest.fn().mockResolvedValue({}),
-      createAccountNumberElement: jest.fn().mockResolvedValue({}),
-    };
-  }),
 }));
 
 describe('PublicSquare', () => {
   let publicsquare: PublicSquare;
   beforeAll(async () => {
     publicsquare = await new PublicSquare().init('api_key');
+  });
+
+  const bankAccountStubs = [
+    spyOn(PublicSquareBankAccount.prototype, 'createElement').mockReturnValue({} as any),
+    spyOn(PublicSquareBankAccount.prototype, 'createRoutingNumberElement').mockReturnValue(
+      {} as any,
+    ),
+    spyOn(PublicSquareBankAccount.prototype, 'createAccountNumberElement').mockReturnValue(
+      {} as any,
+    ),
+  ];
+
+  afterAll(() => {
+    for (const stub of bankAccountStubs) stub.mockRestore();
   });
 
   test('constructs', () => {
