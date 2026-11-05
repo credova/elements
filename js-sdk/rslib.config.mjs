@@ -1,13 +1,23 @@
 import { defineConfig } from '@rslib/core';
 
 export default defineConfig({
-  source: { tsconfigPath: './tsconfig.json' },
+  source: { tsconfigPath: './tsconfig.build.json' },
   output: { target: 'web', cleanDistPath: false },
   lib: [
     {
+      format: 'cjs',
+      bundle: false,
+      syntax: 'es2020',
+      dts: true,
+      source: {
+        entry: { index: ['./src/**/*.ts', '!./src/**/__tests__/**', '!./src/tests/**'] },
+      },
+      output: { distPath: './dist' },
+    },
+    {
       format: 'umd',
       umdName: 'PublicSquare',
-      syntax: 'es2019',
+      syntax: 'es2020',
       dts: false,
       source: {
         entry: { index: './src/index.ts' },
