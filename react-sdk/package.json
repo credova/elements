@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "description": "PublicSquare React Elements",
   "main": "dist/index.js",
-  "module": "dist/index.js",
+  "module": "dist/esm/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"

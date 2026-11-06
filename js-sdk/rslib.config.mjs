@@ -15,6 +15,16 @@ export default defineConfig({
       output: { distPath: './dist' },
     },
     {
+      format: 'esm',
+      bundle: false,
+      syntax: 'es2020',
+      dts: false,
+      source: {
+        entry: { index: ['./src/**/*.ts', '!./src/**/__tests__/**', '!./src/tests/**'] },
+      },
+      output: { distPath: './dist/esm' },
+    },
+    {
       format: 'umd',
       umdName: 'PublicSquare',
       syntax: 'es2020',

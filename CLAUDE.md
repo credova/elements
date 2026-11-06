@@ -72,8 +72,9 @@ The React SDK uses a Context + hooks pattern:
 ### Build Pipeline
 
 Each SDK's `build` script runs `clean`, then `rslib build` (`rslib.config.mjs`), then `prepare.js`. Rslib emits:
-1. **CommonJS + `.d.ts`** (bundleless, ES2020; `.d.ts` via tsgo from `tsconfig.build.json`) — `dist/`, for npm consumers
-2. **UMD bundle**, js-sdk only (ES2020, one file with the 3DS code inlined) — `dist/publicsquare-js.bundle.js`, for the CDN/script tag
+1. **CommonJS + `.d.ts`** (bundleless, ES2020; `.d.ts` via tsgo from `tsconfig.build.json`) — `dist/`, the package `main`
+2. **ESM** (bundleless, ES2020) — `dist/esm/*.mjs`, the package `module`. Runtime imports of directories in dependencies need an explicit `/index.js`, because Node ESM rejects directory imports.
+3. **UMD bundle**, js-sdk only (ES2020, one file with the 3DS code inlined) — `dist/publicsquare-js.bundle.js`, for the CDN/script tag
 
 `prepare.js` in each package copies/transforms `package.json` into `dist/` before publishing.
 

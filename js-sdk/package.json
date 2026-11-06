@@ -4,7 +4,7 @@
   "description": "PublicSquare JavaScript Elements",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "module": "dist/index.js",
+  "module": "dist/esm/index.mjs",
   "files": [
     "dist"
   ],

@@ -12,5 +12,13 @@ export default defineConfig({
       source: { entry: { index: ['./src/**/*.{ts,tsx}'] } },
       output: { distPath: './dist' },
     },
+    {
+      format: 'esm',
+      bundle: false,
+      syntax: 'es2020',
+      dts: false,
+      source: { entry: { index: ['./src/**/*.{ts,tsx}'] } },
+      output: { distPath: './dist/esm' },
+    },
   ],
 });
