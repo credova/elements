@@ -30,8 +30,8 @@
   },
   "dependencies": {
     "@publicsquare/elements-js": "2.0.1",
-    "glob": "^13.0.1",
-    "minimatch": "^10.2.3",
+    "glob": "^14.0.4",
+    "minimatch": "^11.0.8",
     "follow-redirects": "^1.16.2"
   },
   "overrides": {
